@@ -1,0 +1,51 @@
+plan reg_example_reg_block_REG1;
+    attribute string path = "";
+
+    feature reg1_field_bits;
+        measure Group fcov;
+            source = "group instance: \$unit ::ral_cvr_reg_example_reg_block_REG1::reg_bits.${path}.reg1_field";
+        endmeasure
+    endfeature
+endplan
+
+
+plan reg_example_reg_block_REG2;
+    attribute string path = "";
+
+    feature reg2_field1_bits;
+        measure Group fcov;
+            source = "group instance: \$unit ::ral_cvr_reg_example_reg_block_REG2::reg_bits.${path}.reg2_field1";
+        endmeasure
+    endfeature
+    feature reg2_field2_bits;
+        measure Group fcov;
+            source = "group instance: \$unit ::ral_cvr_reg_example_reg_block_REG2::reg_bits.${path}.reg2_field2";
+        endmeasure
+    endfeature
+endplan
+
+
+plan block_example_reg_block;
+    attribute string path = "";
+
+    feature reg_REG1;
+        subplan reg_example_reg_block_REG1 #(path="REG1");
+    endfeature
+    feature reg_REG2;
+        subplan reg_example_reg_block_REG2 #(path="REG2");
+    endfeature
+
+    feature address_map;
+        measure Group fcov;
+            source = "group instance: \$unit ::ral_block_example_reg_block::addr_map";
+        endmeasure
+    endfeature
+
+    feature field_values;
+        measure Group fcov;
+            source = "group instance: \$unit ::ral_block_example_reg_block::field_values";
+        endmeasure
+    endfeature
+endplan
+
+

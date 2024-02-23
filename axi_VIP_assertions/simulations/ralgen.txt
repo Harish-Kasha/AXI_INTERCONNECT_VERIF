@@ -1,0 +1,1 @@
+ralgen -uvm -l sv -t example_reg_block -c b -c a -c f regs.ralf

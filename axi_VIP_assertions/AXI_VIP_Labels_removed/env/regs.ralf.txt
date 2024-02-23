@@ -1,0 +1,58 @@
+block example_reg_block {
+  endian little;
+  bytes 4;
+  register REG1 @'h80000000 {
+    field reg1_field @0 {
+       bits 32
+       access rw;
+       reset 32'hABBADEAD;
+    }
+  }
+  register REG3 @'hACDCACDC {
+    field reg3_field @0 {
+       bits 32
+       access rw;
+       reset 32'h000000;
+    }
+  }
+  register REG2 @'h80000008 {
+    field reg2_field1 @0 {
+       bits 16
+       access rw;
+       reset 0;
+    }
+    field reg2_field2 @16 {
+       bits 16
+       access rw;
+       reset 0;
+    }
+  }
+  register A0 @'h800 {
+  	field a0_f @0 {
+  		bits 32
+  		access rw;
+  		reset 0;
+  	}
+  }
+    register A1 @'h804 {
+  	field a1_f @0 {
+  		bits 32
+  		access rw;
+  		reset 0;
+  	}
+  }
+    register A2 @'h808 {
+  	field a2_f @0 {
+  		bits 32
+  		access rw;
+  		reset 0;
+  	}
+  }
+    register A3 @'h80C {
+  	field a3_f @0 {
+  		bits 32
+  		access rw;
+  		reset 0;
+  	}
+  }
+}
