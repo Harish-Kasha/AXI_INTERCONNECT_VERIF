@@ -1,0 +1,79 @@
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+// File name : axi_interconnect_top.sv
+// 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+`timescale 1ns/1ps
+
+// importing package and includine the necessary files
+import axi_parameter_pkg::*;
+import uvm_pkg::*;
+`include "uvm_macros.svh"
+`include "axi_common.svh"
+`include "axi_vip_test_pkg.sv"
+
+ module axi_interconnect_top();
+
+   import axi_vip_test_pkg::*;
+
+   // global signals : clock and reset signals
+   bit aclk = 0;
+   bit aresetn;
+
+   // interface declarations
+   //axi_interface #(data_width,addr_width,master/slave,"instance name");
+  /* axi_interface#(M_DATA_W[0],1,0,"axi_master_if_0") u_axi_master_if[0];  
+   axi_interface#(M_DATA_W[1],M_ADDR_W[1],0,"axi_master_if_1") u_axi_master_if[1];
+   axi_interface#(M_DATA_W[2],M_ADDR_W[2],0,"axi_master_if_2") u_axi_master_if[2];
+   axi_interface#(M_DATA_W[3],M_ADDR_W[3],0,"axi_master_if_3") u_axi_master_if[3];
+                                        
+   axi_interface#(S_DATA_W[0],S_ADDR_W[0], 1, "axi_slave_if_0")  u_axi_slave_if[0];
+   axi_interface#(S_DATA_W[1],S_ADDR_W[1], 1, "axi_slave_if_1")  u_axi_slave_if[1];
+   axi_interface#(S_DATA_W[2],S_ADDR_W[2], 1, "axi_slave_if_2")  u_axi_slave_if[2];
+   axi_interface#(S_DATA_W[3],S_ADDR_W[3], 1, "axi_slave_if_3")  u_axi_slave_if[3];
+   axi_interface#(S_DATA_W[4],S_ADDR_W[4], 1, "axi_slave_if_4")  u_axi_slave_if[4];
+   axi_interface#(S_DATA_W[5],S_ADDR_W[5], 1, "axi_slave_if_5")  u_axi_slave_if[5];
+   */  
+
+
+   // clock generation
+
+   always #(CP/2) aclk = ~aclk;
+     
+   // Reset and set
+   initial begin
+      aresetn = 1'b0;
+      repeat(10) @(posedge aclk);
+      aresetn = 1'b1;
+   end
+
+   //  contionous assignment of clock and reset to respective interfaces
+   genvar i,j;
+   generate
+     for(i=0;i<NO_M;i++) begin
+       assign u_axi_master_if[i].aresetn = aresetn;
+       assign u_axi_master_if[i].aclk    = aclk;
+     
+     end
+     for(j=0;j<NO_S;j++) begin
+       assign u_axi_master_if[j].aresetn = aresetn;
+       assign u_axi_master_if[j].aclk    = aclk;
+    end
+  endgenerate
+
+   // setting the interface for all the agents
+   initial begin
+     for(int k=0; i< NO_M ;i++)begin
+        uvm_config_db #(virtual axi_footprint_interface)::set(null, "uvm_test_top",$sformatf("axi_master_vif_%0d",i), u_axi_master_if[i].max_footprint_if);
+     end
+     for(int l=0; j<NO_S; j++)begin 
+	uvm_config_db #(virtual axi_footprint_interface)::set(null, "uvm_test_top",$sformatf( "axi_slave_vif_%0d",i), u_axi_slave_if[i].max_footprint_if);
+     end
+        run_test ("example_test1");
+   end
+
+
+
+endmodule
+
+

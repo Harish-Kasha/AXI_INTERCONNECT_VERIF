@@ -1,0 +1,127 @@
+# //  Questa Sim-64
+# //  Version 2021.2_1 linux_x86_64 May 15 2021
+# //
+# //  Copyright 1991-2021 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  QuestaSim and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+do run2.do
+# QuestaSim-64 vlog 2021.2_1 Compiler 2021.05 May 15 2021
+# Start time: 11:55:02 on Feb 23,2024
+# vlog -reportprogress 300 axi_agent_pkg.sv 
+# -- Compiling package axi_agent_pkg
+# -- Importing package mtiUvm.uvm_pkg (uvm-1.1d Built-in)
+# ** Note: (vlog-2286) axi_agent_pkg.sv(9): Using implicit +incdir+/usr/local/questasim/uvm-1.1d/../verilog_src/uvm-1.1d/src from import uvm_pkg
+# ** Warning: axi_burst_write_seq.svh(70): (vlog-2240) Treating stand-alone use of function 'randomize' as an implicit VOID cast.
+# 
+# Top level modules:
+# 	--none--
+# End time: 11:55:02 on Feb 23,2024, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 1
+# QuestaSim-64 vlog 2021.2_1 Compiler 2021.05 May 15 2021
+# Start time: 11:55:02 on Feb 23,2024
+# vlog -reportprogress 300 axi_parameter_pkg.sv 
+# -- Compiling package axi_parameter_pkg
+# 
+# Top level modules:
+# 	--none--
+# End time: 11:55:02 on Feb 23,2024, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# QuestaSim-64 vlog 2021.2_1 Compiler 2021.05 May 15 2021
+# Start time: 11:55:02 on Feb 23,2024
+# vlog -reportprogress 300 axi_interface.sv 
+# -- Compiling interface axi_interface
+# 
+# Top level modules:
+# 	--none--
+# End time: 11:55:02 on Feb 23,2024, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# QuestaSim-64 vlog 2021.2_1 Compiler 2021.05 May 15 2021
+# Start time: 11:55:02 on Feb 23,2024
+# vlog -reportprogress 300 axi_footprint_interface.sv 
+# ** Note: (vlog-2286) axi_footprint_interface.sv(28): Using implicit +incdir+/usr/local/questasim/uvm-1.1d/../verilog_src/uvm-1.1d/src from import uvm_pkg
+# -- Compiling package axi_footprint_interface_sv_unit
+# -- Importing package mtiUvm.uvm_pkg (uvm-1.1d Built-in)
+# -- Importing package axi_agent_pkg
+# -- Compiling interface axi_footprint_interface
+# 
+# Top level modules:
+# 	--none--
+# End time: 11:55:03 on Feb 23,2024, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+# QuestaSim-64 vlog 2021.2_1 Compiler 2021.05 May 15 2021
+# Start time: 11:55:03 on Feb 23,2024
+# vlog -reportprogress 300 axi_interconnect_veri_top.sv 
+# ** Note: (vlog-2286) axi_interconnect_veri_top.sv(10): Using implicit +incdir+/usr/local/questasim/uvm-1.1d/../verilog_src/uvm-1.1d/src from import uvm_pkg
+# -- Compiling package axi_interconnect_veri_top_sv_unit
+# -- Importing package mtiUvm.uvm_pkg (uvm-1.1d Built-in)
+# -- Importing package axi_agent_pkg
+# -- Compiling package axi_parameter_pkg
+# -- Compiling package axi_vip_test_pkg
+# -- Importing package axi_parameter_pkg
+# ** Warning: axi_scoreboard.sv(89): (vlog-2240) Treating stand-alone use of function 'reference_queues' as an implicit VOID cast.
+# ** Warning: axi_scoreboard.sv(94): (vlog-2240) Treating stand-alone use of function 'reference_queues' as an implicit VOID cast.
+# ** Warning: axi_scoreboard.sv(99): (vlog-2240) Treating stand-alone use of function 'reference_queues' as an implicit VOID cast.
+# ** Warning: axi_scoreboard.sv(104): (vlog-2240) Treating stand-alone use of function 'reference_queues' as an implicit VOID cast.
+# ** Warning: axi_scoreboard.sv(178): (vlog-2240) Treating stand-alone use of function 'pop_front' as an implicit VOID cast.
+# ** Warning: axi_scoreboard.sv(193): (vlog-2240) Treating stand-alone use of function 'pop_front' as an implicit VOID cast.
+# ** Warning: axi_scoreboard.sv(194): (vlog-2240) Treating stand-alone use of function 'pop_front' as an implicit VOID cast.
+# ** Warning: axi_scoreboard.sv(198): (vlog-2240) Treating stand-alone use of function 'pop_front' as an implicit VOID cast.
+# ** Warning: axi_scoreboard.sv(199): (vlog-2240) Treating stand-alone use of function 'pop_front' as an implicit VOID cast.
+# ** Warning: axi_scoreboard.sv(136): (vlog-2240) Treating stand-alone use of function 'pkt_compare' as an implicit VOID cast.
+# ** Warning: axi_scoreboard.sv(140): (vlog-2240) Treating stand-alone use of function 'pkt_compare' as an implicit VOID cast.
+# ** Warning: axi_scoreboard.sv(144): (vlog-2240) Treating stand-alone use of function 'pkt_compare' as an implicit VOID cast.
+# ** Warning: axi_scoreboard.sv(148): (vlog-2240) Treating stand-alone use of function 'pkt_compare' as an implicit VOID cast.
+# ** Warning: axi_scoreboard.sv(152): (vlog-2240) Treating stand-alone use of function 'pkt_compare' as an implicit VOID cast.
+# ** Warning: axi_scoreboard.sv(156): (vlog-2240) Treating stand-alone use of function 'pkt_compare' as an implicit VOID cast.
+# -- Compiling module axi_interconnect_top
+# -- Importing package axi_vip_test_pkg
+# 
+# Top level modules:
+# 	axi_interconnect_top
+# End time: 11:55:04 on Feb 23,2024, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 15
+# QuestaSim-64 vlog 2021.2_1 Compiler 2021.05 May 15 2021
+# Start time: 11:55:04 on Feb 23,2024
+# vlog -reportprogress 300 axi_interconnect_pkg.sv 
+# -- Compiling package axi_interconnect_pkg
+# 
+# Top level modules:
+# 	--none--
+# End time: 11:55:04 on Feb 23,2024, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# QuestaSim-64 vlog 2021.2_1 Compiler 2021.05 May 15 2021
+# Start time: 11:55:04 on Feb 23,2024
+# vlog -reportprogress 300 axi_interconnect_wrapper.sv axi_master_interface_coupler_wrapper.v axi_SI_coupler_wrapper.sv axi_fifo.v axi_fifo_rd.v axi_fifo_wr.v axi_register.v axi_register_rd.v axi_register_wr.v axi_adapter.v axi_adapter_rd.v axi_adapter_wr.v axi_crossbar.v axi_crossbar_addr.v axi_crossbar_rd.v axi_crossbar_wr.v arbiter.v priority_encoder.v 
+# -- Compiling package axi_interconnect_wrapper_sv_unit
+# -- Importing package axi_interconnect_pkg
+# -- Compiling module axi_interconnect_wrapper
+# -- Compiling module axi_master_interface_coupler_wrapper
+# -- Compiling module axi_slave_interface_coupler
+# -- Compiling module axi_fifo
+# -- Compiling module axi_fifo_rd
+# -- Compiling module axi_fifo_wr
+# -- Compiling module axi_register
+# -- Compiling module axi_register_rd
+# -- Compiling module axi_register_wr
+# -- Compiling module axi_adapter
+# -- Compiling module axi_adapter_rd
+# -- Compiling module axi_adapter_wr
+# -- Compiling module axi_crossbar
+# -- Compiling module axi_crossbar_addr
+# -- Compiling module axi_crossbar_rd
+# -- Compiling module axi_crossbar_wr
+# -- Compiling module arbiter
+# -- Compiling module priority_encoder
+# 
+# Top level modules:
+# 	axi_interconnect_wrapper
+# End time: 11:55:04 on Feb 23,2024, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
