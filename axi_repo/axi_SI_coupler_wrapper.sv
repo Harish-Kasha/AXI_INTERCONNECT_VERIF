@@ -688,7 +688,7 @@ axi_fifo_inst (
             .m_axi_awregion(f_a_axi_awregion),
             .m_axi_awuser(f_a_axi_awuser),
             .m_axi_awvalid(f_a_axi_awvalid),
-            .m_axi_awready(f_a__axi_awready),
+            .m_axi_awready(f_a_axi_awready),
             .m_axi_wdata(f_a_axi_wdata),
             .m_axi_wstrb(f_a_axi_wstrb),
             .m_axi_wlast(f_a_axi_wlast),
