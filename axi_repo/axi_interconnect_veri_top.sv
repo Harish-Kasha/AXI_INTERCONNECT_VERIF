@@ -39,10 +39,10 @@ import uvm_pkg::*;
      
    // Reset and set
    initial begin
-      aresetn = 1'b0;
+      aresetn = 1'b1;
       aclk    = 1'b0;
       repeat(10) @(posedge aclk);
-      aresetn = 1'b1;
+      aresetn = 1'b0;
    end
 
    
