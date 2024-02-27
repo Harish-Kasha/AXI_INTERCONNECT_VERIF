@@ -42,7 +42,10 @@ parameter SUM_M_STRB_WIDTH=24,
 parameter SUM_CROSSBAR_STRB_WIDTH=24, 
 parameter MAX_S_ID_WIDTH=12,
 parameter COUPLER_REG_INSTANCE=0,
-parameter MAX_M_A_WIDTH=20
+parameter MAX_M_A_WIDTH=20,
+parameter MAX_M_WD_WIDTH=128,
+parameter MAX_M_RD_WIDTH=128,
+parameter MAX_M_STRB_WIDTH=16
     // Forward ID through adapter
 	      
              ) 
@@ -69,7 +72,7 @@ parameter MAX_M_A_WIDTH=20
     input  wire [S_COUNT*WUSER_WIDTH-1:0]  s_axi_wuser,
     input  wire [S_COUNT-1:0]              s_axi_wvalid,
     output wire [S_COUNT-1:0]              s_axi_wready,
-    output wire [SUM_S_ID_WIDTH-1:0]     s_axi_bid,
+    output reg [SUM_S_ID_WIDTH-1:0]     s_axi_bid,
     output wire [S_COUNT*2-1:0]            s_axi_bresp,
     output wire [S_COUNT*BUSER_WIDTH-1:0]  s_axi_buser,
     output wire [S_COUNT-1:0]              s_axi_bvalid,
@@ -86,7 +89,7 @@ parameter MAX_M_A_WIDTH=20
     input  wire [S_COUNT*ARUSER_WIDTH-1:0] s_axi_aruser,
     input  wire [S_COUNT-1:0]              s_axi_arvalid,
     output wire [S_COUNT-1:0]              s_axi_arready,
-    output wire [SUM_S_ID_WIDTH-1:0]     s_axi_rid,
+    output reg  [SUM_S_ID_WIDTH-1:0]     s_axi_rid,
     output wire [SUM_S_R_D_WIDTH-1:0]   s_axi_rdata,
     output wire [S_COUNT*2-1:0]            s_axi_rresp,
     output wire [S_COUNT-1:0]              s_axi_rlast,
@@ -110,8 +113,8 @@ parameter MAX_M_A_WIDTH=20
     output wire [M_COUNT*AWUSER_WIDTH-1:0] m_axi_awuser,
     output wire [M_COUNT-1:0]              m_axi_awvalid,
     input  wire [M_COUNT-1:0]              m_axi_awready,
-    output wire [SUM_M_W_D_WIDTH-1:0]     m_axi_wdata,
-    output wire [SUM_M_STRB_WIDTH-1:0]    m_axi_wstrb,
+    output reg [SUM_M_W_D_WIDTH-1:0]     m_axi_wdata,
+    output reg [SUM_M_STRB_WIDTH-1:0]    m_axi_wstrb,
     output wire [M_COUNT-1:0]              m_axi_wlast,
     output wire [M_COUNT*WUSER_WIDTH-1:0]  m_axi_wuser,
     output wire [M_COUNT-1:0]              m_axi_wvalid,
@@ -122,7 +125,7 @@ parameter MAX_M_A_WIDTH=20
     input  wire [M_COUNT-1:0]              m_axi_bvalid,
     output wire [M_COUNT-1:0]              m_axi_bready,
     output wire [M_COUNT*M_ID_WIDTH-1:0]   m_axi_arid,
-    output wire [SUM_M_A_WIDTH-1:0]       m_axi_araddr,
+    output reg [SUM_M_A_WIDTH-1:0]       m_axi_araddr,
     output wire [M_COUNT*8-1:0]            m_axi_arlen,
     output wire [M_COUNT*3-1:0]            m_axi_arsize,
     output wire [M_COUNT*2-1:0]            m_axi_arburst,
@@ -299,7 +302,20 @@ parameter MAX_M_A_WIDTH=20
   //       assign a_c_axi_wdata_upsized   =  a_c_axi_wdata;  
   //    end
   //endgenerate
+     wire [S_COUNT*MAX_S_ID_WIDTH-1:0] si_2_intwrap_s_axi_bid;
+     wire [S_COUNT*MAX_S_ID_WIDTH-1:0] si_2_intwrap_s_axi_rid;
 
+  genvar h2;
+     generate
+        for(h2=0;h2<S_COUNT;h2=h2+1) begin
+           always@*   
+             begin
+	     s_axi_bid[axi_interconnect_pkg::sum_up_to_index(S_ID_WIDTH,h2)+:S_ID_WIDTH[h2]]        = si_2_intwrap_s_axi_bid[MAX_S_ID_WIDTH*h2+:MAX_S_ID_WIDTH];
+             s_axi_rid[axi_interconnect_pkg::sum_up_to_index(S_ID_WIDTH,h2)+:S_ID_WIDTH[h2]]       = si_2_intwrap_s_axi_rid[MAX_S_ID_WIDTH*h2+:MAX_S_ID_WIDTH];
+             end
+        end
+     endgenerate
+  
   genvar m;
     generate 
 	    for(m=0;m <S_COUNT;m=m+1)begin
@@ -333,7 +349,7 @@ parameter MAX_M_A_WIDTH=20
             .s_axi_wuser(s_axi_wuser[m*WUSER_WIDTH+:WUSER_WIDTH]),
             .s_axi_wvalid(s_axi_wvalid[m]),
             .s_axi_wready(s_axi_wready[m]),
-            .s_axi_bid(s_axi_bid[axi_interconnect_pkg::sum_up_to_index(S_ID_WIDTH,m)+:S_ID_WIDTH[m]]),
+            .s_axi_bid(si_2_intwrap_s_axi_bid[MAX_S_ID_WIDTH*m+:MAX_S_ID_WIDTH]),
             .s_axi_bresp(s_axi_bresp[m*2+:2]),
             .s_axi_buser(s_axi_buser[m*BUSER_WIDTH+:BUSER_WIDTH]),
             .s_axi_bvalid(s_axi_bvalid[m]),
@@ -350,7 +366,7 @@ parameter MAX_M_A_WIDTH=20
             .s_axi_aruser(s_axi_aruser[m*ARUSER_WIDTH+:ARUSER_WIDTH]),
             .s_axi_arvalid(s_axi_arvalid[m]),
             .s_axi_arready(s_axi_arready[m]),
-            .s_axi_rid(s_axi_rid[axi_interconnect_pkg::sum_up_to_index(S_ID_WIDTH,m)+:S_ID_WIDTH[m]]),
+            .s_axi_rid(si_2_intwrap_s_axi_rid[MAX_S_ID_WIDTH*m+:MAX_S_ID_WIDTH]),
             .s_axi_rdata(s_axi_rdata[axi_interconnect_pkg::sum_up_to_index(S_R_D_WIDTH,m)+:S_R_D_WIDTH[m]]),
             .s_axi_rresp(s_axi_rresp[m*2+:2]),
             .s_axi_rlast(s_axi_rlast[m]),
@@ -415,13 +431,24 @@ parameter MAX_M_A_WIDTH=20
     endgenerate
 
      wire [M_COUNT*MAX_M_A_WIDTH-1:0] mi_2_intwrap_m_axi_awaddr;
+     wire [M_COUNT*MAX_M_A_WIDTH-1:0] mi_2_intwrap_m_axi_araddr;
+     wire [M_COUNT*MAX_M_WD_WIDTH-1:0] mi_2_intwrap_m_axi_wdata;
+     //wire [M_COUNT*MAX_M_RD_WIDTH-1:0] mi_2_intwrap_m_axi_rdata;
+     wire [M_COUNT*MAX_M_STRB_WIDTH-1:0] mi_2_intwrap_m_axi_wstrb;
 
            //always@* m_axi_awaddr[axi_interconnect_pkg::sum_up_to_index(M_A_WIDTH,h1)+:M_A_WIDTH[h1]] = {<<M_A_WIDTH[h1]{mi_2_intwrap_m_axi_awaddr[MAX_M_A_WIDTH*M_COUNT*h1+:MAX_M_A_WIDTH]}};
            //always@* m_axi_awaddr[axi_interconnect_pkg::sum_up_to_index(M_A_WIDTH,h1)+:M_A_WIDTH[h1]] = {<<M_A_WIDTH[h1]{mi_2_intwrap_m_axi_awaddr[MAX_M_A_WIDTH*h1+:MAX_M_A_WIDTH]}};
      genvar h1;
      generate
         for(h1=0;h1<M_COUNT;h1=h1+1) begin
-           always@* m_axi_awaddr[axi_interconnect_pkg::sum_up_to_index(M_A_WIDTH,h1)+:M_A_WIDTH[h1]] = mi_2_intwrap_m_axi_awaddr[MAX_M_A_WIDTH*h1+:MAX_M_A_WIDTH];
+           always@*   
+             begin
+	     m_axi_awaddr[axi_interconnect_pkg::sum_up_to_index(M_A_WIDTH,h1)+:M_A_WIDTH[h1]]       = mi_2_intwrap_m_axi_awaddr[MAX_M_A_WIDTH*h1+:MAX_M_A_WIDTH];
+             m_axi_araddr[axi_interconnect_pkg::sum_up_to_index(M_A_WIDTH,h1)+:M_A_WIDTH[h1]]       = mi_2_intwrap_m_axi_araddr[MAX_M_A_WIDTH*h1+:MAX_M_A_WIDTH];
+             m_axi_wdata[axi_interconnect_pkg::sum_up_to_index(M_W_D_WIDTH,h1)+:M_W_D_WIDTH[h1]]    = mi_2_intwrap_m_axi_wdata[MAX_M_WD_WIDTH*h1+:MAX_M_WD_WIDTH];
+             //m_axi_rdata[axi_interconnect_pkg::sum_up_to_index(M_R_D_WIDTH,h1)+:M_R_D_WIDTH[h1]]    = mi_2_intwrap_m_axi_rdata[MAX_M_RD_WIDTH*h1+:MAX_M_RD_WIDTH];
+             m_axi_wstrb[axi_interconnect_pkg::sum_up_to_index(M_STRB_WIDTH,h1)+:M_STRB_WIDTH[h1]]  = mi_2_intwrap_m_axi_wstrb[MAX_M_STRB_WIDTH*h1+:MAX_M_STRB_WIDTH]; 
+             end
         end
      endgenerate
 
@@ -458,8 +485,8 @@ parameter MAX_M_A_WIDTH=20
             .m_axi_awuser(m_axi_awuser[n*AWUSER_WIDTH+:AWUSER_WIDTH]),
             .m_axi_awvalid(m_axi_awvalid[n]),
             .m_axi_awready(m_axi_awready[n]),
-            .m_axi_wdata(m_axi_wdata[axi_interconnect_pkg::sum_up_to_index(M_W_D_WIDTH,n)+:M_W_D_WIDTH[n]]),
-            .m_axi_wstrb(m_axi_wstrb[axi_interconnect_pkg::sum_up_to_index(M_STRB_WIDTH,n)+:M_STRB_WIDTH[n]]),
+            .m_axi_wdata(mi_2_intwrap_m_axi_wdata[MAX_M_WD_WIDTH*n+:MAX_M_WD_WIDTH]),
+            .m_axi_wstrb(mi_2_intwrap_m_axi_wstrb[MAX_M_STRB_WIDTH*n+:MAX_M_STRB_WIDTH]),
             .m_axi_wlast(m_axi_wlast[n]),
             .m_axi_wuser(m_axi_wuser[n*WUSER_WIDTH+:WUSER_WIDTH]),
             .m_axi_wvalid(m_axi_wvalid[n]),
@@ -470,7 +497,7 @@ parameter MAX_M_A_WIDTH=20
             .m_axi_bvalid(m_axi_bvalid[n]),
             .m_axi_bready(m_axi_bready[n]),  
 	    .m_axi_arid(m_axi_arid[M_ID_WIDTH*n+:M_ID_WIDTH]),
-            .m_axi_araddr(m_axi_araddr[axi_interconnect_pkg::sum_up_to_index(M_A_WIDTH,n)+:M_A_WIDTH[n]]),
+            .m_axi_araddr(mi_2_intwrap_m_axi_araddr[MAX_M_A_WIDTH*n+:MAX_M_A_WIDTH]),
             .m_axi_arlen(m_axi_arlen[n*8+:8]),
             .m_axi_arsize(m_axi_arsize[n*3+:3]),
             .m_axi_arburst(m_axi_arburst[n*2+:2]),
