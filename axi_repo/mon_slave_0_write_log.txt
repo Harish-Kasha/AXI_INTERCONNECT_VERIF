@@ -8,7 +8,7 @@ Name                    Type               Size  Value
 t                       uvm_sequence_item  -     @9577    
   id                    integral           32    'h9      
   prot                  integral           3     'h0      
-  addr                  integral           32    'h0      
+  addr                  integral           32    'h480    
   data                  da(integral)       5     -        
     [0]                 integral           1024  'h0      
     [1]                 integral           1024  'h0      

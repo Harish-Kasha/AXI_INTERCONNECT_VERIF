@@ -98,7 +98,7 @@ parameter MAX_M_A_WIDTH=20
      * AXI master interfaces
      */
     output wire [M_COUNT*M_ID_WIDTH-1:0]     m_axi_awid,
-    output wire [SUM_M_A_WIDTH-1:0]   m_axi_awaddr,
+    output reg [SUM_M_A_WIDTH-1:0]   m_axi_awaddr,
     output wire [M_COUNT*8-1:0]            m_axi_awlen,
     output wire [M_COUNT*3-1:0]            m_axi_awsize,
     output wire [M_COUNT*2-1:0]            m_axi_awburst,
@@ -414,6 +414,17 @@ parameter MAX_M_A_WIDTH=20
       end
     endgenerate
 
+     wire [M_COUNT*MAX_M_A_WIDTH-1:0] mi_2_intwrap_m_axi_awaddr;
+
+           //always@* m_axi_awaddr[axi_interconnect_pkg::sum_up_to_index(M_A_WIDTH,h1)+:M_A_WIDTH[h1]] = {<<M_A_WIDTH[h1]{mi_2_intwrap_m_axi_awaddr[MAX_M_A_WIDTH*M_COUNT*h1+:MAX_M_A_WIDTH]}};
+           //always@* m_axi_awaddr[axi_interconnect_pkg::sum_up_to_index(M_A_WIDTH,h1)+:M_A_WIDTH[h1]] = {<<M_A_WIDTH[h1]{mi_2_intwrap_m_axi_awaddr[MAX_M_A_WIDTH*h1+:MAX_M_A_WIDTH]}};
+     genvar h1;
+     generate
+        for(h1=0;h1<M_COUNT;h1=h1+1) begin
+           always@* m_axi_awaddr[axi_interconnect_pkg::sum_up_to_index(M_A_WIDTH,h1)+:M_A_WIDTH[h1]] = mi_2_intwrap_m_axi_awaddr[MAX_M_A_WIDTH*h1+:MAX_M_A_WIDTH];
+        end
+     endgenerate
+
      genvar n;
      generate 
 	    for(n=0;n<M_COUNT;n=n+1)begin
@@ -433,7 +444,9 @@ parameter MAX_M_A_WIDTH=20
              * AXI master interface
              */
             .m_axi_awid(m_axi_awid[M_ID_WIDTH*n+:M_ID_WIDTH]),
-            .m_axi_awaddr(m_axi_awaddr[axi_interconnect_pkg::sum_up_to_index(M_A_WIDTH,n)+:M_A_WIDTH[n]]),
+            //.m_axi_awaddr(m_axi_awaddr[axi_interconnect_pkg::sum_up_to_index(M_A_WIDTH,n)+:M_A_WIDTH[n]]),
+            //.m_axi_awaddr(m_axi_awaddr[axi_interconnect_pkg::sum_up_to_index(M_A_WIDTH,n)+:M_A_WIDTH[n]]),
+            .m_axi_awaddr(mi_2_intwrap_m_axi_awaddr[MAX_M_A_WIDTH*n+:MAX_M_A_WIDTH]),
             .m_axi_awlen(m_axi_awlen[n*8+:8]),
             .m_axi_awsize(m_axi_awsize[n*3+:3]),
             .m_axi_awburst(m_axi_awburst[n*2+:2]),
