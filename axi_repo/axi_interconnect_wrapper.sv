@@ -43,6 +43,7 @@ parameter SUM_CROSSBAR_STRB_WIDTH=24,
 parameter MAX_S_ID_WIDTH=12,
 parameter COUPLER_REG_INSTANCE=0,
 parameter MAX_M_A_WIDTH=20
+    // Forward ID through adapter
 	      
              ) 
        
@@ -146,7 +147,8 @@ parameter MAX_M_A_WIDTH=20
 //// Connect the internal wire to your output port
 //assign s_axi_bid = internal_s_axi_bid[0];
 
-    wire [SUM_S_ID_WIDTH-1:0]       a_c_axi_awid;
+    //wire [SUM_S_ID_WIDTH-1:0]       a_c_axi_awid;
+    wire [S_COUNT*MAX_S_ID_WIDTH-1:0]       a_c_axi_awid;
     wire [S_COUNT*S_A_WIDTH-1:0]     a_c_axi_awaddr;
     wire [S_COUNT*8-1:0]             a_c_axi_awlen;
     wire [S_COUNT*3-1:0]             a_c_axi_awsize;
@@ -261,7 +263,7 @@ parameter MAX_M_A_WIDTH=20
     genvar i;
     generate 
        for(i=0;i <S_COUNT;i=i+1) begin
-          assign adapter_crossbar_S_AW_ID[i] = {{(MAX_S_ID_WIDTH-S_ID_WIDTH[i]){1'b0}},a_c_axi_awid[axi_interconnect_pkg::sum_up_to_index(S_ID_WIDTH,i)+:S_ID_WIDTH[i]]}; 
+          //assign adapter_crossbar_S_AW_ID[i] = {{(MAX_S_ID_WIDTH-S_ID_WIDTH[i]){1'b0}},a_c_axi_awid[axi_interconnect_pkg::sum_up_to_index(S_ID_WIDTH,i)+:S_ID_WIDTH[i]]}; 
           assign adapter_crossbar_S_AR_ID[i] = {{(MAX_S_ID_WIDTH-S_ID_WIDTH[i]){1'b0}},a_c_axi_arid[axi_interconnect_pkg::sum_up_to_index(S_ID_WIDTH,i)+:S_ID_WIDTH[i]]};
           //assign c_a_axi_araddr[axi_interconnect_pkg::sum_up_to_index(S_ID_WIDTH,i)+:S_ID_WIDTH[i]] = temp_adapter_crossbar_M_ARADDR[i*S_A_WIDTH+:S_A_WIDTH];
           always@(*)  
@@ -361,7 +363,8 @@ parameter MAX_M_A_WIDTH=20
             /*
              * AXI master interface
              */
-	    .m_axi_awid(a_c_axi_awid[axi_interconnect_pkg::sum_up_to_index(S_ID_WIDTH,m)+: S_ID_WIDTH[m]]),
+	    //.m_axi_awid(a_c_axi_awid[axi_interconnect_pkg::sum_up_to_index(S_ID_WIDTH,m)+: S_ID_WIDTH[m]]),
+	    .m_axi_awid(a_c_axi_awid[MAX_S_ID_WIDTH*m+:MAX_S_ID_WIDTH]),
             .m_axi_awaddr(a_c_axi_awaddr[S_A_WIDTH*m+:S_A_WIDTH]),
             .m_axi_awlen(a_c_axi_awlen[m*8+:8]),
             .m_axi_awsize(a_c_axi_awsize[m*3+:3]),
@@ -546,7 +549,7 @@ parameter MAX_M_A_WIDTH=20
             /*
              * AXI slave interface
              */
-            .s_axi_awid(temp_adapter_crossbar_S_AW_ID),
+            .s_axi_awid(a_c_axi_awid),
             .s_axi_awaddr(a_c_axi_awaddr),
             .s_axi_awlen(a_c_axi_awlen),
             .s_axi_awsize(a_c_axi_awsize),

@@ -5,7 +5,7 @@ monitor [write packet=0]
 ----------------------------------------------------------
 Name                    Type               Size  Value    
 ----------------------------------------------------------
-t                       uvm_sequence_item  -     @3052    
+t                       uvm_sequence_item  -     @3462    
   id                    integral           32    'h0      
   prot                  integral           3     'h0      
   addr                  integral           32    'h0      
@@ -27,9 +27,9 @@ t                       uvm_sequence_item  -     @3052
   byte_en_last_custom   integral           1     'h0      
   byte_en_last          integral           128   'h0      
   tr_size_in_bytes      integral           32    'h2      
-  transaction_cycles    integral           32    'h15     
+  transaction_cycles    integral           32    'h22     
   op_type               axi_op_type_t      32    AXI_WRITE
-  bresp                 integral           2     'h3      
+  bresp                 integral           2     'h0      
   rresp                 da(integral)       0     -        
 ----------------------------------------------------------
 

@@ -72,7 +72,7 @@ module axi_adapter #
     // When adapting to a wider bus, re-pack all bursts instead of passing through narrow burst if possible
     parameter CONVERT_NARROW_BURST = 0,
     // Forward ID through adapter
-    parameter FORWARD_ID = 0
+    parameter FORWARD_ID = 1
 )
 (
     input  wire                     clk,
