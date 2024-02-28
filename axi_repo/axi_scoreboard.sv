@@ -111,7 +111,7 @@ int count;
       axi_seq_item pkt;
       $cast(pkt,packet.clone());
       // Appending master_id with packet_id
-      m_id = m_id << S_ID_MAX;
+      m_id = m_id << MAX_M_ID_WIDTH;
       pkt.id = m_id | pkt.id;
       // Storing the packet into respective queues based on slave address
       case(pkt.addr)inside
@@ -124,7 +124,8 @@ int count;
 
             default            : `uvm_info(get_type_name(), $sformatf("Decode error=%s ",pkt.sprint()), UVM_LOW)
       endcase
-      exp_S_q[q_num].push_back(pkt);
+       pkt_compare(pkt,q_num);
+      //exp_S_q[q_num].push_back(pkt);
 count++;
       `uvm_info(get_type_name(), $sformatf("exp_S_q[%0d] exp_S_q[%0d]size =%0d",q_num,q_num,exp_S_q[q_num].size()), UVM_LOW)
     endfunction
@@ -133,27 +134,33 @@ count++;
    //............................................... slave.............................
     // Slave 0
     function void write_S0(axi_seq_item pkt);
-       pkt_compare(pkt,S_NUM_S0);
+       //pkt_compare(pkt,S_NUM_S0);
+       exp_S_q[0].push_back(pkt);
     endfunction    
     // Slave 1
     function void write_S1(axi_seq_item pkt);
-       pkt_compare(pkt,S_NUM_S1);
+       //pkt_compare(pkt,S_NUM_S1);
+       exp_S_q[1].push_back(pkt);
     endfunction  
     // Slave 2
     function void write_S2(axi_seq_item pkt);
-       pkt_compare(pkt,S_NUM_S2);
+       //pkt_compare(pkt,S_NUM_S2);
+       exp_S_q[2].push_back(pkt);
     endfunction   
     // Slave 3
     function void write_S3(axi_seq_item pkt);
-       pkt_compare(pkt,S_NUM_S3);
+       //pkt_compare(pkt,S_NUM_S3);
+       exp_S_q[3].push_back(pkt);
     endfunction   
     // Slave 4
     function void write_S4(axi_seq_item pkt);
-       pkt_compare(pkt,S_NUM_S4);
+       //pkt_compare(pkt,S_NUM_S4);
+       exp_S_q[4].push_back(pkt);
     endfunction  
     // Slave 5
     function void write_S5(axi_seq_item pkt);
-       pkt_compare(pkt,S_NUM_S5);
+       //pkt_compare(pkt,S_NUM_S5);
+       exp_S_q[5].push_back(pkt);
     endfunction    
 
     // Comparison method for expected and actual packet 
