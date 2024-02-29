@@ -153,7 +153,7 @@ interface axi_interface #(int DW=32, int AW=32, int ID_W =10,int if_type=0, stri
      );
    `endif
 
-  axi_footprint_interface max_footprint_if();
+  axi_footprint_interface #(DW,AW,ID_W) max_footprint_if();
 
   generate
 	  //Globals

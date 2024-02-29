@@ -49,17 +49,17 @@ import uvm_pkg::*;
    // setting the interface for all the agents
    initial begin
        
-        uvm_config_db #(virtual axi_footprint_interface)::set(null, "uvm_test_top","axi_master_vif_0", u_axi_master_if_0.max_footprint_if);
-        uvm_config_db #(virtual axi_footprint_interface)::set(null, "uvm_test_top","axi_master_vif_1", u_axi_master_if_1.max_footprint_if);
-        uvm_config_db #(virtual axi_footprint_interface)::set(null, "uvm_test_top","axi_master_vif_2", u_axi_master_if_2.max_footprint_if);
-        uvm_config_db #(virtual axi_footprint_interface)::set(null, "uvm_test_top","axi_master_vif_3", u_axi_master_if_3.max_footprint_if);
+        uvm_config_db #(virtual axi_footprint_interface #(M_DATA_W[0],M_ADDR_W,M_ID_WIDTH[0]))::set(null, "uvm_test_top","axi_master_vif_0", u_axi_master_if_0.max_footprint_if);
+        uvm_config_db #(virtual axi_footprint_interface #(M_DATA_W[1],M_ADDR_W,M_ID_WIDTH[1]))::set(null, "uvm_test_top","axi_master_vif_1", u_axi_master_if_1.max_footprint_if);
+        uvm_config_db #(virtual axi_footprint_interface #(M_DATA_W[2],M_ADDR_W,M_ID_WIDTH[2]))::set(null, "uvm_test_top","axi_master_vif_2", u_axi_master_if_2.max_footprint_if);
+        uvm_config_db #(virtual axi_footprint_interface #(M_DATA_W[3],M_ADDR_W,M_ID_WIDTH[3]))::set(null, "uvm_test_top","axi_master_vif_3", u_axi_master_if_3.max_footprint_if);
    	
-        uvm_config_db #(virtual axi_footprint_interface)::set(null, "uvm_test_top", "axi_slave_vif_0", u_axi_slave_if_0.max_footprint_if);
-    	uvm_config_db #(virtual axi_footprint_interface)::set(null, "uvm_test_top", "axi_slave_vif_1", u_axi_slave_if_1.max_footprint_if);
-    	uvm_config_db #(virtual axi_footprint_interface)::set(null, "uvm_test_top", "axi_slave_vif_2", u_axi_slave_if_2.max_footprint_if);
-    	uvm_config_db #(virtual axi_footprint_interface)::set(null, "uvm_test_top", "axi_slave_vif_3", u_axi_slave_if_3.max_footprint_if);
-    	uvm_config_db #(virtual axi_footprint_interface)::set(null, "uvm_test_top", "axi_slave_vif_4", u_axi_slave_if_4.max_footprint_if);
-    	uvm_config_db #(virtual axi_footprint_interface)::set(null, "uvm_test_top", "axi_slave_vif_5", u_axi_slave_if_5.max_footprint_if);
+        uvm_config_db #(virtual axi_footprint_interface #(S_DATA_W[0],S_ADDR_W[0],S_ID_WIDTH))::set(null, "uvm_test_top", "axi_slave_vif_0", u_axi_slave_if_0.max_footprint_if);
+    	uvm_config_db #(virtual axi_footprint_interface #(S_DATA_W[1],S_ADDR_W[1],S_ID_WIDTH))::set(null, "uvm_test_top", "axi_slave_vif_1", u_axi_slave_if_1.max_footprint_if);
+    	uvm_config_db #(virtual axi_footprint_interface #(S_DATA_W[2],S_ADDR_W[2],S_ID_WIDTH))::set(null, "uvm_test_top", "axi_slave_vif_2", u_axi_slave_if_2.max_footprint_if);
+    	uvm_config_db #(virtual axi_footprint_interface #(S_DATA_W[3],S_ADDR_W[3],S_ID_WIDTH))::set(null, "uvm_test_top", "axi_slave_vif_3", u_axi_slave_if_3.max_footprint_if);
+    	uvm_config_db #(virtual axi_footprint_interface #(S_DATA_W[4],S_ADDR_W[4],S_ID_WIDTH))::set(null, "uvm_test_top", "axi_slave_vif_4", u_axi_slave_if_4.max_footprint_if);
+    	uvm_config_db #(virtual axi_footprint_interface #(S_DATA_W[5],S_ADDR_W[5],S_ID_WIDTH))::set(null, "uvm_test_top", "axi_slave_vif_5", u_axi_slave_if_5.max_footprint_if);
      // initial uvm_config_db #(virtual axi_footprint_interface)::set(null, "*",$sformatf( "axi_slave_vif_%0d",j), u_axi_slave_if_j.max_footprint_if);
 
    end

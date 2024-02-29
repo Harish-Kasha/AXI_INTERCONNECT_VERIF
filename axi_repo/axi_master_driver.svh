@@ -5,10 +5,10 @@
 `ifndef AXI_MASTER_DRIVER__SVH
 `define AXI_MASTER_DRIVER__SVH
 
-class axi_master_driver extends uvm_driver #(axi_seq_item);
-
-   axi_agent_configuration cfg;
-   virtual axi_footprint_interface axi_vif;
+class axi_master_driver #(int D_W= 32,int A_W=32,int ID_W = 10) extends uvm_driver #(axi_seq_item);
+ `uvm_component_param_utils(axi_master_driver #(D_W,A_W,ID_W))
+   axi_agent_configuration  #(D_W,A_W,ID_W) cfg;
+   virtual axi_footprint_interface  #(D_W,A_W,ID_W) axi_vif;
    logic [`AXI_MAX_DW-1:0] shifted_wr_data [];
    logic [`AXI_MAX_DW-1:0] shifted_rd_data [];
    bit [`AXI_MAX_DW/8-1:0] shifted_byte_en [];
@@ -42,8 +42,7 @@ class axi_master_driver extends uvm_driver #(axi_seq_item);
    uvm_analysis_port #(axi_seq_item) outbound_write_transactions;
    uvm_analysis_port #(axi_seq_item) outbound_read_transactions;
 
-   `uvm_component_utils(axi_master_driver)
-
+  
    extern function new(string name, uvm_component parent = null);
    extern virtual function void build_phase(uvm_phase phase);
    extern virtual protected task run_phase(uvm_phase phase);
@@ -94,7 +93,7 @@ endfunction
 function void axi_master_driver::build_phase(uvm_phase phase);
    super.build_phase (phase);
 
-   if (!uvm_config_db#(axi_agent_configuration)::get(this, "", "axi_cfg", cfg)) begin
+   if (!uvm_config_db#(axi_agent_configuration #(D_W,A_W,ID_W))::get(this, "", "axi_cfg", cfg)) begin
       `uvm_fatal(get_type_name(), "Can't get configuration object through config_db")
    end
 

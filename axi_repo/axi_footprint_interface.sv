@@ -30,7 +30,7 @@
 `include "axi_common.svh"
 `include "axi_defines.svh"
 
-interface axi_footprint_interface;
+interface axi_footprint_interface #(int DW=32, int AW=32, int ID_W =10);
 
    import uvm_pkg::*;
    import axi_agent_pkg::axi_seq_item;
@@ -43,8 +43,8 @@ interface axi_footprint_interface;
 
    // ---Write address channel signals
    //Master
-   logic [(`AXI_ID_HEADER_SIZE+`AXI_TRANSACTION_ID_SIZE)-1:0]          awid;
-   logic [`AXI_MAX_AW-1:0]           awaddr;
+   logic [ID_W-1:0]          awid;
+   logic [AW-1:0]           awaddr;
    logic [7:0]                       awlen;
    logic [2:0]                       awsize;
    logic [1:0]                       awburst;
@@ -60,8 +60,8 @@ interface axi_footprint_interface;
 
    // ---Write data channel signals
    //Master
-   logic [`AXI_MAX_DW-1:0]           wdata;
-   logic [`AXI_MAX_DW/8-1:0]         wstrb;
+   logic [DW-1:0]           wdata;
+   logic [(DW/8)-1:0]         wstrb;
    logic                             wlast;
    logic                             wuser    = 0;
    logic                             wvalid;
@@ -72,15 +72,15 @@ interface axi_footprint_interface;
    //Master
    logic                             bready;
    //Slave
-   logic [(`AXI_ID_HEADER_SIZE+`AXI_TRANSACTION_ID_SIZE)-1:0]          bid;
+   logic [ID_W-1:0]          bid;
    logic [1:0]                       bresp;
    logic                             buser;
    logic                             bvalid;
 
    // ---Read address channel signals
    //Master
-   logic [(`AXI_ID_HEADER_SIZE+`AXI_TRANSACTION_ID_SIZE)-1:0]          arid;
-   logic [`AXI_MAX_AW-1:0]           araddr;
+   logic [ID_W-1:0]          arid;
+   logic [AW-1:0]           araddr;
    logic [7:0]                       arlen;
    logic [2:0]                       arsize;
    logic [1:0]                       arburst;
@@ -98,8 +98,8 @@ interface axi_footprint_interface;
    //Master
    logic                             rready;
    //Slave
-   logic [(`AXI_ID_HEADER_SIZE+`AXI_TRANSACTION_ID_SIZE)-1:0]          rid;
-   logic [`AXI_MAX_DW-1:0]           rdata;
+   logic [ID_W-1:0]          rid;
+   logic [DW-1:0]           rdata;
    logic [1:0]                       rresp;
    logic                             rlast;
    logic                             ruser     = 0;

@@ -8,13 +8,21 @@
 
 `include "axi_interconnect_base_env.sv"
 
+   import axi_parameter_pkg::*;
 class axi_interconnect_base_test extends uvm_test;
    `uvm_component_utils(axi_interconnect_base_test)
  // uvm_active_passive_enum is_active = UVM_ACTIVE;
-//  import axi_parameter_pkg::*;
    axi_interconnect_env env;
-   axi_agent_configuration master_cfg[NO_M];
-   axi_agent_configuration slave_cfg [NO_S];
+   axi_agent_configuration #(M_DATA_W[0],M_ADDR_W,M_ID_WIDTH[0]) master_cfg_0;  // can we set here with fixed parametrs for different master
+   axi_agent_configuration #(M_DATA_W[1],M_ADDR_W,M_ID_WIDTH[1]) master_cfg_1;
+   axi_agent_configuration #(M_DATA_W[2],M_ADDR_W,M_ID_WIDTH[2]) master_cfg_2;
+   axi_agent_configuration #(M_DATA_W[3],M_ADDR_W,M_ID_WIDTH[3]) master_cfg_3;
+   axi_agent_configuration #(S_DATA_W[0],S_ADDR_W[0],S_ID_WIDTH) slave_cfg_0;
+   axi_agent_configuration #(S_DATA_W[1],S_ADDR_W[1],S_ID_WIDTH) slave_cfg_1;
+   axi_agent_configuration #(S_DATA_W[2],S_ADDR_W[2],S_ID_WIDTH) slave_cfg_2;
+   axi_agent_configuration #(S_DATA_W[3],S_ADDR_W[3],S_ID_WIDTH) slave_cfg_3;
+   axi_agent_configuration #(S_DATA_W[4],S_ADDR_W[4],S_ID_WIDTH) slave_cfg_4;
+   axi_agent_configuration #(S_DATA_W[5],S_ADDR_W[5],S_ID_WIDTH) slave_cfg_5;
    
    extern function new(string name, uvm_component parent = null);
    extern function void start_of_simulation_phase (uvm_phase phase);
@@ -40,69 +48,131 @@ function void axi_interconnect_base_test::build_phase(uvm_phase phase);
    //data_widths for master and slave agents
    int m_array[NO_M] = '{M_DATA_W[0],M_DATA_W[1],M_DATA_W[2],M_DATA_W[3]};
    int s_array[NO_S] = '{S_DATA_W[0],S_DATA_W[1],S_DATA_W[2],S_DATA_W[3],S_DATA_W[4],S_DATA_W[5]};
-
+   int D,I;
    super.build_phase(phase);
 
    //environment creation
    env = axi_interconnect_env::type_id::create("env", this);
 
    //Master configuration object creation
-   for(int i=0; i< NO_M ;i++)begin
-      master_cfg[i] = axi_agent_configuration::type_id::create($sformatf("master_cfg[%0d]",i));
+      
+   master_cfg_0 = axi_agent_configuration #(M_DATA_W[0],M_ADDR_W,M_ID_WIDTH[0])::type_id::create("master_cfg_0");
+   master_cfg_1 = axi_agent_configuration #(M_DATA_W[1],M_ADDR_W,M_ID_WIDTH[1])::type_id::create("master_cfg_1");
+   master_cfg_2 = axi_agent_configuration #(M_DATA_W[2],M_ADDR_W,M_ID_WIDTH[2])::type_id::create("master_cfg_2");
+   master_cfg_3 = axi_agent_configuration #(M_DATA_W[3],M_ADDR_W,M_ID_WIDTH[3])::type_id::create("master_cfg_3");
 
-      master_cfg[i].fast_mode	        = 0;
-      master_cfg[i].wait_all_data       = 1;
-      master_cfg[i].max_read_requests   = 16;
-      master_cfg[i].max_write_requests  = 16;
-      master_cfg[i].data_width 	        = m_array[i];
-      master_cfg[i].has_perf_analysis   = 1;
-      master_cfg[i].log_verbosity       = "none";
-      master_cfg[i].has_pipelining      = 1;
-      master_cfg[i].last_signaling_used = 1;
-      master_cfg[i].master 	 	= 1;
-      master_cfg[i].master_i 	 	= i;
-   end
+   // changing the configuration values  
+      master_cfg_0.data_width 	 = m_array[0];
+      master_cfg_0.master_i      = 0;
+      master_cfg_1.data_width 	 = m_array[1];
+      master_cfg_1.master_i      = 1;
+      master_cfg_2.data_width 	 = m_array[2];
+      master_cfg_2.master_i      = 2;
+      master_cfg_3.data_width 	 = m_array[3];
+      master_cfg_3.master_i      = 3;
    
+   
+      if(!uvm_config_db #(virtual axi_footprint_interface #(M_DATA_W[0],M_ADDR_W,M_ID_WIDTH[0]))::get( this, "","axi_master_vif_0", master_cfg_0.axi_vif)) 
+         `uvm_fatal("NOVIF","No virtual interface set to master 0")
+
+      if(!uvm_config_db #(virtual axi_footprint_interface #(M_DATA_W[1],M_ADDR_W,M_ID_WIDTH[1]))::get( this, "", "axi_master_vif_1", master_cfg_1.axi_vif))
+         `uvm_fatal("NOVIF","No virtual interface set to master 1")
+
+      if(!uvm_config_db #(virtual axi_footprint_interface #(M_DATA_W[2],M_ADDR_W,M_ID_WIDTH[2]))::get( this, "", "axi_master_vif_2", master_cfg_2.axi_vif))
+         `uvm_fatal("NOVIF","No virtual interface set to master 2")
+
+      if(!uvm_config_db #(virtual axi_footprint_interface #(M_DATA_W[3],M_ADDR_W,M_ID_WIDTH[3]))::get( this, "", "axi_master_vif_3", master_cfg_3.axi_vif))
+         `uvm_fatal("NOVIF","No virtual interface set to master 3")
+
+
+
    // setting the master configuration object to the data base
-   for(int i=0; i< NO_M ;i++)begin           
-      master_cfg[NO_M-1].is_active = UVM_PASSIVE; //passive master_agent creation --> making last master agent as passive
+           
+      //master_cfg[NO_M-1].is_active = UVM_PASSIVE; //passive master_agent creation --> making last master agent as passive
+ 
+      uvm_config_db #(axi_agent_configuration #(M_DATA_W[0],M_ADDR_W,M_ID_WIDTH[0]))::set(this,"*","cfgm_0", master_cfg_0);
+      uvm_config_db #(axi_agent_configuration #(M_DATA_W[1],M_ADDR_W,M_ID_WIDTH[1]))::set(this,"*","cfgm_1", master_cfg_1);
+      uvm_config_db #(axi_agent_configuration #(M_DATA_W[2],M_ADDR_W,M_ID_WIDTH[2]))::set(this,"*","cfgm_2", master_cfg_2);
+      uvm_config_db #(axi_agent_configuration #(M_DATA_W[3],M_ADDR_W,M_ID_WIDTH[3]))::set(this,"*","cfgm_3", master_cfg_3);
 
-      if(!uvm_config_db #(virtual axi_footprint_interface)::get( this, "", $sformatf("axi_master_vif_%0d",i), master_cfg[i].axi_vif))
-            `uvm_fatal("NOVIF", $sformatf("No virtual interface set to master_%0d",i))
-      uvm_config_db #(axi_agent_configuration)::set(this,"*",$sformatf("cfgm_%0d",i), master_cfg[i]);
 
-   end
 
    
-   //Slave configuration object creation
-   for(int i=0; i< NO_S ;i++)begin
+   slave_cfg_0 = axi_agent_configuration #(S_DATA_W[0],S_ADDR_W[0],S_ID_WIDTH)::type_id::create("slave_cfg_0");
+   slave_cfg_1 = axi_agent_configuration #(S_DATA_W[1],S_ADDR_W[1],S_ID_WIDTH)::type_id::create("slave_cfg_1");
+   slave_cfg_2 = axi_agent_configuration #(S_DATA_W[2],S_ADDR_W[2],S_ID_WIDTH)::type_id::create("slave_cfg_2");
+   slave_cfg_3= axi_agent_configuration #(S_DATA_W[3],S_ADDR_W[3],S_ID_WIDTH)::type_id::create("slave_cfg_3");
+   slave_cfg_4 = axi_agent_configuration #(S_DATA_W[4],S_ADDR_W[4],S_ID_WIDTH)::type_id::create("slave_cfg_4");
+   slave_cfg_5 = axi_agent_configuration #(S_DATA_W[5],S_ADDR_W[5],S_ID_WIDTH)::type_id::create("slave_cfg_5");
+  
+ //Slave configuration object creation
+  
+      slave_cfg_0.data_width = s_array[0];
+      slave_cfg_0.has_perf_analysis = 0;
+      slave_cfg_0.log_verbosity = "medium";
+      slave_cfg_0.memory_debug_verbosity = 0;
+      slave_cfg_0.enable_addr_to_cause_error = 1'b1;
+      slave_cfg_0.addr_to_cause_error = 32'hEEEEEEEE; 
+      slave_cfg_0.master   = 0;
+      slave_cfg_0.slave_i = 0;
 
-      slave_cfg[i] = axi_agent_configuration::type_id::create($sformatf("slave_cfg[%0d]",i));
+       
+      slave_cfg_1.data_width = s_array[1];
+      slave_cfg_1.has_perf_analysis = 0;
+      slave_cfg_1.log_verbosity = "medium";
+      slave_cfg_1.memory_debug_verbosity = 0;
+      slave_cfg_1.enable_addr_to_cause_error = 1'b1;
+      slave_cfg_1.addr_to_cause_error = 32'hEEEEEEEE; 
+      slave_cfg_1.master   = 0;
+      slave_cfg_1.slave_i = 1;
 
-      slave_cfg[i].fast_mode = 0;
-      slave_cfg[i].max_read_requests = 16;
-      slave_cfg[i].max_write_requests = 16;
-      slave_cfg[i].data_width = s_array[i];
-      slave_cfg[i].has_perf_analysis = 0;
-      slave_cfg[i].log_verbosity = "medium";
-      slave_cfg[i].memory_debug_verbosity = 0;
-      slave_cfg[i].enable_addr_to_cause_error = 1'b1;
-      slave_cfg[i].addr_to_cause_error = 32'hEEEEEEEE; 
-      slave_cfg[i].has_pipelining = 1;
-      slave_cfg[i].last_signaling_used = 1;
-      slave_cfg[i].master   = 0;
-      slave_cfg[i].slave_i = i;
-   end
+       
+      slave_cfg_2.data_width = s_array[2];
+      slave_cfg_2.has_perf_analysis = 0;
+      slave_cfg_2.log_verbosity = "medium";
+      slave_cfg_2.memory_debug_verbosity = 0;
+      slave_cfg_2.enable_addr_to_cause_error = 1'b1;
+      slave_cfg_2.addr_to_cause_error = 32'hEEEEEEEE; 
+      slave_cfg_2.master   = 0;
+      slave_cfg_2.slave_i = 2;
+      
+      slave_cfg_3.data_width = s_array[3];
+      slave_cfg_3.has_perf_analysis = 0;
+      slave_cfg_3.log_verbosity = "medium";
+      slave_cfg_3.memory_debug_verbosity = 0;
+      slave_cfg_3.enable_addr_to_cause_error = 1'b1;
+      slave_cfg_3.addr_to_cause_error = 32'hEEEEEEEE; 
+      slave_cfg_3.master   = 0;
+      slave_cfg_3.slave_i = 3;
+       
+      slave_cfg_3.is_active = UVM_PASSIVE;  //passive agent creation--> making last slave agent as passive
    
+  
+
+   if(!uvm_config_db #(virtual axi_footprint_interface #(S_DATA_W[0],S_ADDR_W[0],S_ID_WIDTH))::get( this, "","axi_slave_vif_0", slave_cfg_0.axi_vif)) 
+         `uvm_fatal("NOVIF","No virtual interface set to slave 0")
+   if(!uvm_config_db #(virtual axi_footprint_interface #(S_DATA_W[1],S_ADDR_W[1],S_ID_WIDTH))::get( this, "","axi_slave_vif_1", slave_cfg_1.axi_vif)) 
+         `uvm_fatal("NOVIF","No virtual interface set to slave 1")
+   if(!uvm_config_db #(virtual axi_footprint_interface #(S_DATA_W[2],S_ADDR_W[2],S_ID_WIDTH))::get( this, "","axi_slave_vif_2", slave_cfg_2.axi_vif)) 
+         `uvm_fatal("NOVIF","No virtual interface set to slave 2")
+   if(!uvm_config_db #(virtual axi_footprint_interface #(S_DATA_W[3],S_ADDR_W[3],S_ID_WIDTH))::get( this, "","axi_slave_vif_3", slave_cfg_3.axi_vif)) 
+         `uvm_fatal("NOVIF","No virtual interface set to slave 3")
+   if(!uvm_config_db #(virtual axi_footprint_interface #(S_DATA_W[4],S_ADDR_W[4],S_ID_WIDTH))::get( this, "","axi_slave_vif_4", slave_cfg_4.axi_vif)) 
+         `uvm_fatal("NOVIF","No virtual interface set to slave 4")
+   if(!uvm_config_db #(virtual axi_footprint_interface #(S_DATA_W[5],S_ADDR_W[5],S_ID_WIDTH))::get( this, "","axi_slave_vif_5", slave_cfg_5.axi_vif)) 
+         `uvm_fatal("NOVIF","No virtual interface set to slave 5")
+ 
+
+
   // setting the salve configuration object to the data base
-   for(int i=0; i< NO_S ;i++)begin
-      slave_cfg[NO_S-1].is_active = UVM_PASSIVE;  //passive agent creation--> making last slave agent as passive
-
-      if(!uvm_config_db #(virtual axi_footprint_interface)::get( this, "",$sformatf("axi_slave_vif_%0d",i), slave_cfg[i].axi_vif))
-         `uvm_fatal("NOVIF", $sformatf("No virtual interface set to slave_%0d",i))
-
-      uvm_config_db #(axi_agent_configuration)::set(this,"*",$sformatf("cfgs_%0d",i), slave_cfg[i]);
-   end     
+ 
+      uvm_config_db #(axi_agent_configuration #(S_DATA_W[0],S_ADDR_W[0],S_ID_WIDTH))::set(this,"*","cfgs_0", slave_cfg_0);
+      uvm_config_db #(axi_agent_configuration #(S_DATA_W[1],S_ADDR_W[1],S_ID_WIDTH))::set(this,"*","cfgs_1", slave_cfg_1);
+      uvm_config_db #(axi_agent_configuration #(S_DATA_W[2],S_ADDR_W[2],S_ID_WIDTH))::set(this,"*","cfgs_2", slave_cfg_2);
+      uvm_config_db #(axi_agent_configuration #(S_DATA_W[3],S_ADDR_W[3],S_ID_WIDTH))::set(this,"*","cfgs_3", slave_cfg_3);
+      uvm_config_db #(axi_agent_configuration #(S_DATA_W[4],S_ADDR_W[4],S_ID_WIDTH))::set(this,"*","cfgs_4", slave_cfg_4);
+      uvm_config_db #(axi_agent_configuration #(S_DATA_W[5],S_ADDR_W[5],S_ID_WIDTH))::set(this,"*","cfgs_5", slave_cfg_5);
+        
   
   endfunction: build_phase
 

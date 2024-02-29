@@ -4,11 +4,11 @@
 
 `timescale 1ps/1ps;
 
-class axi_master_sequencer extends uvm_sequencer #(axi_seq_item);
+class axi_master_sequencer #(int D_W= 32,int A_W=32,int ID_W = 10) extends uvm_sequencer #(axi_seq_item);
 
-	`uvm_component_utils(axi_master_sequencer)
+	`uvm_component_param_utils(axi_master_sequencer #(D_W,A_W,ID_W))
 
-	axi_agent_configuration cfg;
+	axi_agent_configuration #(D_W,A_W,ID_W) cfg;
 
 	uvm_analysis_export #(axi_seq_item) inbound_write_transactions;
 	uvm_analysis_export #(axi_seq_item) inbound_read_transactions;
@@ -49,7 +49,7 @@ endtask : run_phase
 function void axi_master_sequencer::build_phase(uvm_phase phase);
 	super.build_phase (phase);
 
-	if (!uvm_config_db#(axi_agent_configuration)::get(this, "", "axi_cfg", cfg)) begin
+	if (!uvm_config_db#(axi_agent_configuration #(D_W,A_W,ID_W))::get(this, "", "axi_cfg", cfg)) begin
 		`uvm_fatal(get_type_name(), "Can't get configuration object through config_db")
 	end
 

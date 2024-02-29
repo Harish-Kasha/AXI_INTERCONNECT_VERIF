@@ -7,10 +7,10 @@
  *
  *******************************************************************/
 
-class axi_agent_configuration extends uvm_object;
-   `uvm_object_utils(axi_agent_configuration)
+class axi_agent_configuration #(int D_W= 32,int A_W=32,int ID_W = 10) extends uvm_object;
+   `uvm_object_param_utils(axi_agent_configuration #(D_W,A_W,ID_W))
    uvm_active_passive_enum is_active = UVM_ACTIVE;
-   virtual axi_footprint_interface axi_vif;
+   virtual axi_footprint_interface #(D_W,A_W,ID_W) axi_vif;
 
    bit master   = 1;
    int master_i = 0;
@@ -35,19 +35,24 @@ class axi_agent_configuration extends uvm_object;
    // Slave has internal memory i.e. works as memory component
    bit has_memory = 1;
 	// Set any address here if you want the slave to produce SLVERR when accessing this address
-	bit enable_addr_to_cause_error = 0;
-	bit [`AXI_MAX_AW-1:0] addr_to_cause_error = 32'hCAFEBABE;
+   bit enable_addr_to_cause_error = 0;
+   bit [`AXI_MAX_AW-1:0] addr_to_cause_error = 32'hCAFEBABE;
    // Setting this bit passive agent (i.e. monitor) writes transactions to memory component
    bit active_monitor = 0;
+
    // Monitor does performance reporting
-   bit has_perf_analysis = 0;
+  //our change :basava from o -> 1
+   bit has_perf_analysis = 1;
+
+
    // When 1, AW channel is executed before W channel (this reduces write channel performance by 2x), 
    // When 0, AW and W are executed in parallel (performance in par with read channel)
    bit aw_before_w_channel = 0;
    
    int num_timeout_cycles = 300;
-
-   string log_verbosity = "medium"; ///< "low", "medium" or "high"
+    
+  //our change :basava from medium -> none
+   string log_verbosity = "none"; ///< "low", "medium" or "high"
    bit memory_debug_verbosity = 0;
    bit bresp_error = 1; ///< bresp monitoring log severity control
    bit rresp_error = 1; ///< rresp monitoring log severity control

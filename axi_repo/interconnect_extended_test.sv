@@ -67,16 +67,16 @@ endclass
       //data = 16'h0;
       for(int i = 0; i < 14; i++) begin
          data = data + 1;
-         pw_seq.write_burst(i*128, wr_data,burst_length, 2'b11, env.master_agt[0].sqr,2);
+         pw_seq.write_burst(i*128, wr_data,burst_length, 2'b11, env.master_agt_0.sqr,2);
          #30ns;
       end
    `uvm_info(get_full_name,"from test after the pipeline write resp of 5",UVM_NONE)
-      env.master_agt[0].sqr.get_write_responses(tr, 5, 0);
+      env.master_agt_0.sqr.get_write_responses(tr, 5, 0);
 
    `uvm_info(get_full_name,"from test after the pipeline write resp of 1",UVM_NONE)
-      env.master_agt[0].sqr.get_single_write_response(t);
+      env.master_agt_0.sqr.get_single_write_response(t);
    `uvm_info(get_full_name,"from test after the pipeline write resp of all",UVM_NONE)
-      env.master_agt[0].sqr.get_all_write_responses_in_fifo(tr, 100);
+      env.master_agt_0.sqr.get_all_write_responses_in_fifo(tr, 100);
    `uvm_info(get_full_name,"from test after the pipeline write seq",UVM_NONE)
       foreach (tr[ii]) `uvm_info("TEST", $sformatf("bresp: %0d", tr[ii].bresp), UVM_LOW)
       #20ns;

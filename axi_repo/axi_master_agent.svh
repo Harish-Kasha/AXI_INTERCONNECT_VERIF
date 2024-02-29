@@ -4,15 +4,15 @@
 `ifndef AXI_MASTER_AGENT_SV
 `define AXI_MASTER_AGENT_SV
 
-class axi_master_agent extends uvm_agent;
-
-   axi_agent_configuration cfg;
-   axi_master_sequencer sqr;
-   axi_master_driver drv;
-   axi_monitor mon;
+class axi_master_agent #(int D_W= 32,int A_W=32,int ID_W = 10) extends uvm_agent;
+   `uvm_component_param_utils(axi_master_agent #(D_W,A_W,ID_W))
+   axi_agent_configuration #(D_W,A_W,ID_W) cfg;
+   axi_master_sequencer #(D_W,A_W,ID_W) sqr;
+   axi_master_driver #(D_W,A_W,ID_W) drv;
+   axi_monitor #(D_W,A_W,ID_W) mon;
    uvm_analysis_port #(axi_seq_item) axi_analysis_port;
 
-   `uvm_component_utils(axi_master_agent)
+
    
    extern function new(string name, uvm_component parent = null);
    extern virtual function void build_phase(uvm_phase phase);
@@ -63,15 +63,15 @@ function void axi_master_agent::build_phase(uvm_phase phase);
                            cfg.data_width, `AXI_MAX_DW))
    end
 
-   uvm_config_db#(axi_agent_configuration)::set(this, "*", "axi_cfg", cfg);
+   uvm_config_db#(axi_agent_configuration #(D_W,A_W,ID_W))::set(this, "*", "axi_cfg", cfg);
 
    if (cfg.is_active == UVM_ACTIVE) begin
-      sqr = axi_master_sequencer::type_id::create("sqr", this);
-      drv = axi_master_driver::type_id::create("drv", this);
-      mon = axi_monitor::type_id::create("mon", this);
+      sqr = axi_master_sequencer #(D_W,A_W,ID_W)::type_id::create("sqr", this);
+      drv = axi_master_driver #(D_W,A_W,ID_W)::type_id::create("drv", this);
+      mon = axi_monitor #(D_W,A_W,ID_W)::type_id::create("mon", this);
    end
    else begin
-      mon = axi_monitor::type_id::create("mon", this);
+      mon = axi_monitor #(D_W,A_W,ID_W)::type_id::create("mon", this);
    end
 
    axi_analysis_port	= new("axi_analysis_port", this);

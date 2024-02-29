@@ -5,16 +5,15 @@
 `ifndef AXI_SLAVE_AGENT_SV
 `define AXI_SLAVE_AGENT_SV
 
-class axi_slave_agent extends uvm_agent;
-
-  axi_agent_configuration cfg;
-  axi_slave_driver drv;
-  axi_monitor mon;
+class axi_slave_agent #(int D_W= 32,int A_W=32,int ID_W = 10) extends uvm_agent;
+  `uvm_component_param_utils(axi_slave_agent # (D_W,A_W,ID_W))
+  axi_agent_configuration #(D_W,A_W,ID_W) cfg;
+  axi_slave_driver #(D_W,A_W,ID_W) drv;
+  axi_monitor #(D_W,A_W,ID_W) mon;
   axi_slave_memory mem;
   uvm_analysis_port #(axi_seq_item) axi_analysis_port;
 
-  `uvm_component_utils(axi_slave_agent)
-
+  
   extern function new(string name, uvm_component parent = null);
   extern virtual function void build_phase(uvm_phase phase);
   extern virtual function void connect_phase(uvm_phase phase);
@@ -65,14 +64,14 @@ function void axi_slave_agent::build_phase(uvm_phase phase);
    end
 
 
-   uvm_config_db#(axi_agent_configuration)::set(this, "*", "axi_cfg", cfg);
+   uvm_config_db#(axi_agent_configuration #(D_W,A_W,ID_W))::set(this, "*", "axi_cfg", cfg);
 
    if (cfg.is_active == UVM_ACTIVE) begin
-      drv = axi_slave_driver::type_id::create("drv", this);
-      mon = axi_monitor::type_id::create("mon", this);
+      drv = axi_slave_driver #(D_W,A_W,ID_W)::type_id::create("drv", this);
+      mon = axi_monitor #(D_W,A_W,ID_W)::type_id::create("mon", this);
    end
    else begin
-      mon = axi_monitor::type_id::create("mon", this);
+      mon = axi_monitor #(D_W,A_W,ID_W)::type_id::create("mon", this);
    end
 
    if (cfg.has_memory == 1) begin

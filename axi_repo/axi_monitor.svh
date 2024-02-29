@@ -7,12 +7,12 @@
 
 `include "axi_slave_memory.svh"
 
-class axi_monitor extends uvm_monitor;
-   `uvm_component_utils(axi_monitor)
+class axi_monitor #(int D_W= 32,int A_W=32,int ID_W = 10) extends uvm_monitor;
+   `uvm_component_param_utils(axi_monitor #(D_W,A_W,ID_W))
    
-   axi_agent_configuration cfg;
+   axi_agent_configuration #(D_W,A_W,ID_W)cfg;
    axi_slave_memory mem;
-   virtual axi_footprint_interface axi_vif;
+   virtual axi_footprint_interface #(D_W,A_W,ID_W) axi_vif;
    uvm_analysis_port #(axi_seq_item) axi_analysis_port;
    
    logic [`AXI_MAX_DW-1:0] shifted_wr_data [];
@@ -94,7 +94,7 @@ endfunction : new
 function void axi_monitor::build_phase(uvm_phase phase);
    super.build_phase (phase);
 
-   if (!uvm_config_db#(axi_agent_configuration)::get(this, "", "axi_cfg", cfg)) begin
+   if (!uvm_config_db#(axi_agent_configuration #(D_W,A_W,ID_W))::get(this, "", "axi_cfg", cfg)) begin
       `uvm_fatal(get_type_name(), "Can't get configuration object through config_db")
    end
 
