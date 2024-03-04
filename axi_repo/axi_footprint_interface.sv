@@ -295,7 +295,6 @@ interface axi_footprint_interface #(int DW=32, int AW=32, int ID_W =10);
       axi_master_cb.awburst <= 2'b01; //TODO: ATM INCR BURST SUPPORTED ONLY
 
       $display("from interface write task of aw channel",);
-      $display("testing display of the channel");
       @(axi_master_cb);
 
       if (awvalid == 1'b0) @(axi_master_cb);
@@ -468,8 +467,8 @@ interface axi_footprint_interface #(int DW=32, int AW=32, int ID_W =10);
 
    task automatic mon_w (ref axi_seq_item t);
       automatic int i = 0;
-      bit[127:0] qu_data[$];    
-      bit[127:0] qu_storb[$];      
+      bit[1024:0] qu_data[$];    
+      bit[1024:0] qu_storb[$];      
                      
 
       forever begin
@@ -486,7 +485,7 @@ interface axi_footprint_interface #(int DW=32, int AW=32, int ID_W =10);
               t.byte_en =new[qu_storb.size()];
               foreach(t.data[i])begin
 	      t.data[i] = qu_data.pop_front();
-              $display($time,"here##################$$$$$$$$$$$$$$$ data write[%0d] =%0d",i,t.data[i]);
+              $display($time,"##################$$$$$$$$$$$$$$$ data write[%0d] =%0d",i,t.data[i]);
               end
               foreach(t.byte_en[i]) t.byte_en[i] = qu_storb.pop_front();
               break;
