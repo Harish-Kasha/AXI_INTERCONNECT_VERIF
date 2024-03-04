@@ -54,20 +54,26 @@ endclass
       
       // master 0 --> 16 transactions of write and read to slave 0   
       // pipelined write
-      burst_length = 5;
+     /* burst_length = 5;
       wr_data = new[burst_length];   
       wr_data[0] = 16'h0001; 
       wr_data[1] = 16'h0002; 
       wr_data[2] = 16'h0003; 
       wr_data[3] = 16'h0004; 
-      wr_data[4] = 16'h0005; 
+      wr_data[4] = 16'h0005;*/ 
 
 
 
       //data = 16'h0;
-      for(int i = 0; i < 14; i++) begin
-         data = data + 1;
-         pw_seq.write_burst(i*128, wr_data,burst_length, 2'b11, env.master_agt_0.sqr,2);
+      for(int i = 0; i <7; i++) begin
+        burst_length=1;
+        burst_length=burst_length+i;
+        `uvm_info(get_type_name,$sformatf("value of burst_length=%0d",burst_length),UVM_LOW)
+        wr_data=new[burst_length];
+        foreach(wr_data[i])begin
+          wr_data[i]=i;
+        end
+         pw_seq.write_burst((i+1)*'d2000, wr_data,burst_length, 2'b11, env.master_agt_0.sqr,2);
          #30ns;
       end
    `uvm_info(get_full_name,"from test after the pipeline write resp of 5",UVM_NONE)

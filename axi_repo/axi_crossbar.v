@@ -83,7 +83,7 @@ module axi_crossbar #
     // Master interface address widths
     // M_COUNT concatenated fields of M_REGIONS concatenated fields of 32 bits
     //parameter M_ADDR_WIDTH = {M_COUNT{{M_REGIONS{32'd12}}}},
-    parameter M_ADDR_WIDTH = {32'd12,32'd13,32'd14,32'd20,32'd13,32'd13},
+    parameter M_ADDR_WIDTH = {32'd13,32'd13,32'd20,32'd14,32'd13,32'd12},
     // Read connections between interfaces
     // M_COUNT concatenated fields of S_COUNT bits
     parameter M_CONNECT_READ = {M_COUNT{{S_COUNT{1'b1}}}},
