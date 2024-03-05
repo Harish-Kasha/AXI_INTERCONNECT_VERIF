@@ -28,12 +28,12 @@ package axi_parameter_pkg;
   parameter MAX_S_ADDR_WIDTH               = 20;
   
 
-   parameter S0_START = 'h0,      S0_END   = 'h0FFF; 
-   parameter S1_START = 'h1000,   S1_END   = 'h2FFF; 
-   parameter S2_START = 'h3000,   S2_END   = 'h6FFF; 
-   parameter S3_START = 'h7000,   S3_END   = 'h106FFF; 
-   parameter S4_START = 'h107000, S4_END   = 'h108FFF; 
-   parameter S5_START = 'h109000, S5_END   = 'h10AFFF;
+   parameter S0_START = 32'h00000000, S0_END   = 32'h00000fff;
+   parameter S1_START = 32'h00002000, S1_END   = 32'h00003fff;
+   parameter S2_START = 32'h00004000, S2_END   = 32'h00007fff;
+   parameter S3_START = 32'h00100000, S3_END   = 32'h001fffff; 
+   parameter S4_START = 32'h00200000, S4_END   = 32'h00201fff; 
+   parameter S5_START = 32'h00202000, S5_END   = 32'h00203fff;
 		 
    parameter MID_M0   = 0; 
    parameter MID_M1   = 1; 

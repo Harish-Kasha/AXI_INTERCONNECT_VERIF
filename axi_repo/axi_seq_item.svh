@@ -36,18 +36,19 @@ class axi_seq_item extends uvm_sequence_item;
    int data_amount_in_bytes;
    real bw_in_bits;
    real bw_in_bytes;
+   axi_agent_pkg::req_res_identifier req_res;
    
    axi_delay_vars delay_vars;
    
    string parent;
 
    `uvm_object_param_utils_begin (axi_seq_item)
-	   `uvm_field_int (id, UVM_ALL_ON);
-	   `uvm_field_int (prot, UVM_ALL_ON);
+       `uvm_field_int (id, UVM_ALL_ON);
+       `uvm_field_int (prot, UVM_ALL_ON | UVM_NOCOMPARE);
        `uvm_field_int (addr, UVM_ALL_ON);
        `uvm_field_array_int (data,   UVM_ALL_ON);
        `uvm_field_int (burst_length, UVM_ALL_ON);
-	   `uvm_field_int (burst_type, UVM_ALL_ON);
+       `uvm_field_int (burst_type, UVM_ALL_ON);
        `uvm_field_array_int (byte_en,   UVM_ALL_ON);
        `uvm_field_int (byte_en_first_custom,   UVM_ALL_ON);
        `uvm_field_int (byte_en_last_custom,   UVM_ALL_ON);

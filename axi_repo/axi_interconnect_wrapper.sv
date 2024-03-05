@@ -44,7 +44,8 @@ parameter MAX_S_ID_WIDTH=12,
 parameter COUPLER_REG_INSTANCE=0,
 parameter MAX_M_A_WIDTH=20,
 parameter MAX_M_WD_WIDTH=128,
-parameter MAX_M_RD_WIDTH=128,
+parameter MAX_M_RD_WIDTH=64, // update  this it is important to update
+parameter MAX_S_RD_WIDTH=32, // update  this it is important to update
 parameter MAX_M_STRB_WIDTH=16
     // Forward ID through adapter
 	      
@@ -90,7 +91,7 @@ parameter MAX_M_STRB_WIDTH=16
     input  wire [S_COUNT-1:0]              s_axi_arvalid,
     output wire [S_COUNT-1:0]              s_axi_arready,
     output reg  [SUM_S_ID_WIDTH-1:0]     s_axi_rid,
-    output wire [SUM_S_R_D_WIDTH-1:0]   s_axi_rdata,
+    output reg [SUM_S_R_D_WIDTH-1:0]   s_axi_rdata,
     output wire [S_COUNT*2-1:0]            s_axi_rresp,
     output wire [S_COUNT-1:0]              s_axi_rlast,
     output wire [S_COUNT*RUSER_WIDTH-1:0]  s_axi_ruser,
@@ -235,7 +236,8 @@ parameter MAX_M_STRB_WIDTH=16
     wire [M_COUNT-1:0]               c_a_axi_arvalid;
     wire [M_COUNT-1:0]               c_a_axi_arready;
     wire [M_COUNT*M_ID_WIDTH-1:0]    c_a_axi_rid;
-    logic [SUM_M_R_D_WIDTH-1:0]      c_a_axi_rdata;
+    //logic [SUM_M_R_D_WIDTH-1:0]      c_a_axi_rdata;
+    logic [MAX_M_RD_WIDTH*M_COUNT-1:0]    c_a_axi_rdata;
     wire [M_COUNT*2-1:0]             c_a_axi_rresp;
     wire [M_COUNT-1:0]               c_a_axi_rlast;
     wire [M_COUNT*RUSER_WIDTH-1:0]   c_a_axi_ruser;
@@ -244,9 +246,10 @@ parameter MAX_M_STRB_WIDTH=16
 
 
 
+    wire [MAX_S_RD_WIDTH*S_COUNT-1:0]    temp_s_axi_rdata;
     wire [MAX_S_ID_WIDTH-1:0] adapter_crossbar_S_AW_ID[S_COUNT];
     wire [S_COUNT*MAX_S_ID_WIDTH-1:0] adapter_crossbar_S_B_ID;
-    wire [MAX_S_ID_WIDTH-1:0] adapter_crossbar_S_AR_ID[S_COUNT];
+    wire [S_COUNT*MAX_S_ID_WIDTH-1:0] adapter_crossbar_S_AR_ID;
     wire [S_COUNT*MAX_S_ID_WIDTH-1:0] adapter_crossbar_S_R_ID;
 
     wire [S_COUNT*MAX_S_ID_WIDTH-1:0] temp_adapter_crossbar_S_AW_ID;
@@ -258,7 +261,7 @@ parameter MAX_M_STRB_WIDTH=16
     generate
 	    for(k=0;k<S_COUNT;k=k+1)begin
 		 assign temp_adapter_crossbar_S_AW_ID[k*MAX_S_ID_WIDTH +: MAX_S_ID_WIDTH] = adapter_crossbar_S_AW_ID[k]; 
-		 assign temp_adapter_crossbar_S_AR_ID[k*MAX_S_ID_WIDTH +: MAX_S_ID_WIDTH] = adapter_crossbar_S_AR_ID[k];
+		 //assign temp_adapter_crossbar_S_AR_ID[k*MAX_S_ID_WIDTH +: MAX_S_ID_WIDTH] = adapter_crossbar_S_AR_ID[k];
 	    end
    endgenerate 
 
@@ -273,6 +276,7 @@ parameter MAX_M_STRB_WIDTH=16
           begin 
              a_c_axi_bid[axi_interconnect_pkg::sum_up_to_index(S_ID_WIDTH,i)+:S_ID_WIDTH[i]] = adapter_crossbar_S_B_ID[i*MAX_S_ID_WIDTH+:MAX_S_ID_WIDTH]; 
              a_c_axi_rid[axi_interconnect_pkg::sum_up_to_index(S_ID_WIDTH,i)+:S_ID_WIDTH[i]] = adapter_crossbar_S_R_ID[i*MAX_S_ID_WIDTH+:MAX_S_ID_WIDTH]; 
+             s_axi_rdata[axi_interconnect_pkg::sum_up_to_index(S_R_D_WIDTH,i)+:S_R_D_WIDTH[i]] = temp_s_axi_rdata[MAX_S_RD_WIDTH*i+:MAX_S_RD_WIDTH];
           end
        end
     endgenerate
@@ -289,7 +293,7 @@ parameter MAX_M_STRB_WIDTH=16
           begin 
              c_a_axi_awaddr[axi_interconnect_pkg::sum_up_to_index(M_A_WIDTH,j)+:M_A_WIDTH[j]] = crossbar_adapter_M_AWADDR[j*S_A_WIDTH+:S_A_WIDTH]; 
              c_a_axi_araddr[axi_interconnect_pkg::sum_up_to_index(M_A_WIDTH,j)+:M_A_WIDTH[j]] = crossbar_adapter_M_ARADDR[j*S_A_WIDTH+:S_A_WIDTH]; 
-             c_a_axi_rdata[axi_interconnect_pkg::sum_up_to_index(M_R_D_WIDTH,j)+:M_R_D_WIDTH[j]] = crossbar_adapter_M_RDATA[j*CROSSBAR_D_WIDTH+:CROSSBAR_D_WIDTH]; 
+             //c_a_axi_rdata[axi_interconnect_pkg::sum_up_to_index(M_R_D_WIDTH,j)+:M_R_D_WIDTH[j]] = crossbar_adapter_M_RDATA[j*CROSSBAR_D_WIDTH+:CROSSBAR_D_WIDTH]; 
           end
        end
     endgenerate
@@ -367,7 +371,7 @@ parameter MAX_M_STRB_WIDTH=16
             .s_axi_arvalid(s_axi_arvalid[m]),
             .s_axi_arready(s_axi_arready[m]),
             .s_axi_rid(si_2_intwrap_s_axi_rid[MAX_S_ID_WIDTH*m+:MAX_S_ID_WIDTH]),
-            .s_axi_rdata(s_axi_rdata[axi_interconnect_pkg::sum_up_to_index(S_R_D_WIDTH,m)+:S_R_D_WIDTH[m]]),
+            .s_axi_rdata(temp_s_axi_rdata[MAX_S_RD_WIDTH*m+:MAX_S_RD_WIDTH]),
             .s_axi_rresp(s_axi_rresp[m*2+:2]),
             .s_axi_rlast(s_axi_rlast[m]),
             .s_axi_ruser(s_axi_ruser[m*RUSER_WIDTH+: RUSER_WIDTH]),
@@ -404,7 +408,7 @@ parameter MAX_M_STRB_WIDTH=16
             .m_axi_buser(a_c_axi_buser[m*BUSER_WIDTH+:BUSER_WIDTH]),
             .m_axi_bvalid(a_c_axi_bvalid[m]),
             .m_axi_bready(a_c_axi_bready[m]),  
-	    .m_axi_arid(a_c_axi_arid[axi_interconnect_pkg::sum_up_to_index(S_ID_WIDTH,m)+:S_ID_WIDTH[m]]),
+	    .m_axi_arid(temp_adapter_crossbar_S_AR_ID[m*MAX_S_ID_WIDTH +: MAX_S_ID_WIDTH]),
             .m_axi_araddr(a_c_axi_araddr[S_A_WIDTH*m+:S_A_WIDTH]),
             .m_axi_arlen(a_c_axi_arlen[m*8+:8]),
             .m_axi_arsize(a_c_axi_arsize[m*3+:3]),
@@ -560,7 +564,7 @@ parameter MAX_M_STRB_WIDTH=16
             .s_axi_arvalid(c_a_axi_arvalid[n]),
             .s_axi_arready(c_a_axi_arready[n]),
             .s_axi_rid(c_a_axi_rid[M_ID_WIDTH*n+:M_ID_WIDTH]),
-            .s_axi_rdata(c_a_axi_rdata[axi_interconnect_pkg::sum_up_to_index(M_R_D_WIDTH,n)+:M_R_D_WIDTH[n]]),
+            .s_axi_rdata(c_a_axi_rdata[MAX_M_RD_WIDTH*n+:MAX_M_RD_WIDTH]),
             .s_axi_rresp(c_a_axi_rresp[n*2+:2]),
             .s_axi_rlast(c_a_axi_rlast[n]),
             .s_axi_ruser(c_a_axi_ruser[n*RUSER_WIDTH+: RUSER_WIDTH]),
@@ -675,7 +679,7 @@ parameter MAX_M_STRB_WIDTH=16
             .m_axi_arvalid(c_a_axi_arvalid),
             .m_axi_arready(c_a_axi_arready),
             .m_axi_rid(c_a_axi_rid),
-            .m_axi_rdata(crossbar_adapter_M_RDATA),
+            .m_axi_rdata(c_a_axi_rdata),
             .m_axi_rresp(c_a_axi_rresp),
             .m_axi_rlast(c_a_axi_rlast),
             .m_axi_ruser(c_a_axi_ruser),

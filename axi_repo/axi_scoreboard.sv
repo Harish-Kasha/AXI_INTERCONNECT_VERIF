@@ -52,7 +52,10 @@ class interconnect_scoreboard extends uvm_scoreboard;
 int count;
 
    // queues for storing the  expected packets
-   axi_seq_item exp_S_q[NO_S][$];  
+   axi_seq_item write_req_q[NO_S][$];  
+   axi_seq_item read_req_q[NO_S][$];  
+   axi_seq_item write_res_q[NO_M][$];  
+   axi_seq_item read_res_q[NO_M][$];  
 
    // analysis ports  
    uvm_analysis_imp_M0     #(axi_seq_item,interconnect_scoreboard) M0_imp;
@@ -113,8 +116,9 @@ int count;
       // Appending master_id with packet_id
       m_id = m_id << MAX_M_ID_WIDTH;
       pkt.id = m_id | pkt.id;
+      packet.id = m_id | packet.id;
       // Storing the packet into respective queues based on slave address
-      case(pkt.addr)inside
+      case(pkt.addr) inside
             [S0_START:S0_END]  : q_num = 'd0;
             [S1_START:S1_END]  : q_num = 'd1;
             [S2_START:S2_END]  : q_num = 'd2;
@@ -124,69 +128,127 @@ int count;
 
             default            : `uvm_info(get_type_name(), $sformatf("Decode error=%s ",pkt.sprint()), UVM_LOW)
       endcase
-       pkt_compare(pkt,q_num);
-      //exp_S_q[q_num].push_back(pkt);
-count++;
-      //`uvm_info(get_type_name(), $sformatf("exp_S_q[%0d] exp_S_q[%0d]size =%0d",q_num,q_num,exp_S_q[q_num].size()), UVM_LOW)
+      if(packet.req_res == RESPONSE)
+      begin
+         if(packet.op_type == AXI_WRITE) packet.addr = ({M_ADDR_W{1'b1}} >> (M_ADDR_W-S_ADDR_W[q_num])) & packet.addr;
+         pkt_compare(packet,packet.id[(S_ID_WIDTH-1)-:$clog2(NO_M)]);
+      end
+      else if(pkt.op_type==AXI_WRITE && pkt.req_res == REQUEST) 
+      begin
+         //pkt.addr = {{(M_ADDR_W-S_ADDR_W[q_num]){1'b0}},{S_ADDR_W[q_num]{1'b1}}} & pkt.addr;
+         pkt.addr = ({M_ADDR_W{1'b1}} >> (M_ADDR_W-S_ADDR_W[q_num])) & pkt.addr;
+         write_req_q[q_num].push_back(pkt);
+      end
+      else if(pkt.op_type==AXI_READ && pkt.req_res == REQUEST)  
+      begin
+         //pkt.addr = {{(M_ADDR_W-S_ADDR_W[q_num]){1'b0}},{S_ADDR_W[q_num]{1'b1}}} & pkt.addr;
+         read_req_q[q_num].push_back(pkt);
+      end
+      count++;
+      //`uvm_info(get_type_name(), $sformatf("write_req_q[%0d] write_req_q[%0d]size =%0d",q_num,q_num,write_req_q[q_num].size()), UVM_LOW)
     endfunction
 
 
    //............................................... slave.............................
     // Slave 0
     function void write_S0(axi_seq_item pkt);
-       //pkt_compare(pkt,S_NUM_S0);
-       exp_S_q[0].push_back(pkt);
+       axi_seq_item cloned_pkt;
+       $cast(cloned_pkt,pkt.clone());
+       if(pkt.op_type==AXI_WRITE && pkt.req_res == RESPONSE)    begin
+         write_res_q[cloned_pkt.id[(S_ID_WIDTH-1)-:$clog2(NO_M)]].push_back(cloned_pkt);
+       end
+       else if(pkt.op_type==AXI_WRITE && pkt.req_res == REQUEST)      pkt_compare(pkt,S_NUM_S0);
+       else if(pkt.op_type==AXI_READ && pkt.req_res == REQUEST)       pkt_compare(pkt,S_NUM_S0);
+       else if(pkt.op_type==AXI_READ && pkt.req_res == RESPONSE)      begin
+          read_res_q[cloned_pkt.id[(S_ID_WIDTH-1)-:$clog2(NO_M)]].push_back(cloned_pkt);
+       end
     endfunction    
     // Slave 1
     function void write_S1(axi_seq_item pkt);
-       //pkt_compare(pkt,S_NUM_S1);
-       exp_S_q[1].push_back(pkt);
+       axi_seq_item cloned_pkt;
+       $cast(cloned_pkt,pkt.clone());
+       if(pkt.op_type==AXI_WRITE && pkt.req_res == RESPONSE)    begin
+         write_res_q[cloned_pkt.id[(S_ID_WIDTH-1)-:$clog2(NO_M)]].push_back(cloned_pkt);
+       end
+       else if(pkt.op_type==AXI_WRITE && pkt.req_res == REQUEST)                 pkt_compare(pkt,S_NUM_S1);
+       else if(pkt.op_type==AXI_READ && pkt.req_res == REQUEST)                  pkt_compare(pkt,S_NUM_S1);
+       else if(pkt.op_type==AXI_READ && pkt.req_res == RESPONSE)      
+       begin
+          read_res_q[cloned_pkt.id[(S_ID_WIDTH-1)-:$clog2(NO_M)]].push_back(cloned_pkt);
+       end
     endfunction  
     // Slave 2
     function void write_S2(axi_seq_item pkt);
-       //pkt_compare(pkt,S_NUM_S2);
-       exp_S_q[2].push_back(pkt);
+       axi_seq_item cloned_pkt;
+         $cast(cloned_pkt,pkt.clone());
+       if(pkt.op_type==AXI_WRITE && pkt.req_res == RESPONSE)    begin
+         write_res_q[cloned_pkt.id[(S_ID_WIDTH-1)-:$clog2(NO_M)]].push_back(cloned_pkt);
+       end
+       else if(pkt.op_type==AXI_WRITE && pkt.req_res == REQUEST)                 pkt_compare(pkt,S_NUM_S2);
+       else if(pkt.op_type==AXI_READ && pkt.req_res == REQUEST)                  pkt_compare(pkt,S_NUM_S2);
+       else if(pkt.op_type==AXI_READ && pkt.req_res == RESPONSE)      read_res_q[cloned_pkt.id[(S_ID_WIDTH-1)-:$clog2(NO_M)]].push_back(cloned_pkt);
     endfunction   
     // Slave 3
     function void write_S3(axi_seq_item pkt);
-       //pkt_compare(pkt,S_NUM_S3);
-       exp_S_q[3].push_back(pkt);
+       axi_seq_item cloned_pkt;
+         $cast(cloned_pkt,pkt.clone());
+       if(pkt.op_type==AXI_WRITE && pkt.req_res == RESPONSE)    begin
+         write_res_q[cloned_pkt.id[(S_ID_WIDTH-1)-:$clog2(NO_M)]].push_back(cloned_pkt);
+       end
+       else if(pkt.op_type==AXI_WRITE && pkt.req_res == REQUEST)                 pkt_compare(pkt,S_NUM_S3);
+       else if(pkt.op_type==AXI_READ && pkt.req_res == REQUEST)                  pkt_compare(pkt,S_NUM_S3);
+       else if(pkt.op_type==AXI_READ && pkt.req_res == RESPONSE)      read_res_q[cloned_pkt.id[(S_ID_WIDTH-1)-:$clog2(NO_M)]].push_back(cloned_pkt);
     endfunction   
     // Slave 4
     function void write_S4(axi_seq_item pkt);
-       //pkt_compare(pkt,S_NUM_S4);
-       exp_S_q[4].push_back(pkt);
+       axi_seq_item cloned_pkt;
+         $cast(cloned_pkt,pkt.clone());
+       if(pkt.op_type==AXI_WRITE && pkt.req_res == RESPONSE)    begin
+         write_res_q[cloned_pkt.id[(S_ID_WIDTH-1)-:$clog2(NO_M)]].push_back(cloned_pkt);
+       end
+       else if(pkt.op_type==AXI_WRITE && pkt.req_res == REQUEST)                 pkt_compare(pkt,S_NUM_S4);
+       else if(pkt.op_type==AXI_READ && pkt.req_res == REQUEST)                  pkt_compare(pkt,S_NUM_S4);
+       else if(pkt.op_type==AXI_READ && pkt.req_res == RESPONSE)      read_res_q[cloned_pkt.id[(S_ID_WIDTH-1)-:$clog2(NO_M)]].push_back(cloned_pkt);
     endfunction  
     // Slave 5
     function void write_S5(axi_seq_item pkt);
-       //pkt_compare(pkt,S_NUM_S5);
-       exp_S_q[5].push_back(pkt);
+       axi_seq_item cloned_pkt;
+         $cast(cloned_pkt,pkt.clone());
+       if(pkt.op_type==AXI_WRITE && pkt.req_res == RESPONSE)    begin
+         write_res_q[cloned_pkt.id[(S_ID_WIDTH-1)-:$clog2(NO_M)]].push_back(cloned_pkt);
+       end
+       else if(pkt.op_type==AXI_WRITE && pkt.req_res == REQUEST)                 pkt_compare(pkt,S_NUM_S5);
+       else if(pkt.op_type==AXI_READ && pkt.req_res == REQUEST)                  pkt_compare(pkt,S_NUM_S5);
+       else if(pkt.op_type==AXI_READ && pkt.req_res == RESPONSE)      read_res_q[cloned_pkt.id[(S_ID_WIDTH-1)-:$clog2(NO_M)]].push_back(cloned_pkt);
     endfunction    
 
     // Comparison method for expected and actual packet 
-    function axi_seq_item pkt_compare(axi_seq_item pkt,int s_num);
-       axi_seq_item temp;
-       axi_seq_item qu[NO_S][$];
+    function axi_seq_item pkt_compare(axi_seq_item pkt,int m_s_num);
+       axi_seq_item temp,temp2;
+       axi_seq_item slave_q[NO_S][$];
+       axi_seq_item master_q[NO_M][$];
        // If no packets in expected queues
-       if(exp_S_q[s_num].size == 0)begin   
+       if((pkt.op_type==AXI_WRITE) ? (pkt.req_res == 1'b0)? (write_req_q[m_s_num].size == 0) : (write_res_q[m_s_num].size == 0) : (pkt.req_res == 1'b0)? (read_req_q[m_s_num].size == 0) : (read_res_q[m_s_num].size == 0))begin   
           `uvm_error(get_type_name(), "no packet in the expected queues")
        end
        // If packets exists in expected queues
        else begin          
-	  `uvm_info(get_type_name(), $sformatf("Queue size of expected slave[%0d] =%d ",s_num,exp_S_q[s_num].size), UVM_LOW)
-          `uvm_info(get_type_name(), $sformatf("expected packet recevied to S[%0d] slave=%s ",s_num,pkt.sprint()), UVM_LOW)
-          temp = exp_S_q[s_num][0];
-
-          `uvm_info(get_type_name(), $sformatf("actual packet recevied from S[%0d] slave=%s ",s_num,temp.sprint()), UVM_LOW)
+	  //`uvm_info(get_type_name(), $sformatf("Queue size of expected slave[%0d] =%d ",m_s_num,write_req_q[m_s_num].size), UVM_LOW)
+          //`uvm_info(get_type_name(), $sformatf("Actual packet recevied from S[%0d] slave=%s ",m_s_num,pkt.sprint()), UVM_LOW)
+          temp = (pkt.op_type == AXI_WRITE) ? (pkt.req_res == 1'b0) ? write_req_q[m_s_num][0] : write_res_q[m_s_num][0] : (pkt.req_res == 1'b0) ? read_req_q[m_s_num][0] : read_res_q[m_s_num][0];
           // comparing the actual packet with first packet from the expected queues for in-order transaction
           if(pkt.id == temp.id) begin
              if(pkt.addr == temp.addr) begin
                 if(pkt.compare(temp)) begin
-                   `uvm_info(get_type_name(), "actual and expected packets are same in case of same ID's", UVM_LOW)
-                   exp_S_q[s_num].pop_front();
+                   if(pkt.op_type == AXI_WRITE && pkt.req_res == 1'b0)                   write_req_q[m_s_num].pop_front();
+                   else if (pkt.op_type == AXI_WRITE && pkt.req_res == 1'b1)             write_res_q[m_s_num].pop_front();
+                   else if (pkt.op_type == AXI_READ && pkt.req_res == 1'b0)              read_req_q[m_s_num].pop_front();
+                   else if (pkt.op_type == AXI_READ && pkt.req_res == 1'b1)              read_res_q[m_s_num].pop_front();
+                   `uvm_info(get_type_name(), $sformatf("actual and expected packets are same for %s %s following order for same ID's",pkt.op_type.name,pkt.req_res.name), UVM_LOW)
+                   `uvm_info(get_type_name(), $sformatf("%s %s comparison failed due to data mismatch, expected is \n%s actual is \n%s",pkt.op_type.name,pkt.req_res.name,temp.sprint(),pkt.sprint()),UVM_NONE)
                 end            
                 else begin
-                `uvm_error(get_type_name(), $sformatf("comparison of failed due to data mismatch, expected is \n%s actual is \n%s",temp.sprint(),pkt.sprint()))
+                `uvm_error(get_type_name(), $sformatf("%s %s comparison failed due to data mismatch, expected is \n%s actual is \n%s",pkt.op_type.name,pkt.req_res.name,temp.sprint(),pkt.sprint()))
                 end
              end
              else begin
@@ -195,16 +257,24 @@ count++;
           end
           // comparing the actual packet with packets from the expected queues for out of order transaction
           else begin
-             qu[s_num] = exp_S_q[s_num].find(i) with (i.id == pkt.id );
-             if(pkt.compare(qu[s_num][0]))begin
-                `uvm_info(get_type_name(), "actual and expected packets are same", UVM_LOW)
-                qu[s_num].pop_front();
-                exp_S_q[s_num].pop_front();
+             if(pkt.op_type == AXI_WRITE && pkt.req_res == 1'b0)            slave_q[m_s_num]  = write_req_q[m_s_num].find(i) with (i.id == pkt.id);
+             else if (pkt.op_type == AXI_WRITE && pkt.req_res == 1'b1)      master_q[m_s_num] = write_res_q[m_s_num].find(i) with (i.id == pkt.id);
+             else if (pkt.op_type == AXI_READ && pkt.req_res == 1'b0)       slave_q[m_s_num] = read_req_q[m_s_num].find(i) with (i.id == pkt.id);
+             else if (pkt.op_type == AXI_READ && pkt.req_res == 1'b1)       master_q[m_s_num] = read_res_q[m_s_num].find(i) with (i.id == pkt.id);
+
+             if(pkt.compare( (pkt.req_res == 1'b0)?slave_q[m_s_num][0] : master_q[m_s_num][0])) begin
+                `uvm_info(get_type_name(), $sformatf("actual and expected packets are same for %s %s",pkt.op_type.name,pkt.req_res.name), UVM_LOW)
+                //if(pkt.req_res == 1'b0)  slave_q[m_s_num].pop_front();
+                //else                                                 master_q[m_s_num].pop_front();
+                if(pkt.op_type == AXI_WRITE && pkt.req_res == 1'b0)        write_req_q[m_s_num].pop_front();
+                else if(pkt.op_type == AXI_WRITE && pkt.req_res == 1'b1)   write_res_q[m_s_num].pop_front;
+                else if(pkt.op_type == AXI_READ && pkt.req_res == 1'b0)    read_req_q[m_s_num].pop_front();
+                else if(pkt.op_type == AXI_READ && pkt.req_res == 1'b1)    read_res_q[m_s_num].pop_front();
              end            
              else begin
-                `uvm_error(get_type_name(), $sformatf("two packets are not same, expected is \n%p actual is \n%s",qu[0],pkt.sprint()))
-                qu[s_num].pop_front();
-                exp_S_q[s_num].pop_front();
+                `uvm_error(get_type_name(), $sformatf("two packets are not same for %s %s, expected is \n%p actual is \n%s",pkt.op_type.name,pkt.req_res.name, (pkt.req_res == 1'b0)? slave_q[0]: master_q[0],pkt.sprint()))
+                //if(pkt.op_type == AXI_WRITE && pkt.req_res == 1'b0)  slave_q[m_s_num].pop_front(); else master_q[m_s_num].pop_front();
+                //if(pkt.op_type == AXI_WRITE && pkt.req_res == 1'b0)  write_req_q[m_s_num].pop_front(); else write_res_q[m_s_num].pop_front;
 	     end
           end
        
@@ -216,5 +286,6 @@ super.report_phase(phase);
 `uvm_info(get_full_name,$sformatf("count=%0d",count),UVM_NONE)
 endfunction
 endclass
+
 
 

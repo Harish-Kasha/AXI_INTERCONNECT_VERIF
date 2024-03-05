@@ -5,7 +5,7 @@ vlog axi_footprint_interface.sv
 vlog axi_interconnect_veri_top.sv
 vlog axi_interconnect_pkg.sv
 vlog axi_interconnect_wrapper.sv axi_master_interface_coupler_wrapper.v axi_SI_coupler_wrapper.sv axi_fifo.v axi_fifo_rd.v axi_fifo_wr.v axi_register.v axi_register_rd.v axi_register_wr.v axi_adapter.v axi_adapter_rd.v axi_adapter_wr.v axi_crossbar.v axi_crossbar_addr.v axi_crossbar_rd.v axi_crossbar_wr.v arbiter.v priority_encoder.v
-vsim -debugDB -suppress 12003 -suppress 3053 -logfile log1.txt work.axi_interconnect_top -voptargs=+acc 
+vsim -debugDB -suppress 12003 -suppress 3053 -logfile log3.txt work.axi_interconnect_top -voptargs=+acc 
 add wave -position insertpoint  \
 sim:/axi_interconnect_top/u_axi_master_if_0/max_footprint_if/aclk \
 sim:/axi_interconnect_top/u_axi_master_if_0/max_footprint_if/aresetn \

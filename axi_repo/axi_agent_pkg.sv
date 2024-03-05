@@ -12,7 +12,13 @@ package axi_agent_pkg;
      AXI_WRITE = 0,
      AXI_READ = 1
   } axi_op_type_t;
-   
+  
+  typedef enum {
+      REQUEST  = 0,
+      RESPONSE = 1
+  } req_res_identifier;
+
+ 
   typedef enum logic [1:0] {
     FIXED, INCR, WRAP
   } burst_type_t;

@@ -10,7 +10,7 @@
 `endif
 
 `ifndef AXI_MAX_DW
- `define AXI_MAX_DW 1024
+ `define AXI_MAX_DW 128
 `endif
 
 `ifndef AXI_ID_HEADER_SIZE

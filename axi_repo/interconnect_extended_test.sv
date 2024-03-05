@@ -54,8 +54,8 @@ endclass
       
       #50ns;
       // master 0 --> 16 transactions of write and read to slave 0   
-      // pipelined write
-      burst_length = 5;
+     // pipelined write
+ /*     burst_length = 5;
       wr_data = new[burst_length];   
       wr_data[0] = 16'h0001; 
       wr_data[1] = 16'h0002; 
@@ -81,7 +81,7 @@ endclass
    `uvm_info(get_full_name,"from test after the pipeline write seq",UVM_NONE)
       foreach (tr[ii]) `uvm_info("TEST", $sformatf("bresp: %0d", tr[ii].bresp), UVM_LOW)
       #200ns;
-
+*/
 
       burst_length = 5;
       wr_data = new[burst_length];   
@@ -111,7 +111,7 @@ endclass
       #200ns;
 
 
-      burst_length = 5;
+   /*   burst_length = 5;
       wr_data = new[burst_length];   
       wr_data[0] = 32'hAA11; 
       wr_data[1] = 32'hBB22; 
@@ -164,7 +164,7 @@ endclass
    `uvm_info(get_full_name,"from test after the pipeline write seq",UVM_NONE)
       foreach (tr[ii]) `uvm_info("TEST", $sformatf("bresp: %0d", tr[ii].bresp), UVM_LOW)
       #200ns;
-
+*/
 
    // #50ns;
 

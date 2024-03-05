@@ -41,7 +41,7 @@ import uvm_pkg::*;
    initial begin
       aresetn = 1'b1;
       aclk    = 1'b0;
-      repeat(10) @(posedge aclk);
+      repeat(2) @(posedge aclk);
       aresetn = 1'b0;
    end
 

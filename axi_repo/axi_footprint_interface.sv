@@ -469,18 +469,42 @@ interface axi_footprint_interface #(int DW=32, int AW=32, int ID_W =10);
       automatic int i = 0;
       bit [1023:0] qu_data[$];    
       bit [1023:0] qu_storb[$];      
+      bit [1023:0] temp_data; 
       bit [1023:0] temp,temp1,shift,vale,data;
-      int storb;                
+      int storb;   
+      int data_size_in_bytes=0;             
 
       forever begin
          while (axi_monitor_cb.wvalid !== 1'b1) @(axi_monitor_cb);
          while (axi_monitor_cb.wready !== 1'b1) @(axi_monitor_cb);
          if (axi_monitor_cb.wvalid === 1'b1) begin
             qu_data.push_back(axi_monitor_cb.wdata); 
-            $display($time,"data_write_queue =%0p",qu_data);
+            $display($time,"data_write_queue_array =%0p",qu_data);
             $display($time,"data_write_queue =%0h",axi_monitor_cb.wdata);
             qu_storb.push_back(axi_monitor_cb.wstrb);  
             i++;
+            //if (axi_monitor_cb.wlast === 1'b1 || !(t.use_last_signaling)) begin
+            //  t.byte_en =new[qu_storb.size()];
+            //  foreach(t.byte_en[i]) t.byte_en[i] = qu_storb.pop_front();
+
+            //  foreach(t.byte_en[i])   
+            //  begin 
+            //  //$display("harish__1=%b",t.byte_en[i][j]);
+            //     foreach(t.byte_en[i][j]) if(t.byte_en[i][j] == 1'b1) begin   $display("harish__2=%d",data_size_in_bytes); data_size_in_bytes++; end 
+            //  end
+            //  $display("harish__3=%p",t.byte_en);
+            //  t.data =new[data_size_in_bytes];
+
+            //  foreach(t.data[i]) begin
+	    //    temp_data = qu_data.pop_front();
+            //    foreach(t.byte_en[i][j])
+            //    begin
+            //       if(t.byte_en[i][j] == 1'b1)    t.data[i]         = temp_data[j*8+:8];
+            //       //else                           t.data[i][j*8+:8] = 8'h00;
+            //    end
+            //    $display($time,"##################$$$$$$$$$$$$$$$ data write[%0d] =%0d",i,t.data[i]);
+            //  end
+            //  data_size_in_bytes = 0;
             if (axi_monitor_cb.wlast === 1'b1 || !(t.use_last_signaling)) begin
               
               t.data =new[qu_data.size()];
@@ -541,8 +565,8 @@ interface axi_footprint_interface #(int DW=32, int AW=32, int ID_W =10);
 
    task automatic mon_r (ref axi_seq_item t);
       automatic int i = 0;
-      int qu_data [$];    
-      int qu_resp[$];      
+      bit [1023:0] qu_data [$];    
+      bit [1023:0] qu_resp[$];      
                      
       forever begin
          while (axi_monitor_cb.rvalid !== 1'b1) @(axi_monitor_cb);
