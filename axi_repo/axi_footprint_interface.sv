@@ -467,15 +467,18 @@ interface axi_footprint_interface #(int DW=32, int AW=32, int ID_W =10);
 
    task automatic mon_w (ref axi_seq_item t);
       automatic int i = 0;
-      bit[1024:0] qu_data[$];    
-      bit[1024:0] qu_storb[$];      
-                     
+      bit [1023:0] qu_data[$];    
+      bit [1023:0] qu_storb[$];      
+      bit [1023:0] temp,temp1,shift,vale,data;
+      int storb;                
 
       forever begin
          while (axi_monitor_cb.wvalid !== 1'b1) @(axi_monitor_cb);
          while (axi_monitor_cb.wready !== 1'b1) @(axi_monitor_cb);
          if (axi_monitor_cb.wvalid === 1'b1) begin
             qu_data.push_back(axi_monitor_cb.wdata); 
+            $display($time,"data_write_queue =%0p",qu_data);
+            $display($time,"data_write_queue =%0h",axi_monitor_cb.wdata);
             qu_storb.push_back(axi_monitor_cb.wstrb);  
             i++;
             if (axi_monitor_cb.wlast === 1'b1 || !(t.use_last_signaling)) begin
@@ -483,8 +486,15 @@ interface axi_footprint_interface #(int DW=32, int AW=32, int ID_W =10);
               t.data =new[qu_data.size()];
               
               t.byte_en =new[qu_storb.size()];
+              $display($time,"mon_w data_size =%0d stobe_size=%0d",t.data.size,t.byte_en.size);
               foreach(t.data[i])begin
-	      t.data[i] = qu_data.pop_front();
+              storb = qu_storb[i]; 
+	      temp1 = (8*storb);
+              shift = 1 << temp1;
+              vale = shift -1;
+	      temp =  qu_data.pop_front();
+              data = temp & vale;
+	      t.data[i] = data;
               $display($time,"##################$$$$$$$$$$$$$$$ data write[%0d] =%0d",i,t.data[i]);
               end
               foreach(t.byte_en[i]) t.byte_en[i] = qu_storb.pop_front();
@@ -630,7 +640,7 @@ interface axi_footprint_interface #(int DW=32, int AW=32, int ID_W =10);
    task automatic s_b (ref axi_seq_item t);
 
       repeat (t.delay_vars.s_b_start_delay) @(axi_slave_cb);
-
+      $display($time,"@@@@@@@@@response");
       axi_slave_cb.bvalid <= 1'b1;
       axi_slave_cb.bid <= t.id;
       axi_slave_cb.bresp <= t.bresp;

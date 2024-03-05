@@ -127,7 +127,7 @@ int count;
        pkt_compare(pkt,q_num);
       //exp_S_q[q_num].push_back(pkt);
 count++;
-      `uvm_info(get_type_name(), $sformatf("exp_S_q[%0d] exp_S_q[%0d]size =%0d",q_num,q_num,exp_S_q[q_num].size()), UVM_LOW)
+      //`uvm_info(get_type_name(), $sformatf("exp_S_q[%0d] exp_S_q[%0d]size =%0d",q_num,q_num,exp_S_q[q_num].size()), UVM_LOW)
     endfunction
 
 
@@ -174,9 +174,10 @@ count++;
        // If packets exists in expected queues
        else begin          
 	  `uvm_info(get_type_name(), $sformatf("Queue size of expected slave[%0d] =%d ",s_num,exp_S_q[s_num].size), UVM_LOW)
-          `uvm_info(get_type_name(), $sformatf("Actual packet recevied from S[%0d] slave=%s ",s_num,pkt.sprint()), UVM_LOW)
+          `uvm_info(get_type_name(), $sformatf("expected packet recevied to S[%0d] slave=%s ",s_num,pkt.sprint()), UVM_LOW)
           temp = exp_S_q[s_num][0];
 
+          `uvm_info(get_type_name(), $sformatf("actual packet recevied from S[%0d] slave=%s ",s_num,temp.sprint()), UVM_LOW)
           // comparing the actual packet with first packet from the expected queues for in-order transaction
           if(pkt.id == temp.id) begin
              if(pkt.addr == temp.addr) begin

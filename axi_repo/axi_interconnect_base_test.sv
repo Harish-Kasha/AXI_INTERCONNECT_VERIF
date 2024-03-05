@@ -145,7 +145,26 @@ function void axi_interconnect_base_test::build_phase(uvm_phase phase);
       slave_cfg_3.master   = 0;
       slave_cfg_3.slave_i = 3;
        
-      slave_cfg_3.is_active = UVM_PASSIVE;  //passive agent creation--> making last slave agent as passive
+ 
+      slave_cfg_4.data_width = s_array[4];
+      slave_cfg_4.has_perf_analysis = 0;
+      slave_cfg_4.log_verbosity = "medium";
+      slave_cfg_4.memory_debug_verbosity = 0;
+      slave_cfg_4.enable_addr_to_cause_error = 1'b1;
+      slave_cfg_4.addr_to_cause_error = 32'hEEEEEEEE; 
+      slave_cfg_4.master   = 0;
+      slave_cfg_4.slave_i = 4;
+ 
+      slave_cfg_5.data_width = s_array[5];
+      slave_cfg_5.has_perf_analysis = 0;
+      slave_cfg_5.log_verbosity = "medium";
+      slave_cfg_5.memory_debug_verbosity = 0;
+      slave_cfg_5.enable_addr_to_cause_error = 1'b1;
+      slave_cfg_5.addr_to_cause_error = 32'hEEEEEEEE; 
+      slave_cfg_5.master   = 0;
+      slave_cfg_5.slave_i = 5;
+
+    //  slave_cfg_3.is_active = UVM_PASSIVE;  //passive agent creation--> making last slave agent as passive
    
   
 

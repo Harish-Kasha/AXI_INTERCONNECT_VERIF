@@ -292,7 +292,6 @@ task axi_monitor:: get_writes();
          axi_vif.mon_w(t);
       end
    join
-   `uvm_info(get_full_name,$sformatf("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%mon packet is \n%s",t.sprint),UVM_NONE) 
    // Internal ID counter in case of AXI Lite
    if(cfg.last_signaling_used == 0)
       t.id = awid_bid_counter++;
@@ -398,14 +397,14 @@ task axi_monitor:: post_process_axi_write_pkt(axi_seq_item t);
    if(cfg.log_verbosity != "none")
       publish_write_transaction(wr_tr);
    if(cfg.master == 1)begin
-   file_m_wr= $fopen($sformatf("mon_master_%0d_write_log.txt",cfg.master_i),"w");
+   file_m_wr= $fopen($sformatf("mon_master_%0d_write_log.txt",cfg.master_i),"a");
   
    $fdisplay(file_m_wr,"\n\n------------------------****************************START****************************************-------------------------\nmonitor [write packet=%0d]\n%s\n------------------------------****************************END****************************************----------------------------\n",count_m,wr_tr.sprint);  
    count_m++; 
  
    end
    else begin
-   file_s_wr= $fopen($sformatf("mon_slave_%0d_write_log.txt",cfg.slave_i),"w");
+   file_s_wr= $fopen($sformatf("mon_slave_%0d_write_log.txt",cfg.slave_i),"a");
   
    $fdisplay(file_s_wr,"\n\n------------------------****************************START****************************************-------------------------\nmonitor [write packet=%0d]\n%s\n------------------------------****************************END****************************************----------------------------\n",count_s,wr_tr.sprint);  
    count_s++; 
@@ -413,6 +412,7 @@ task axi_monitor:: post_process_axi_write_pkt(axi_seq_item t);
    end
 
     
+   `uvm_info(get_full_name,$sformatf("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%mon packet is \n%s",t.sprint),UVM_NONE) 
   
      axi_analysis_port.write(wr_tr);
        
