@@ -307,30 +307,6 @@ task axi_monitor:: get_writes();
    
    @(axi_vif.axi_monitor_cb);
    t.end_of_rw = $realtime();
-
-  `uvm_info(get_type_name,$sformatf("monitor write request packet is =%0s",t.sprint),UVM_NONE)
-   // Shift byte enable and data (default mode)
-   if (cfg.monitor_print_tr_in_state == 1'b0) begin
-     beat_address = t.addr;
-     for (int i = 0; i < t.burst_length; i++) begin
-        axi_common::shift_data_right(beat_address, byte_en[i], t.byte_en[i], t.tr_size_in_bytes, 1, cfg.data_width);
-        if (i == 0 && (beat_address % t.tr_size_in_bytes != 0)) // Unaligned transfer, next addresses of burst are aligned
-          beat_address = (beat_address + t.tr_size_in_bytes) - (beat_address % t.tr_size_in_bytes);
-        else
-          beat_address = beat_address + t.tr_size_in_bytes;
-     end
-     
-     beat_address = t.addr;
-     for (int i = 0; i < t.burst_length; i++) begin
-        axi_common::shift_data_right(beat_address, wr_data[i], t.data[i], t.tr_size_in_bytes, 0, cfg.data_width); 
-        address[i] = beat_address;
-        if (i == 0 && (beat_address % t.tr_size_in_bytes != 0)) // Unaligned transfer, next addresses of burst are aligned
-          beat_address = (beat_address + t.tr_size_in_bytes) - (beat_address % t.tr_size_in_bytes);
-        else
-          beat_address = beat_address + t.tr_size_in_bytes;
-     end
-   end
-    
    axi_analysis_port.write(t);
    req_write_q.put(t);
    
@@ -345,14 +321,12 @@ task axi_monitor:: match_writes();
    req_write_q.peek(t);
    sem_w.get(1);
 
-	//check for validity
    if( (($realtime - t.start_time) / ((1/timescale)/clk)) > cfg.num_timeout_cycles ) 
       `uvm_fatal(get_type_name(), $sformatf("Write response not received for transaction ID: %0d (start time: %0d, current cycles: %0d, max cycles: %0d", 
       t.id, t.start_time, (($realtime - t.start_time) / ((1/timescale)/clk)), cfg.num_timeout_cycles))
 
    for(int i = 0; i < b_q.size(); i++) begin
       b = b_q.get(i);
-   
       if(b.id == t.id || cfg.last_signaling_used == 0) begin         
          t.bresp = b.bresp;
          t.end_time = b.end_time;
@@ -395,26 +369,26 @@ task axi_monitor:: post_process_axi_write_pkt(axi_seq_item t);
    //
    
    // Shift byte enable and data (default mode)
-   //if (cfg.monitor_print_tr_in_state == 1'b0) begin
-   //  beat_address = wr_tr.addr;
-   //  for (int i = 0; i < wr_tr.burst_length; i++) begin
-   //     axi_common::shift_data_right(beat_address, byte_en[i], wr_tr.byte_en[i], wr_tr.tr_size_in_bytes, 1, cfg.data_width);
-   //     if (i == 0 && (beat_address % wr_tr.tr_size_in_bytes != 0)) // Unaligned transfer, next addresses of burst are aligned
-   //       beat_address = (beat_address + wr_tr.tr_size_in_bytes) - (beat_address % wr_tr.tr_size_in_bytes);
-   //     else
-   //       beat_address = beat_address + wr_tr.tr_size_in_bytes;
-   //  end
-   //  
-   //  beat_address = wr_tr.addr;
-   //  for (int i = 0; i < wr_tr.burst_length; i++) begin
-   //     axi_common::shift_data_right(beat_address, wr_data[i], wr_tr.data[i], wr_tr.tr_size_in_bytes, 0, cfg.data_width); 
-   //     address[i] = beat_address;
-   //     if (i == 0 && (beat_address % wr_tr.tr_size_in_bytes != 0)) // Unaligned transfer, next addresses of burst are aligned
-   //       beat_address = (beat_address + wr_tr.tr_size_in_bytes) - (beat_address % wr_tr.tr_size_in_bytes);
-   //     else
-   //       beat_address = beat_address + wr_tr.tr_size_in_bytes;
-   //  end
-   //end
+   if (cfg.monitor_print_tr_in_state == 1'b0) begin
+     beat_address = wr_tr.addr;
+     for (int i = 0; i < wr_tr.burst_length; i++) begin
+        axi_common::shift_data_right(beat_address, byte_en[i], wr_tr.byte_en[i], wr_tr.tr_size_in_bytes, 1, cfg.data_width);
+        if (i == 0 && (beat_address % wr_tr.tr_size_in_bytes != 0)) // Unaligned transfer, next addresses of burst are aligned
+          beat_address = (beat_address + wr_tr.tr_size_in_bytes) - (beat_address % wr_tr.tr_size_in_bytes);
+        else
+          beat_address = beat_address + wr_tr.tr_size_in_bytes;
+     end
+     
+     beat_address = wr_tr.addr;
+     for (int i = 0; i < wr_tr.burst_length; i++) begin
+        axi_common::shift_data_right(beat_address, wr_data[i], wr_tr.data[i], wr_tr.tr_size_in_bytes, 0, cfg.data_width); 
+        address[i] = beat_address;
+        if (i == 0 && (beat_address % wr_tr.tr_size_in_bytes != 0)) // Unaligned transfer, next addresses of burst are aligned
+          beat_address = (beat_address + wr_tr.tr_size_in_bytes) - (beat_address % wr_tr.tr_size_in_bytes);
+        else
+          beat_address = beat_address + wr_tr.tr_size_in_bytes;
+     end
+   end
    
    
    if(cfg.active_monitor == 1) begin

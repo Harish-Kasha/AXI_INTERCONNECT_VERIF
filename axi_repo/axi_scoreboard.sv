@@ -116,7 +116,7 @@ int count;
       // Appending master_id with packet_id
       m_id = m_id << MAX_M_ID_WIDTH;
       pkt.id = m_id | pkt.id;
-      packet.id = m_id | packet.id;
+      //packet.id = m_id | packet.id;
       // Storing the packet into respective queues based on slave address
       case(pkt.addr) inside
             [S0_START:S0_END]  : q_num = 'd0;
@@ -128,10 +128,10 @@ int count;
 
             default            : `uvm_info(get_type_name(), $sformatf("Decode error=%s ",pkt.sprint()), UVM_LOW)
       endcase
-      if(packet.req_res == RESPONSE)
+      if(pkt.req_res == RESPONSE)
       begin
-         if(packet.op_type == AXI_WRITE) packet.addr = ({M_ADDR_W{1'b1}} >> (M_ADDR_W-S_ADDR_W[q_num])) & packet.addr;
-         pkt_compare(packet,packet.id[(S_ID_WIDTH-1)-:$clog2(NO_M)]);
+         if(pkt.op_type == AXI_WRITE) pkt.addr = ({M_ADDR_W{1'b1}} >> (M_ADDR_W-S_ADDR_W[q_num])) & pkt.addr;
+         pkt_compare(pkt,pkt.id[(S_ID_WIDTH-1)-:$clog2(NO_M)]);
       end
       else if(pkt.op_type==AXI_WRITE && pkt.req_res == REQUEST) 
       begin

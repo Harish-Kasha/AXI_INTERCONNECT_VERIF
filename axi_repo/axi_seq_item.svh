@@ -49,7 +49,7 @@ class axi_seq_item extends uvm_sequence_item;
        `uvm_field_array_int (data,   UVM_ALL_ON);
        `uvm_field_int (burst_length, UVM_ALL_ON);
        `uvm_field_int (burst_type, UVM_ALL_ON);
-       `uvm_field_array_int (byte_en,   UVM_ALL_ON);
+       `uvm_field_array_int (byte_en,   UVM_ALL_ON| UVM_NOCOMPARE);
        `uvm_field_int (byte_en_first_custom,   UVM_ALL_ON);
        `uvm_field_int (byte_en_last_custom,   UVM_ALL_ON);
        `uvm_field_int (byte_en_last, UVM_ALL_ON);

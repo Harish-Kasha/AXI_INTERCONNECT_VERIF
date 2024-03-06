@@ -483,45 +483,43 @@ interface axi_footprint_interface #(int DW=32, int AW=32, int ID_W =10);
             $display($time,"data_write_queue =%0h",axi_monitor_cb.wdata);
             qu_storb.push_back(axi_monitor_cb.wstrb);  
             i++;
-            //if (axi_monitor_cb.wlast === 1'b1 || !(t.use_last_signaling)) begin
-            //  t.byte_en =new[qu_storb.size()];
-            //  foreach(t.byte_en[i]) t.byte_en[i] = qu_storb.pop_front();
-
-            //  foreach(t.byte_en[i])   
-            //  begin 
-            //  //$display("harish__1=%b",t.byte_en[i][j]);
-            //     foreach(t.byte_en[i][j]) if(t.byte_en[i][j] == 1'b1) begin   $display("harish__2=%d",data_size_in_bytes); data_size_in_bytes++; end 
-            //  end
-            //  $display("harish__3=%p",t.byte_en);
-            //  t.data =new[data_size_in_bytes];
-
-            //  foreach(t.data[i]) begin
-	    //    temp_data = qu_data.pop_front();
-            //    foreach(t.byte_en[i][j])
-            //    begin
-            //       if(t.byte_en[i][j] == 1'b1)    t.data[i]         = temp_data[j*8+:8];
-            //       //else                           t.data[i][j*8+:8] = 8'h00;
-            //    end
-            //    $display($time,"##################$$$$$$$$$$$$$$$ data write[%0d] =%0d",i,t.data[i]);
-            //  end
-            //  data_size_in_bytes = 0;
             if (axi_monitor_cb.wlast === 1'b1 || !(t.use_last_signaling)) begin
-              
-              t.data =new[qu_data.size()];
-              
               t.byte_en =new[qu_storb.size()];
-              $display($time,"mon_w data_size =%0d stobe_size=%0d",t.data.size,t.byte_en.size);
-              foreach(t.data[i])begin
-              storb = qu_storb[i]; 
-	      temp1 = (8*storb);
-              shift = 1 << temp1;
-              vale = shift -1;
-	      temp =  qu_data.pop_front();
-              data = temp & vale;
-	      t.data[i] = data;
-              $display($time,"##################$$$$$$$$$$$$$$$ data write[%0d] =%0d",i,t.data[i]);
-              end
               foreach(t.byte_en[i]) t.byte_en[i] = qu_storb.pop_front();
+
+              foreach(t.byte_en[i])   
+              begin 
+                 foreach(t.byte_en[i][j]) if(t.byte_en[i][j] == 1'b1) data_size_in_bytes++; 
+              end
+              t.data =new[data_size_in_bytes];
+
+              foreach(t.data[i]) begin
+	        temp_data = qu_data.pop_front();
+                foreach(t.byte_en[i][j])
+                begin
+                   if(t.byte_en[i][j] == 1'b1)    t.data[i]         = temp_data[j*8+:8];
+                   //else                           t.data[i][j*8+:8] = 8'h00;
+                end
+                $display($time,"##################$$$$$$$$$$$$$$$ data write[%0d] =%0d",i,t.data[i]);
+              end
+              data_size_in_bytes = 0;
+            //if (axi_monitor_cb.wlast === 1'b1 || !(t.use_last_signaling)) begin
+            //  
+            //  t.data =new[qu_data.size()];
+            //  
+            //  t.byte_en =new[qu_storb.size()];
+            //  $display($time,"mon_w data_size =%0d stobe_size=%0d",t.data.size,t.byte_en.size);
+            //  foreach(t.data[i])begin
+            //  storb = qu_storb[i]; 
+	    //  temp1 = (8*storb);
+            //  shift = 1 << temp1;
+            //  vale = shift -1;
+	    //  temp =  qu_data.pop_front();
+            //  data = temp & vale;
+	    //  t.data[i] = data;
+            //  $display($time,"##################$$$$$$$$$$$$$$$ data write[%0d] =%0d",i,t.data[i]);
+            //  end
+            //  foreach(t.byte_en[i]) t.byte_en[i] = qu_storb.pop_front();
               break;
 
             end
