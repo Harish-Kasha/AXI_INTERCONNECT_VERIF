@@ -1,5 +1,5 @@
 # vsim -c -debugDB -suppress 12003 -suppress 3053 -logfile log3.txt work.axi_interconnect_top -voptargs="+acc" -do "run -all; quit" 
-# Start time: 10:46:48 on Mar 06,2024
+# Start time: 07:04:53 on Mar 07,2024
 # ** Note: (vsim-3813) Design is being optimized due to module recompilation...
 # ** Note: (vsim-8611) Generating debug db.
 # ** Warning: axi_burst_write_seq.svh(70): (vopt-2240) Treating stand-alone use of function 'randomize' as an implicit VOID cast.
@@ -30,27 +30,7 @@
 # ** Warning: axi_scoreboard.sv(221): (vopt-2240) Treating stand-alone use of function 'pkt_compare' as an implicit VOID cast.
 # ** Warning: axi_scoreboard.sv(112): (vopt-2250) Function "reference_queues" has no return value assignment.
 # ** Warning: axi_scoreboard.sv(226): (vopt-2250) Function "pkt_compare" has no return value assignment.
-# ** Warning: axi_footprint_interface.sv(492): (vopt-2897) Using non-standard foreach loop variable list syntax.
-# ** Warning: axi_footprint_interface.sv(498): (vopt-2897) Using non-standard foreach loop variable list syntax.
-# ** Warning: axi_footprint_interface.sv(492): (vopt-2897) Using non-standard foreach loop variable list syntax.
-# ** Warning: axi_footprint_interface.sv(498): (vopt-2897) Using non-standard foreach loop variable list syntax.
-# ** Warning: axi_footprint_interface.sv(492): (vopt-2897) Using non-standard foreach loop variable list syntax.
-# ** Warning: axi_footprint_interface.sv(498): (vopt-2897) Using non-standard foreach loop variable list syntax.
-# ** Warning: axi_footprint_interface.sv(492): (vopt-2897) Using non-standard foreach loop variable list syntax.
-# ** Warning: axi_footprint_interface.sv(498): (vopt-2897) Using non-standard foreach loop variable list syntax.
-# ** Warning: axi_footprint_interface.sv(492): (vopt-2897) Using non-standard foreach loop variable list syntax.
-# ** Warning: axi_footprint_interface.sv(498): (vopt-2897) Using non-standard foreach loop variable list syntax.
-# ** Warning: axi_footprint_interface.sv(492): (vopt-2897) Using non-standard foreach loop variable list syntax.
-# ** Warning: axi_footprint_interface.sv(498): (vopt-2897) Using non-standard foreach loop variable list syntax.
-# ** Warning: axi_footprint_interface.sv(492): (vopt-2897) Using non-standard foreach loop variable list syntax.
-# ** Warning: axi_footprint_interface.sv(498): (vopt-2897) Using non-standard foreach loop variable list syntax.
-# ** Warning: axi_footprint_interface.sv(492): (vopt-2897) Using non-standard foreach loop variable list syntax.
-# ** Warning: axi_footprint_interface.sv(498): (vopt-2897) Using non-standard foreach loop variable list syntax.
-# ** Warning: axi_footprint_interface.sv(492): (vopt-2897) Using non-standard foreach loop variable list syntax.
-# ** Warning: axi_footprint_interface.sv(498): (vopt-2897) Using non-standard foreach loop variable list syntax.
-# ** Warning: axi_footprint_interface.sv(492): (vopt-2897) Using non-standard foreach loop variable list syntax.
-# ** Warning: axi_footprint_interface.sv(498): (vopt-2897) Using non-standard foreach loop variable list syntax.
-# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=48.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=28.
 # //  Questa Sim-64
 # //  Version 2021.2_1 linux_x86_64 May 15 2021
 # //
@@ -622,791 +602,1514 @@
 # UVM_INFO axi_master_driver.svh(113) @ 0: uvm_test_top.env.master_agt_1.drv [uvm_driver #(REQ,RSP)] Run_phase is running...
 # UVM_INFO axi_master_driver.svh(113) @ 0: uvm_test_top.env.master_agt_0.drv [uvm_driver #(REQ,RSP)] Run_phase is running...
 # from interface write task of aw channel 
+#                65000data_write_queue_array =43537
+#                65000data_write_queue =aa11
 # from interface write task of aw channel ......... 
-#                65000data_write_queue_array =17
-#                65000data_write_queue =11
-#                65000@@@@@@@@@@@@@@@@@_mon_aw burst_length =4 aw_len=4
-#                65000!!!!!!!!!!!!!!! mon_aw data_size =0 stobe_size=0
-#                75000data_write_queue_array =17 8704
-#                75000data_write_queue =2200
-#                85000data_write_queue_array =17 8704 3342336
-#                85000data_write_queue =330000
-#                95000data_write_queue_array =17 8704 3342336 1140850688
-#                95000data_write_queue =44000000
-# UVM_INFO axi_master_driver.svh(295) @ 105000: uvm_test_top.env.master_agt_1.drv [uvm_test_top.env.master_agt_1.drv] from driver process write task 
-#  -------------------------------------------------------------
-# Name                    Type               Size  Value       
-# -------------------------------------------------------------
-# axi_seq_item_tr         uvm_sequence_item  -     @3177       
-#   id                    integral           32    'h0         
-#   prot                  integral           3     'h0X        
-#   addr                  integral           32    'h0         
-#   data                  da(integral)       5     -           
-#     [0]                 integral           128   'h11        
-#     [1]                 integral           128   'h2200      
-#     [2]                 integral           128   'h330000    
-#     [3]                 integral           128   'h44000000  
-#     [4]                 integral           128   'h5500000000
-#   burst_length          integral           32    'h5         
-#   burst_type            integral           32    'h1         
-#   byte_en               da(integral)       5     -           
-#     [0]                 integral           16    'h1         
-#     [1]                 integral           16    'h2         
-#     [2]                 integral           16    'h4         
-#     [3]                 integral           16    'h8         
-#     [4]                 integral           16    'h10        
-#   byte_en_first_custom  integral           1     'h0         
-#   byte_en_last_custom   integral           1     'h0         
-#   byte_en_last          integral           16    'h0         
-#   tr_size_in_bytes      integral           32    'h1         
-#   transaction_cycles    integral           32    'h0         
-#   op_type               axi_op_type_t      32    AXI_WRITE   
-#   bresp                 integral           2     'h0X        
-#   rresp                 da(integral)       0     -           
-#   begin_time            time               64    50000       
-# -------------------------------------------------------------
+#                75000@@@@@@@@@@@@@@@@@_mon_aw burst_length =4 aw_len=4
+#                75000!!!!!!!!!!!!!!! mon_aw data_size =0 stobe_size=0
+#                75000data_write_queue_array =43537 47906
+#                75000data_write_queue =bb22
+#                85000data_write_queue_array =43537 47906 52275
+#                85000data_write_queue =cc33
+#                95000data_write_queue_array =43537 47906 52275 56644
+#                95000data_write_queue =dd44
+# UVM_INFO axi_master_driver.svh(295) @ 105000: uvm_test_top.env.master_agt_0.drv [uvm_test_top.env.master_agt_0.drv] from driver process write task 
+#  ------------------------------------------------------------
+# Name                    Type                Size  Value     
+# ------------------------------------------------------------
+# axi_seq_item_tr         uvm_sequence_item   -     @3177     
+#   id                    integral            32    'h0       
+#   prot                  integral            3     'h0X      
+#   addr                  integral            32    'h200000  
+#   data                  da(integral)        5     -         
+#     [0]                 integral            128   'h9af9aa11
+#     [1]                 integral            128   'h9bf9bb22
+#     [2]                 integral            128   'h9cf9cc33
+#     [3]                 integral            128   'h9df9dd44
+#     [4]                 integral            128   'h9ef9ee55
+#   burst_length          integral            32    'h5       
+#   burst_type            integral            32    'h1       
+#   byte_en               da(integral)        5     -         
+#     [0]                 integral            16    'h3       
+#     [1]                 integral            16    'h3       
+#     [2]                 integral            16    'h3       
+#     [3]                 integral            16    'h3       
+#     [4]                 integral            16    'h3       
+#   byte_en_first_custom  integral            1     'h0       
+#   byte_en_last_custom   integral            1     'h0       
+#   byte_en_last          integral            16    'h0       
+#   tr_size_in_bytes      integral            32    'h2       
+#   transaction_cycles    integral            32    'h0       
+#   op_type               axi_op_type_t       32    AXI_WRITE 
+#   req_res               req_res_identifier  32    REQUEST   
+#   bresp                 integral            2     'h0X      
+#   rresp                 da(integral)        0     -         
+#   begin_time            time                64    50000     
+# ------------------------------------------------------------
 # 
-#               105000data_write_queue_array =17 8704 3342336 1140850688 365072220160
-#               105000data_write_queue =5500000000
-#               105000##################$$$$$$$$$$$$$$$ data write[0] =17
-#               105000##################$$$$$$$$$$$$$$$ data write[1] =34
-#               105000##################$$$$$$$$$$$$$$$ data write[2] =51
-#               105000##################$$$$$$$$$$$$$$$ data write[3] =68
-#               105000##################$$$$$$$$$$$$$$$ data write[4] =85
+#               105000data_write_queue_array =43537 47906 52275 56644 61013
+#               105000data_write_queue =ee55
+# UVM_INFO axi_footprint_interface.sv(501) @ 105000: reporter [harish_6] '{238, 85, 221, 68, 204, 51, 187, 34, 170, 17}
 # from interface write task of aw channel 
-#               145000@@@@@@@@@@@@@@@@@_mon_aw burst_length =4 aw_len=4
-#               145000!!!!!!!!!!!!!!! mon_aw data_size =0 stobe_size=0
-#               155000data_write_queue_array =17
-#               155000data_write_queue =11
-#               165000data_write_queue_array =17 8704
-#               165000data_write_queue =2200
-#               165000data_write_queue_array =17
-#               165000data_write_queue =11
-#               175000data_write_queue_array =17 8704 3342336
-#               175000data_write_queue =330000
-#               175000data_write_queue_array =17 8704
-#               175000data_write_queue =2200
-#               185000data_write_queue_array =17 8704 3342336 1140850688
-#               185000data_write_queue =44000000
-#               185000data_write_queue_array =17 8704 51
-#               185000data_write_queue =33
-#               195000data_write_queue_array =17 8704 3342336 1140850688 365072220160
-#               195000data_write_queue =5500000000
-#               195000##################$$$$$$$$$$$$$$$ data write[0] =17
-#               195000##################$$$$$$$$$$$$$$$ data write[1] =34
-#               195000##################$$$$$$$$$$$$$$$ data write[2] =51
-#               195000##################$$$$$$$$$$$$$$$ data write[3] =68
-#               195000##################$$$$$$$$$$$$$$$ data write[4] =85
-#               195000data_write_queue_array =17 8704 51 17408
-#               195000data_write_queue =4400
-# UVM_INFO interconnect_extended_test.sv(102) @ 200000: uvm_test_top [uvm_test_top] from test after the pipeline write resp of 5
-# UVM_INFO interconnect_extended_test.sv(105) @ 200000: uvm_test_top [uvm_test_top] from test after the pipeline write resp of 1
-#               205000data_write_queue_array =17 8704 51 17408 85
-#               205000data_write_queue =55
-#               205000##################$$$$$$$$$$$$$$$ data write[0] =17
-#               205000##################$$$$$$$$$$$$$$$ data write[1] =34
-#               205000##################$$$$$$$$$$$$$$$ data write[2] =51
-#               205000##################$$$$$$$$$$$$$$$ data write[3] =68
-#               205000##################$$$$$$$$$$$$$$$ data write[4] =85
-# UVM_INFO axi_scoreboard.sv(247) @ 215000: uvm_test_top.env.scr [interconnect_scoreboard] actual and expected packets are same for AXI_WRITE REQUEST following order for same ID's
-# UVM_INFO axi_scoreboard.sv(248) @ 215000: uvm_test_top.env.scr [interconnect_scoreboard] AXI_WRITE REQUEST comparison failed due to data mismatch, expected is 
-# ----------------------------------------------------------
-# Name                    Type               Size  Value    
-# ----------------------------------------------------------
-# t                       uvm_sequence_item  -     @3218    
-#   id                    integral           32    'h200    
-#   prot                  integral           3     'h0      
-#   addr                  integral           32    'h0      
-#   data                  da(integral)       5     -        
-#     [0]                 integral           128   'h11     
-#     [1]                 integral           128   'h22     
-#     [2]                 integral           128   'h33     
-#     [3]                 integral           128   'h44     
-#     [4]                 integral           128   'h55     
-#   burst_length          integral           32    'h5      
-#   burst_type            integral           32    'h1      
-#   byte_en               da(integral)       5     -        
-#     [0]                 integral           16    'h1      
-#     [1]                 integral           16    'h2      
-#     [2]                 integral           16    'h4      
-#     [3]                 integral           16    'h8      
-#     [4]                 integral           16    'h10     
-#   byte_en_first_custom  integral           1     'h0      
-#   byte_en_last_custom   integral           1     'h0      
-#   byte_en_last          integral           16    'h0      
-#   tr_size_in_bytes      integral           32    'h1      
-#   transaction_cycles    integral           32    'h0      
-#   op_type               axi_op_type_t      32    AXI_WRITE
-#   bresp                 integral           2     'h0X     
-#   rresp                 da(integral)       0     -        
-# ----------------------------------------------------------
+#               155000data_write_queue_array =43537
+#               155000data_write_queue =aa11
+#               155000@@@@@@@@@@@@@@@@@_mon_aw burst_length =4 aw_len=4
+#               155000!!!!!!!!!!!!!!! mon_aw data_size =0 stobe_size=0
+#               165000data_write_queue_array =43537 47906
+#               165000data_write_queue =bb22
+#               175000data_write_queue_array =43537 47906 52275
+#               175000data_write_queue =cc33
+#               175000data_write_queue_array =2853284369
+#               175000data_write_queue =aa11aa11
+#               185000data_write_queue_array =43537 47906 52275 56644
+#               185000data_write_queue =dd44
+#               195000data_write_queue_array =43537 47906 52275 56644 61013
+#               195000data_write_queue =ee55
+# UVM_INFO axi_footprint_interface.sv(501) @ 195000: reporter [harish_6] '{238, 85, 221, 68, 204, 51, 187, 34, 170, 17}
+#               195000data_write_queue_array =2853284369 3139615522
+#               195000data_write_queue =bb22bb22
+#               215000data_write_queue_array =2853284369 3139615522 3425946675
+#               215000data_write_queue =cc33cc33
+#               235000data_write_queue_array =2853284369 3139615522 3425946675 3712277828
+#               235000data_write_queue =dd44dd44
+#               255000data_write_queue_array =2853284369 3139615522 3425946675 3712277828 3998608981
+#               255000data_write_queue =ee55ee55
+# UVM_INFO axi_footprint_interface.sv(501) @ 255000: reporter [harish_6] '{238, 85, 221, 68, 204, 51, 187, 34, 170, 17}
+#               265000@@@@@@@@@response
+# UVM_INFO axi_scoreboard.sv(247) @ 265000: uvm_test_top.env.scr [interconnect_scoreboard] actual and expected packets are same for AXI_WRITE REQUEST following order for same ID's
+# UVM_INFO axi_scoreboard.sv(248) @ 265000: uvm_test_top.env.scr [interconnect_scoreboard] AXI_WRITE REQUEST comparison failed due to data mismatch, expected is 
+# -----------------------------------------------------------
+# Name                    Type                Size  Value    
+# -----------------------------------------------------------
+# t                       uvm_sequence_item   -     @3218    
+#   id                    integral            32    'h0      
+#   prot                  integral            3     'h0      
+#   addr                  integral            32    'h0      
+#   data                  da(integral)        10    -        
+#     [0]                 integral            128   'h11     
+#     [1]                 integral            128   'haa     
+#     [2]                 integral            128   'h22     
+#     [3]                 integral            128   'hbb     
+#     [4]                 integral            128   'h33     
+#     [5]                 integral            128   'hcc     
+#     [6]                 integral            128   'h44     
+#     [7]                 integral            128   'hdd     
+#     [8]                 integral            128   'h55     
+#     [9]                 integral            128   'hee     
+#   burst_length          integral            32    'h5      
+#   burst_type            integral            32    'h1      
+#   byte_en               da(integral)        5     -        
+#     [0]                 integral            16    'h3      
+#     [1]                 integral            16    'h3      
+#     [2]                 integral            16    'h3      
+#     [3]                 integral            16    'h3      
+#     [4]                 integral            16    'h3      
+#   byte_en_first_custom  integral            1     'h0      
+#   byte_en_last_custom   integral            1     'h0      
+#   byte_en_last          integral            16    'h0      
+#   tr_size_in_bytes      integral            32    'h2      
+#   transaction_cycles    integral            32    'h0      
+#   op_type               axi_op_type_t       32    AXI_WRITE
+#   req_res               req_res_identifier  32    REQUEST  
+#   bresp                 integral            2     'h0X     
+#   rresp                 da(integral)        0     -        
+# -----------------------------------------------------------
 #  actual is 
-# ----------------------------------------------------------
-# Name                    Type               Size  Value    
-# ----------------------------------------------------------
-# t                       uvm_sequence_item  -     @2397    
-#   id                    integral           32    'h200    
-#   prot                  integral           3     'h0      
-#   addr                  integral           32    'h0      
-#   data                  da(integral)       5     -        
-#     [0]                 integral           128   'h11     
-#     [1]                 integral           128   'h22     
-#     [2]                 integral           128   'h33     
-#     [3]                 integral           128   'h44     
-#     [4]                 integral           128   'h55     
-#   burst_length          integral           32    'h5      
-#   burst_type            integral           32    'h1      
-#   byte_en               da(integral)       5     -        
-#     [0]                 integral           16    'h1      
-#     [1]                 integral           16    'h2      
-#     [2]                 integral           16    'h1      
-#     [3]                 integral           16    'h2      
-#     [4]                 integral           16    'h1      
-#   byte_en_first_custom  integral           1     'h0      
-#   byte_en_last_custom   integral           1     'h0      
-#   byte_en_last          integral           16    'h0      
-#   tr_size_in_bytes      integral           32    'h1      
-#   transaction_cycles    integral           32    'h0      
-#   op_type               axi_op_type_t      32    AXI_WRITE
-#   bresp                 integral           2     'h0X     
-#   rresp                 da(integral)       0     -        
-# ----------------------------------------------------------
+# -----------------------------------------------------------
+# Name                    Type                Size  Value    
+# -----------------------------------------------------------
+# t                       uvm_sequence_item   -     @2517    
+#   id                    integral            32    'h0      
+#   prot                  integral            3     'h0      
+#   addr                  integral            32    'h0      
+#   data                  da(integral)        10    -        
+#     [0]                 integral            128   'h11     
+#     [1]                 integral            128   'haa     
+#     [2]                 integral            128   'h22     
+#     [3]                 integral            128   'hbb     
+#     [4]                 integral            128   'h33     
+#     [5]                 integral            128   'hcc     
+#     [6]                 integral            128   'h44     
+#     [7]                 integral            128   'hdd     
+#     [8]                 integral            128   'h55     
+#     [9]                 integral            128   'hee     
+#   burst_length          integral            32    'h5      
+#   burst_type            integral            32    'h1      
+#   byte_en               da(integral)        5     -        
+#     [0]                 integral            16    'h3      
+#     [1]                 integral            16    'hc      
+#     [2]                 integral            16    'h3      
+#     [3]                 integral            16    'hc      
+#     [4]                 integral            16    'h3      
+#   byte_en_first_custom  integral            1     'h0      
+#   byte_en_last_custom   integral            1     'h0      
+#   byte_en_last          integral            16    'h0      
+#   tr_size_in_bytes      integral            32    'h2      
+#   transaction_cycles    integral            32    'h0      
+#   op_type               axi_op_type_t       32    AXI_WRITE
+#   req_res               req_res_identifier  32    REQUEST  
+#   bresp                 integral            2     'h0X     
+#   rresp                 da(integral)        0     -        
+# -----------------------------------------------------------
 # 
-#               235000@@@@@@@@@response
-# UVM_INFO axi_monitor.svh(480) @ 255000: uvm_test_top.env.slave_cfg_0.mon [uvm_monitor] AXI write: addr: 0x0, data[0]: 0x11, byte_en: 0x1, tr_size_in_bytes: 1, burst_length: 5
-# UVM_INFO axi_monitor.svh(485) @ 255000: uvm_test_top.env.slave_cfg_0.mon [uvm_monitor] AXI write burst data 0: 0x11
-# UVM_INFO axi_monitor.svh(485) @ 255000: uvm_test_top.env.slave_cfg_0.mon [uvm_monitor] AXI write burst data 1: 0x0
-# UVM_INFO axi_monitor.svh(485) @ 255000: uvm_test_top.env.slave_cfg_0.mon [uvm_monitor] AXI write burst data 2: 0x33
-# UVM_INFO axi_monitor.svh(485) @ 255000: uvm_test_top.env.slave_cfg_0.mon [uvm_monitor] AXI write burst data 3: 0x0
-# UVM_INFO axi_monitor.svh(485) @ 255000: uvm_test_top.env.slave_cfg_0.mon [uvm_monitor] AXI write burst data 4: 0x55
-# UVM_INFO axi_monitor.svh(508) @ 255000: uvm_test_top.env.slave_cfg_0.mon [uvm_monitor] AXI write completed for transaction ID: 512, latency: 13 cycles
-# UVM_INFO axi_monitor.svh(420) @ 255000: uvm_test_top.env.slave_cfg_0.mon [uvm_monitor] monitor write packet respnse is =----------------------------------------------------------
-# Name                    Type               Size  Value    
-# ----------------------------------------------------------
-# t                       uvm_sequence_item  -     @3588    
-#   id                    integral           32    'h200    
-#   prot                  integral           3     'h0      
-#   addr                  integral           32    'h0      
-#   data                  da(integral)       5     -        
-#     [0]                 integral           128   'h11     
-#     [1]                 integral           128   'h0      
-#     [2]                 integral           128   'h33     
-#     [3]                 integral           128   'h0      
-#     [4]                 integral           128   'h55     
-#   burst_length          integral           32    'h5      
-#   burst_type            integral           32    'h1      
-#   byte_en               da(integral)       5     -        
-#     [0]                 integral           16    'h1      
-#     [1]                 integral           16    'h1      
-#     [2]                 integral           16    'h1      
-#     [3]                 integral           16    'h1      
-#     [4]                 integral           16    'h1      
-#   byte_en_first_custom  integral           1     'h0      
-#   byte_en_last_custom   integral           1     'h0      
-#   byte_en_last          integral           16    'h0      
-#   tr_size_in_bytes      integral           32    'h1      
-#   transaction_cycles    integral           32    'hd      
-#   op_type               axi_op_type_t      32    AXI_WRITE
-#   bresp                 integral           2     'h0      
-#   rresp                 da(integral)       0     -        
-# ----------------------------------------------------------
-# 
-# from interface write task of aw channel ......... 
-# UVM_INFO axi_master_driver.svh(295) @ 285000: uvm_test_top.env.master_agt_1.drv [uvm_test_top.env.master_agt_1.drv] from driver process write task 
-#  -------------------------------------------------------------
-# Name                    Type               Size  Value       
-# -------------------------------------------------------------
-# axi_seq_item_tr         uvm_sequence_item  -     @3188       
-#   id                    integral           32    'h1         
-#   prot                  integral           3     'h0X        
-#   addr                  integral           32    'h10        
-#   data                  da(integral)       5     -           
-#     [0]                 integral           128   'h11        
-#     [1]                 integral           128   'h2200      
-#     [2]                 integral           128   'h330000    
-#     [3]                 integral           128   'h44000000  
-#     [4]                 integral           128   'h5500000000
-#   burst_length          integral           32    'h5         
-#   burst_type            integral           32    'h1         
-#   byte_en               da(integral)       5     -           
-#     [0]                 integral           16    'h1         
-#     [1]                 integral           16    'h2         
-#     [2]                 integral           16    'h4         
-#     [3]                 integral           16    'h8         
-#     [4]                 integral           16    'h10        
-#   byte_en_first_custom  integral           1     'h0         
-#   byte_en_last_custom   integral           1     'h0         
-#   byte_en_last          integral           16    'h0         
-#   tr_size_in_bytes      integral           32    'h1         
-#   transaction_cycles    integral           32    'h0         
-#   op_type               axi_op_type_t      32    AXI_WRITE   
-#   bresp                 integral           2     'h0X        
-#   rresp                 da(integral)       0     -           
-#   begin_time            time               64    80000       
-# -------------------------------------------------------------
-# 
-#               285000@@@@@@@@@@@@@@@@@_mon_aw burst_length =4 aw_len=4
-#               285000!!!!!!!!!!!!!!! mon_aw data_size =5 stobe_size=5
-# UVM_INFO interconnect_extended_test.sv(107) @ 285000: uvm_test_top [uvm_test_top] from test after the pipeline write resp of all
-# UVM_INFO interconnect_extended_test.sv(109) @ 285000: uvm_test_top [uvm_test_top] from test after the pipeline write seq
-# UVM_INFO axi_monitor.svh(420) @ 295000: uvm_test_top.env.master_agt_1.mon [uvm_monitor] monitor write packet respnse is =----------------------------------------------------------
-# Name                    Type               Size  Value    
-# ----------------------------------------------------------
-# t                       uvm_sequence_item  -     @3713    
-#   id                    integral           32    'h0      
-#   prot                  integral           3     'h0      
-#   addr                  integral           32    'h0      
-#   data                  da(integral)       5     -        
-#     [0]                 integral           128   'h11     
-#     [1]                 integral           128   'h0      
-#     [2]                 integral           128   'h0      
-#     [3]                 integral           128   'h0      
-#     [4]                 integral           128   'h0      
-#   burst_length          integral           32    'h5      
-#   burst_type            integral           32    'h1      
-#   byte_en               da(integral)       5     -        
-#     [0]                 integral           16    'h1      
-#     [1]                 integral           16    'h1      
-#     [2]                 integral           16    'h1      
-#     [3]                 integral           16    'h1      
-#     [4]                 integral           16    'h1      
-#   byte_en_first_custom  integral           1     'h0      
-#   byte_en_last_custom   integral           1     'h0      
-#   byte_en_last          integral           16    'h0      
-#   tr_size_in_bytes      integral           32    'h1      
-#   transaction_cycles    integral           32    'h16     
-#   op_type               axi_op_type_t      32    AXI_WRITE
-#   bresp                 integral           2     'h0      
-#   rresp                 da(integral)       0     -        
-# ----------------------------------------------------------
-# 
-#               305000data_write_queue_array =17
-#               305000data_write_queue =11
-# from interface write task of aw channel 
-#               315000data_write_queue_array =17 8704
-#               315000data_write_queue =2200
-#               325000data_write_queue_array =17 8704 3342336
-#               325000data_write_queue =330000
-#               335000data_write_queue_array =17 8704 3342336 1140850688
-#               335000data_write_queue =44000000
-#               335000@@@@@@@@@@@@@@@@@_mon_aw burst_length =4 aw_len=4
-#               335000!!!!!!!!!!!!!!! mon_aw data_size =0 stobe_size=0
-#               345000data_write_queue_array =17 8704 3342336 1140850688 365072220160
-#               345000data_write_queue =5500000000
-#               345000##################$$$$$$$$$$$$$$$ data write[0] =17
-#               345000##################$$$$$$$$$$$$$$$ data write[1] =34
-#               345000##################$$$$$$$$$$$$$$$ data write[2] =51
-#               345000##################$$$$$$$$$$$$$$$ data write[3] =68
-#               345000##################$$$$$$$$$$$$$$$ data write[4] =85
-#               375000data_write_queue_array =17
-#               375000data_write_queue =11
-#               395000data_write_queue_array =17 8704
-#               395000data_write_queue =2200
-#               415000data_write_queue_array =17 8704 51
-#               415000data_write_queue =33
-#               435000data_write_queue_array =17 8704 51 17408
-#               435000data_write_queue =4400
-#               455000data_write_queue_array =17 8704 51 17408 85
-#               455000data_write_queue =55
-#               455000##################$$$$$$$$$$$$$$$ data write[0] =17
-#               455000##################$$$$$$$$$$$$$$$ data write[1] =34
-#               455000##################$$$$$$$$$$$$$$$ data write[2] =51
-#               455000##################$$$$$$$$$$$$$$$ data write[3] =68
-#               455000##################$$$$$$$$$$$$$$$ data write[4] =85
-#               465000@@@@@@@@@response
-# UVM_INFO axi_scoreboard.sv(266) @ 465000: uvm_test_top.env.scr [interconnect_scoreboard] actual and expected packets are same for AXI_WRITE REQUEST
-# UVM_INFO axi_monitor.svh(480) @ 485000: uvm_test_top.env.slave_cfg_0.mon [uvm_monitor] AXI write: addr: 0x10, data[0]: 0x11, byte_en: 0x1, tr_size_in_bytes: 1, burst_length: 5
-# UVM_INFO axi_monitor.svh(485) @ 485000: uvm_test_top.env.slave_cfg_0.mon [uvm_monitor] AXI write burst data 0: 0x11
-# UVM_INFO axi_monitor.svh(485) @ 485000: uvm_test_top.env.slave_cfg_0.mon [uvm_monitor] AXI write burst data 1: 0x0
-# UVM_INFO axi_monitor.svh(485) @ 485000: uvm_test_top.env.slave_cfg_0.mon [uvm_monitor] AXI write burst data 2: 0x33
-# UVM_INFO axi_monitor.svh(485) @ 485000: uvm_test_top.env.slave_cfg_0.mon [uvm_monitor] AXI write burst data 3: 0x0
-# UVM_INFO axi_monitor.svh(485) @ 485000: uvm_test_top.env.slave_cfg_0.mon [uvm_monitor] AXI write burst data 4: 0x55
-# UVM_INFO axi_monitor.svh(508) @ 485000: uvm_test_top.env.slave_cfg_0.mon [uvm_monitor] AXI write completed for transaction ID: 513, latency: 14 cycles
-# UVM_INFO axi_monitor.svh(420) @ 485000: uvm_test_top.env.slave_cfg_0.mon [uvm_monitor] monitor write packet respnse is =----------------------------------------------------------
-# Name                    Type               Size  Value    
-# ----------------------------------------------------------
-# t                       uvm_sequence_item  -     @4158    
-#   id                    integral           32    'h201    
-#   prot                  integral           3     'h0      
-#   addr                  integral           32    'h10     
-#   data                  da(integral)       5     -        
-#     [0]                 integral           128   'h11     
-#     [1]                 integral           128   'h0      
-#     [2]                 integral           128   'h33     
-#     [3]                 integral           128   'h0      
-#     [4]                 integral           128   'h55     
-#   burst_length          integral           32    'h5      
-#   burst_type            integral           32    'h1      
-#   byte_en               da(integral)       5     -        
-#     [0]                 integral           16    'h1      
-#     [1]                 integral           16    'h1      
-#     [2]                 integral           16    'h1      
-#     [3]                 integral           16    'h1      
-#     [4]                 integral           16    'h1      
-#   byte_en_first_custom  integral           1     'h0      
-#   byte_en_last_custom   integral           1     'h0      
-#   byte_en_last          integral           16    'h0      
-#   tr_size_in_bytes      integral           32    'h1      
-#   transaction_cycles    integral           32    'he      
-#   op_type               axi_op_type_t      32    AXI_WRITE
-#   bresp                 integral           2     'h0      
-#   rresp                 da(integral)       0     -        
-# ----------------------------------------------------------
+# UVM_INFO axi_monitor.svh(482) @ 285000: uvm_test_top.env.slave_agt_4.mon [uvm_monitor] AXI write: addr: 0x0, data[0]: 0x11, byte_en: 0x3, tr_size_in_bytes: 2, burst_length: 5
+# UVM_INFO axi_monitor.svh(487) @ 285000: uvm_test_top.env.slave_agt_4.mon [uvm_monitor] AXI write burst data 0: 0x11
+# UVM_INFO axi_monitor.svh(487) @ 285000: uvm_test_top.env.slave_agt_4.mon [uvm_monitor] AXI write burst data 1: 0xaa
+# UVM_INFO axi_monitor.svh(487) @ 285000: uvm_test_top.env.slave_agt_4.mon [uvm_monitor] AXI write burst data 2: 0x22
+# UVM_INFO axi_monitor.svh(487) @ 285000: uvm_test_top.env.slave_agt_4.mon [uvm_monitor] AXI write burst data 3: 0xbb
+# UVM_INFO axi_monitor.svh(487) @ 285000: uvm_test_top.env.slave_agt_4.mon [uvm_monitor] AXI write burst data 4: 0x33
+# UVM_INFO axi_monitor.svh(510) @ 285000: uvm_test_top.env.slave_agt_4.mon [uvm_monitor] AXI write completed for transaction ID: 0, latency: 15 cycles
+# UVM_INFO axi_monitor.svh(419) @ 285000: uvm_test_top.env.slave_agt_4.mon [harish_7] its entering
+# UVM_INFO axi_monitor.svh(422) @ 285000: uvm_test_top.env.slave_agt_4.mon [uvm_monitor] monitor write packet respnse is =-----------------------------------------------------------
+# Name                    Type                Size  Value    
+# -----------------------------------------------------------
+# t                       uvm_sequence_item   -     @3628    
+#   id                    integral            32    'h0      
+#   prot                  integral            3     'h0      
+#   addr                  integral            32    'h0      
+#   data                  da(integral)        10    -        
+#     [0]                 integral            128   'h11     
+#     [1]                 integral            128   'haa     
+#     [2]                 integral            128   'h22     
+#     [3]                 integral            128   'hbb     
+#     [4]                 integral            128   'h33     
+#     [5]                 integral            128   'hcc     
+#     [6]                 integral            128   'h44     
+#     [7]                 integral            128   'hdd     
+#     [8]                 integral            128   'h55     
+#     [9]                 integral            128   'hee     
+#   burst_length          integral            32    'h5      
+#   burst_type            integral            32    'h1      
+#   byte_en               da(integral)        5     -        
+#     [0]                 integral            16    'h3      
+#     [1]                 integral            16    'hc      
+#     [2]                 integral            16    'h3      
+#     [3]                 integral            16    'hc      
+#     [4]                 integral            16    'h3      
+#   byte_en_first_custom  integral            1     'h0      
+#   byte_en_last_custom   integral            1     'h0      
+#   byte_en_last          integral            16    'h0      
+#   tr_size_in_bytes      integral            32    'h2      
+#   transaction_cycles    integral            32    'hf      
+#   op_type               axi_op_type_t       32    AXI_WRITE
+#   req_res               req_res_identifier  32    RESPONSE 
+#   bresp                 integral            2     'h0      
+#   rresp                 da(integral)        0     -        
+# -----------------------------------------------------------
 # 
 # from interface write task of aw channel ......... 
-# UVM_INFO axi_master_driver.svh(295) @ 515000: uvm_test_top.env.master_agt_1.drv [uvm_test_top.env.master_agt_1.drv] from driver process write task 
-#  -------------------------------------------------------------
-# Name                    Type               Size  Value       
-# -------------------------------------------------------------
-# axi_seq_item_tr         uvm_sequence_item  -     @3198       
-#   id                    integral           32    'h2         
-#   prot                  integral           3     'h0X        
-#   addr                  integral           32    'h20        
-#   data                  da(integral)       5     -           
-#     [0]                 integral           128   'h11        
-#     [1]                 integral           128   'h2200      
-#     [2]                 integral           128   'h330000    
-#     [3]                 integral           128   'h44000000  
-#     [4]                 integral           128   'h5500000000
-#   burst_length          integral           32    'h5         
-#   burst_type            integral           32    'h1         
-#   byte_en               da(integral)       5     -           
-#     [0]                 integral           16    'h1         
-#     [1]                 integral           16    'h2         
-#     [2]                 integral           16    'h4         
-#     [3]                 integral           16    'h8         
-#     [4]                 integral           16    'h10        
-#   byte_en_first_custom  integral           1     'h0         
-#   byte_en_last_custom   integral           1     'h0         
-#   byte_en_last          integral           16    'h0         
-#   tr_size_in_bytes      integral           32    'h1         
-#   transaction_cycles    integral           32    'h0         
-#   op_type               axi_op_type_t      32    AXI_WRITE   
-#   bresp                 integral           2     'h0X        
-#   rresp                 da(integral)       0     -           
-#   begin_time            time               64    110000      
-# -------------------------------------------------------------
+# UVM_INFO axi_master_driver.svh(295) @ 315000: uvm_test_top.env.master_agt_0.drv [uvm_test_top.env.master_agt_0.drv] from driver process write task 
+#  ------------------------------------------------------------
+# Name                    Type                Size  Value     
+# ------------------------------------------------------------
+# axi_seq_item_tr         uvm_sequence_item   -     @3188     
+#   id                    integral            32    'h1       
+#   prot                  integral            3     'h0X      
+#   addr                  integral            32    'h200028  
+#   data                  da(integral)        5     -         
+#     [0]                 integral            128   'h9af9aa11
+#     [1]                 integral            128   'h9bf9bb22
+#     [2]                 integral            128   'h9cf9cc33
+#     [3]                 integral            128   'h9df9dd44
+#     [4]                 integral            128   'h9ef9ee55
+#   burst_length          integral            32    'h5       
+#   burst_type            integral            32    'h1       
+#   byte_en               da(integral)        5     -         
+#     [0]                 integral            16    'h3       
+#     [1]                 integral            16    'h3       
+#     [2]                 integral            16    'h3       
+#     [3]                 integral            16    'h3       
+#     [4]                 integral            16    'h3       
+#   byte_en_first_custom  integral            1     'h0       
+#   byte_en_last_custom   integral            1     'h0       
+#   byte_en_last          integral            16    'h0       
+#   tr_size_in_bytes      integral            32    'h2       
+#   transaction_cycles    integral            32    'h0       
+#   op_type               axi_op_type_t       32    AXI_WRITE 
+#   req_res               req_res_identifier  32    REQUEST   
+#   bresp                 integral            2     'h0X      
+#   rresp                 da(integral)        0     -         
+#   begin_time            time                64    80000     
+# ------------------------------------------------------------
 # 
-#               515000@@@@@@@@@@@@@@@@@_mon_aw burst_length =4 aw_len=4
-#               515000!!!!!!!!!!!!!!! mon_aw data_size =5 stobe_size=5
-# UVM_INFO axi_monitor.svh(420) @ 525000: uvm_test_top.env.master_agt_1.mon [uvm_monitor] monitor write packet respnse is =----------------------------------------------------------
-# Name                    Type               Size  Value    
-# ----------------------------------------------------------
-# t                       uvm_sequence_item  -     @4263    
-#   id                    integral           32    'h1      
-#   prot                  integral           3     'h0      
-#   addr                  integral           32    'h10     
-#   data                  da(integral)       5     -        
-#     [0]                 integral           128   'h11     
-#     [1]                 integral           128   'h0      
-#     [2]                 integral           128   'h0      
-#     [3]                 integral           128   'h0      
-#     [4]                 integral           128   'h0      
-#   burst_length          integral           32    'h5      
-#   burst_type            integral           32    'h1      
-#   byte_en               da(integral)       5     -        
-#     [0]                 integral           16    'h1      
-#     [1]                 integral           16    'h1      
-#     [2]                 integral           16    'h1      
-#     [3]                 integral           16    'h1      
-#     [4]                 integral           16    'h1      
-#   byte_en_first_custom  integral           1     'h0      
-#   byte_en_last_custom   integral           1     'h0      
-#   byte_en_last          integral           16    'h0      
-#   tr_size_in_bytes      integral           32    'h1      
-#   transaction_cycles    integral           32    'h25     
-#   op_type               axi_op_type_t      32    AXI_WRITE
-#   bresp                 integral           2     'h0      
-#   rresp                 da(integral)       0     -        
-# ----------------------------------------------------------
+#               315000@@@@@@@@@@@@@@@@@_mon_aw burst_length =4 aw_len=4
+#               315000!!!!!!!!!!!!!!! mon_aw data_size =10 stobe_size=5
+# UVM_INFO axi_monitor.svh(419) @ 325000: uvm_test_top.env.master_agt_0.mon [harish_7] its entering
+# UVM_INFO axi_monitor.svh(422) @ 325000: uvm_test_top.env.master_agt_0.mon [uvm_monitor] monitor write packet respnse is =-----------------------------------------------------------
+# Name                    Type                Size  Value    
+# -----------------------------------------------------------
+# t                       uvm_sequence_item   -     @3733    
+#   id                    integral            32    'h0      
+#   prot                  integral            3     'h0      
+#   addr                  integral            32    'h200000 
+#   data                  da(integral)        10    -        
+#     [0]                 integral            128   'h11     
+#     [1]                 integral            128   'haa     
+#     [2]                 integral            128   'h22     
+#     [3]                 integral            128   'hbb     
+#     [4]                 integral            128   'h33     
+#     [5]                 integral            128   'hcc     
+#     [6]                 integral            128   'h44     
+#     [7]                 integral            128   'hdd     
+#     [8]                 integral            128   'h55     
+#     [9]                 integral            128   'hee     
+#   burst_length          integral            32    'h5      
+#   burst_type            integral            32    'h1      
+#   byte_en               da(integral)        5     -        
+#     [0]                 integral            16    'h3      
+#     [1]                 integral            16    'h3      
+#     [2]                 integral            16    'h3      
+#     [3]                 integral            16    'h3      
+#     [4]                 integral            16    'h3      
+#   byte_en_first_custom  integral            1     'h0      
+#   byte_en_last_custom   integral            1     'h0      
+#   byte_en_last          integral            16    'h0      
+#   tr_size_in_bytes      integral            32    'h2      
+#   transaction_cycles    integral            32    'h18     
+#   op_type               axi_op_type_t       32    AXI_WRITE
+#   req_res               req_res_identifier  32    RESPONSE 
+#   bresp                 integral            2     'h0      
+#   rresp                 da(integral)        0     -        
+# -----------------------------------------------------------
+# 
+# UVM_INFO axi_scoreboard.sv(247) @ 325000: uvm_test_top.env.scr [interconnect_scoreboard] actual and expected packets are same for AXI_WRITE RESPONSE following order for same ID's
+# UVM_INFO axi_scoreboard.sv(248) @ 325000: uvm_test_top.env.scr [interconnect_scoreboard] AXI_WRITE RESPONSE comparison failed due to data mismatch, expected is 
+# -----------------------------------------------------------
+# Name                    Type                Size  Value    
+# -----------------------------------------------------------
+# t                       uvm_sequence_item   -     @3633    
+#   id                    integral            32    'h0      
+#   prot                  integral            3     'h0      
+#   addr                  integral            32    'h0      
+#   data                  da(integral)        10    -        
+#     [0]                 integral            128   'h11     
+#     [1]                 integral            128   'haa     
+#     [2]                 integral            128   'h22     
+#     [3]                 integral            128   'hbb     
+#     [4]                 integral            128   'h33     
+#     [5]                 integral            128   'hcc     
+#     [6]                 integral            128   'h44     
+#     [7]                 integral            128   'hdd     
+#     [8]                 integral            128   'h55     
+#     [9]                 integral            128   'hee     
+#   burst_length          integral            32    'h5      
+#   burst_type            integral            32    'h1      
+#   byte_en               da(integral)        5     -        
+#     [0]                 integral            16    'h3      
+#     [1]                 integral            16    'hc      
+#     [2]                 integral            16    'h3      
+#     [3]                 integral            16    'hc      
+#     [4]                 integral            16    'h3      
+#   byte_en_first_custom  integral            1     'h0      
+#   byte_en_last_custom   integral            1     'h0      
+#   byte_en_last          integral            16    'h0      
+#   tr_size_in_bytes      integral            32    'h2      
+#   transaction_cycles    integral            32    'hf      
+#   op_type               axi_op_type_t       32    AXI_WRITE
+#   req_res               req_res_identifier  32    RESPONSE 
+#   bresp                 integral            2     'h0      
+#   rresp                 da(integral)        0     -        
+# -----------------------------------------------------------
+#  actual is 
+# -----------------------------------------------------------
+# Name                    Type                Size  Value    
+# -----------------------------------------------------------
+# t                       uvm_sequence_item   -     @3738    
+#   id                    integral            32    'h0      
+#   prot                  integral            3     'h0      
+#   addr                  integral            32    'h0      
+#   data                  da(integral)        10    -        
+#     [0]                 integral            128   'h11     
+#     [1]                 integral            128   'haa     
+#     [2]                 integral            128   'h22     
+#     [3]                 integral            128   'hbb     
+#     [4]                 integral            128   'h33     
+#     [5]                 integral            128   'hcc     
+#     [6]                 integral            128   'h44     
+#     [7]                 integral            128   'hdd     
+#     [8]                 integral            128   'h55     
+#     [9]                 integral            128   'hee     
+#   burst_length          integral            32    'h5      
+#   burst_type            integral            32    'h1      
+#   byte_en               da(integral)        5     -        
+#     [0]                 integral            16    'h3      
+#     [1]                 integral            16    'h3      
+#     [2]                 integral            16    'h3      
+#     [3]                 integral            16    'h3      
+#     [4]                 integral            16    'h3      
+#   byte_en_first_custom  integral            1     'h0      
+#   byte_en_last_custom   integral            1     'h0      
+#   byte_en_last          integral            16    'h0      
+#   tr_size_in_bytes      integral            32    'h2      
+#   transaction_cycles    integral            32    'h18     
+#   op_type               axi_op_type_t       32    AXI_WRITE
+#   req_res               req_res_identifier  32    RESPONSE 
+#   bresp                 integral            2     'h0      
+#   rresp                 da(integral)        0     -        
+# -----------------------------------------------------------
 # 
 # from interface write task of aw channel 
-#               565000data_write_queue_array =17
-#               565000data_write_queue =11
-#               575000data_write_queue_array =17 8704
-#               575000data_write_queue =2200
-#               585000data_write_queue_array =17 8704 3342336
-#               585000data_write_queue =330000
-#               585000@@@@@@@@@@@@@@@@@_mon_aw burst_length =4 aw_len=4
-#               585000!!!!!!!!!!!!!!! mon_aw data_size =0 stobe_size=0
-#               595000data_write_queue_array =17 8704 3342336 1140850688
-#               595000data_write_queue =44000000
-#               605000data_write_queue_array =17 8704 3342336 1140850688 365072220160
-#               605000data_write_queue =5500000000
-#               605000##################$$$$$$$$$$$$$$$ data write[0] =17
-#               605000##################$$$$$$$$$$$$$$$ data write[1] =34
-#               605000##################$$$$$$$$$$$$$$$ data write[2] =51
-#               605000##################$$$$$$$$$$$$$$$ data write[3] =68
-#               605000##################$$$$$$$$$$$$$$$ data write[4] =85
-#               635000data_write_queue_array =17
-#               635000data_write_queue =11
-#               665000data_write_queue_array =17 8704
-#               665000data_write_queue =2200
-#               695000data_write_queue_array =17 8704 51
-#               695000data_write_queue =33
-#               725000data_write_queue_array =17 8704 51 17408
-#               725000data_write_queue =4400
-#               755000data_write_queue_array =17 8704 51 17408 85
-#               755000data_write_queue =55
-#               755000##################$$$$$$$$$$$$$$$ data write[0] =17
-#               755000##################$$$$$$$$$$$$$$$ data write[1] =34
-#               755000##################$$$$$$$$$$$$$$$ data write[2] =51
-#               755000##################$$$$$$$$$$$$$$$ data write[3] =68
-#               755000##################$$$$$$$$$$$$$$$ data write[4] =85
-#               755000@@@@@@@@@response
-# UVM_INFO axi_scoreboard.sv(266) @ 765000: uvm_test_top.env.scr [interconnect_scoreboard] actual and expected packets are same for AXI_WRITE REQUEST
-# UVM_INFO axi_monitor.svh(480) @ 765000: uvm_test_top.env.slave_cfg_0.mon [uvm_monitor] AXI write: addr: 0x20, data[0]: 0x11, byte_en: 0x1, tr_size_in_bytes: 1, burst_length: 5
-# UVM_INFO axi_monitor.svh(485) @ 765000: uvm_test_top.env.slave_cfg_0.mon [uvm_monitor] AXI write burst data 0: 0x11
-# UVM_INFO axi_monitor.svh(485) @ 765000: uvm_test_top.env.slave_cfg_0.mon [uvm_monitor] AXI write burst data 1: 0x0
-# UVM_INFO axi_monitor.svh(485) @ 765000: uvm_test_top.env.slave_cfg_0.mon [uvm_monitor] AXI write burst data 2: 0x33
-# UVM_INFO axi_monitor.svh(485) @ 765000: uvm_test_top.env.slave_cfg_0.mon [uvm_monitor] AXI write burst data 3: 0x0
-# UVM_INFO axi_monitor.svh(485) @ 765000: uvm_test_top.env.slave_cfg_0.mon [uvm_monitor] AXI write burst data 4: 0x55
-# UVM_INFO axi_monitor.svh(508) @ 765000: uvm_test_top.env.slave_cfg_0.mon [uvm_monitor] AXI write completed for transaction ID: 514, latency: 20 cycles
-# UVM_INFO axi_monitor.svh(420) @ 765000: uvm_test_top.env.slave_cfg_0.mon [uvm_monitor] monitor write packet respnse is =----------------------------------------------------------
-# Name                    Type               Size  Value    
-# ----------------------------------------------------------
-# t                       uvm_sequence_item  -     @4808    
-#   id                    integral           32    'h202    
-#   prot                  integral           3     'h0      
-#   addr                  integral           32    'h20     
-#   data                  da(integral)       5     -        
-#     [0]                 integral           128   'h11     
-#     [1]                 integral           128   'h0      
-#     [2]                 integral           128   'h33     
-#     [3]                 integral           128   'h0      
-#     [4]                 integral           128   'h55     
-#   burst_length          integral           32    'h5      
-#   burst_type            integral           32    'h1      
-#   byte_en               da(integral)       5     -        
-#     [0]                 integral           16    'h1      
-#     [1]                 integral           16    'h1      
-#     [2]                 integral           16    'h1      
-#     [3]                 integral           16    'h1      
-#     [4]                 integral           16    'h1      
-#   byte_en_first_custom  integral           1     'h0      
-#   byte_en_last_custom   integral           1     'h0      
-#   byte_en_last          integral           16    'h0      
-#   tr_size_in_bytes      integral           32    'h1      
-#   transaction_cycles    integral           32    'h14     
-#   op_type               axi_op_type_t      32    AXI_WRITE
-#   bresp                 integral           2     'h0      
-#   rresp                 da(integral)       0     -        
-# ----------------------------------------------------------
+#               355000data_write_queue_array =43537
+#               355000data_write_queue =aa11
+#               365000data_write_queue_array =43537 47906
+#               365000data_write_queue =bb22
+#               375000data_write_queue_array =43537 47906 52275
+#               375000data_write_queue =cc33
+#               385000data_write_queue_array =43537 47906 52275 56644
+#               385000data_write_queue =dd44
+#               395000data_write_queue_array =43537 47906 52275 56644 61013
+#               395000data_write_queue =ee55
+# UVM_INFO axi_footprint_interface.sv(501) @ 395000: reporter [harish_6] '{238, 85, 221, 68, 204, 51, 187, 34, 170, 17}
+#               395000@@@@@@@@@@@@@@@@@_mon_aw burst_length =4 aw_len=4
+#               395000!!!!!!!!!!!!!!! mon_aw data_size =0 stobe_size=0
+#               425000data_write_queue_array =2853284369
+#               425000data_write_queue =aa11aa11
+#               455000data_write_queue_array =2853284369 3139615522
+#               455000data_write_queue =bb22bb22
+#               485000data_write_queue_array =2853284369 3139615522 3425946675
+#               485000data_write_queue =cc33cc33
+#               515000data_write_queue_array =2853284369 3139615522 3425946675 3712277828
+#               515000data_write_queue =dd44dd44
+#               545000data_write_queue_array =2853284369 3139615522 3425946675 3712277828 3998608981
+#               545000data_write_queue =ee55ee55
+# UVM_INFO axi_footprint_interface.sv(501) @ 545000: reporter [harish_6] '{238, 85, 221, 68, 204, 51, 187, 34, 170, 17}
+#               555000@@@@@@@@@response
+# UVM_INFO axi_scoreboard.sv(247) @ 555000: uvm_test_top.env.scr [interconnect_scoreboard] actual and expected packets are same for AXI_WRITE REQUEST following order for same ID's
+# UVM_INFO axi_scoreboard.sv(248) @ 555000: uvm_test_top.env.scr [interconnect_scoreboard] AXI_WRITE REQUEST comparison failed due to data mismatch, expected is 
+# -----------------------------------------------------------
+# Name                    Type                Size  Value    
+# -----------------------------------------------------------
+# t                       uvm_sequence_item   -     @3763    
+#   id                    integral            32    'h1      
+#   prot                  integral            3     'h0      
+#   addr                  integral            32    'h28     
+#   data                  da(integral)        10    -        
+#     [0]                 integral            128   'h11     
+#     [1]                 integral            128   'haa     
+#     [2]                 integral            128   'h22     
+#     [3]                 integral            128   'hbb     
+#     [4]                 integral            128   'h33     
+#     [5]                 integral            128   'hcc     
+#     [6]                 integral            128   'h44     
+#     [7]                 integral            128   'hdd     
+#     [8]                 integral            128   'h55     
+#     [9]                 integral            128   'hee     
+#   burst_length          integral            32    'h5      
+#   burst_type            integral            32    'h1      
+#   byte_en               da(integral)        5     -        
+#     [0]                 integral            16    'h3      
+#     [1]                 integral            16    'h3      
+#     [2]                 integral            16    'h3      
+#     [3]                 integral            16    'h3      
+#     [4]                 integral            16    'h3      
+#   byte_en_first_custom  integral            1     'h0      
+#   byte_en_last_custom   integral            1     'h0      
+#   byte_en_last          integral            16    'h0      
+#   tr_size_in_bytes      integral            32    'h2      
+#   transaction_cycles    integral            32    'h0      
+#   op_type               axi_op_type_t       32    AXI_WRITE
+#   req_res               req_res_identifier  32    REQUEST  
+#   bresp                 integral            2     'h0X     
+#   rresp                 da(integral)        0     -        
+# -----------------------------------------------------------
+#  actual is 
+# -----------------------------------------------------------
+# Name                    Type                Size  Value    
+# -----------------------------------------------------------
+# t                       uvm_sequence_item   -     @3558    
+#   id                    integral            32    'h1      
+#   prot                  integral            3     'h0      
+#   addr                  integral            32    'h28     
+#   data                  da(integral)        10    -        
+#     [0]                 integral            128   'h11     
+#     [1]                 integral            128   'haa     
+#     [2]                 integral            128   'h22     
+#     [3]                 integral            128   'hbb     
+#     [4]                 integral            128   'h33     
+#     [5]                 integral            128   'hcc     
+#     [6]                 integral            128   'h44     
+#     [7]                 integral            128   'hdd     
+#     [8]                 integral            128   'h55     
+#     [9]                 integral            128   'hee     
+#   burst_length          integral            32    'h5      
+#   burst_type            integral            32    'h1      
+#   byte_en               da(integral)        5     -        
+#     [0]                 integral            16    'h3      
+#     [1]                 integral            16    'hc      
+#     [2]                 integral            16    'h3      
+#     [3]                 integral            16    'hc      
+#     [4]                 integral            16    'h3      
+#   byte_en_first_custom  integral            1     'h0      
+#   byte_en_last_custom   integral            1     'h0      
+#   byte_en_last          integral            16    'h0      
+#   tr_size_in_bytes      integral            32    'h2      
+#   transaction_cycles    integral            32    'h0      
+#   op_type               axi_op_type_t       32    AXI_WRITE
+#   req_res               req_res_identifier  32    REQUEST  
+#   bresp                 integral            2     'h0X     
+#   rresp                 da(integral)        0     -        
+# -----------------------------------------------------------
+# 
+# UVM_INFO axi_monitor.svh(482) @ 575000: uvm_test_top.env.slave_agt_4.mon [uvm_monitor] AXI write: addr: 0x28, data[0]: 0x11, byte_en: 0x3, tr_size_in_bytes: 2, burst_length: 5
+# UVM_INFO axi_monitor.svh(487) @ 575000: uvm_test_top.env.slave_agt_4.mon [uvm_monitor] AXI write burst data 0: 0x11
+# UVM_INFO axi_monitor.svh(487) @ 575000: uvm_test_top.env.slave_agt_4.mon [uvm_monitor] AXI write burst data 1: 0xaa
+# UVM_INFO axi_monitor.svh(487) @ 575000: uvm_test_top.env.slave_agt_4.mon [uvm_monitor] AXI write burst data 2: 0x22
+# UVM_INFO axi_monitor.svh(487) @ 575000: uvm_test_top.env.slave_agt_4.mon [uvm_monitor] AXI write burst data 3: 0xbb
+# UVM_INFO axi_monitor.svh(487) @ 575000: uvm_test_top.env.slave_agt_4.mon [uvm_monitor] AXI write burst data 4: 0x33
+# UVM_INFO axi_monitor.svh(510) @ 575000: uvm_test_top.env.slave_agt_4.mon [uvm_monitor] AXI write completed for transaction ID: 1, latency: 20 cycles
+# UVM_INFO axi_monitor.svh(419) @ 575000: uvm_test_top.env.slave_agt_4.mon [harish_7] its entering
+# UVM_INFO axi_monitor.svh(422) @ 575000: uvm_test_top.env.slave_agt_4.mon [uvm_monitor] monitor write packet respnse is =-----------------------------------------------------------
+# Name                    Type                Size  Value    
+# -----------------------------------------------------------
+# t                       uvm_sequence_item   -     @4318    
+#   id                    integral            32    'h1      
+#   prot                  integral            3     'h0      
+#   addr                  integral            32    'h28     
+#   data                  da(integral)        10    -        
+#     [0]                 integral            128   'h11     
+#     [1]                 integral            128   'haa     
+#     [2]                 integral            128   'h22     
+#     [3]                 integral            128   'hbb     
+#     [4]                 integral            128   'h33     
+#     [5]                 integral            128   'hcc     
+#     [6]                 integral            128   'h44     
+#     [7]                 integral            128   'hdd     
+#     [8]                 integral            128   'h55     
+#     [9]                 integral            128   'hee     
+#   burst_length          integral            32    'h5      
+#   burst_type            integral            32    'h1      
+#   byte_en               da(integral)        5     -        
+#     [0]                 integral            16    'h3      
+#     [1]                 integral            16    'hc      
+#     [2]                 integral            16    'h3      
+#     [3]                 integral            16    'hc      
+#     [4]                 integral            16    'h3      
+#   byte_en_first_custom  integral            1     'h0      
+#   byte_en_last_custom   integral            1     'h0      
+#   byte_en_last          integral            16    'h0      
+#   tr_size_in_bytes      integral            32    'h2      
+#   transaction_cycles    integral            32    'h14     
+#   op_type               axi_op_type_t       32    AXI_WRITE
+#   req_res               req_res_identifier  32    RESPONSE 
+#   bresp                 integral            2     'h0      
+#   rresp                 da(integral)        0     -        
+# -----------------------------------------------------------
 # 
 # from interface write task of aw channel ......... 
-# UVM_INFO axi_master_driver.svh(295) @ 805000: uvm_test_top.env.master_agt_1.drv [uvm_test_top.env.master_agt_1.drv] from driver process write task 
-#  -------------------------------------------------------------
-# Name                    Type               Size  Value       
-# -------------------------------------------------------------
-# axi_seq_item_tr         uvm_sequence_item  -     @3273       
-#   id                    integral           32    'h3         
-#   prot                  integral           3     'h0X        
-#   addr                  integral           32    'h30        
-#   data                  da(integral)       5     -           
-#     [0]                 integral           128   'h11        
-#     [1]                 integral           128   'h2200      
-#     [2]                 integral           128   'h330000    
-#     [3]                 integral           128   'h44000000  
-#     [4]                 integral           128   'h5500000000
-#   burst_length          integral           32    'h5         
-#   burst_type            integral           32    'h1         
-#   byte_en               da(integral)       5     -           
-#     [0]                 integral           16    'h1         
-#     [1]                 integral           16    'h2         
-#     [2]                 integral           16    'h4         
-#     [3]                 integral           16    'h8         
-#     [4]                 integral           16    'h10        
-#   byte_en_first_custom  integral           1     'h0         
-#   byte_en_last_custom   integral           1     'h0         
-#   byte_en_last          integral           16    'h0         
-#   tr_size_in_bytes      integral           32    'h1         
-#   transaction_cycles    integral           32    'h0         
-#   op_type               axi_op_type_t      32    AXI_WRITE   
-#   bresp                 integral           2     'h0X        
-#   rresp                 da(integral)       0     -           
-#   begin_time            time               64    140000      
-# -------------------------------------------------------------
+# UVM_INFO axi_master_driver.svh(295) @ 605000: uvm_test_top.env.master_agt_0.drv [uvm_test_top.env.master_agt_0.drv] from driver process write task 
+#  ------------------------------------------------------------
+# Name                    Type                Size  Value     
+# ------------------------------------------------------------
+# axi_seq_item_tr         uvm_sequence_item   -     @3198     
+#   id                    integral            32    'h2       
+#   prot                  integral            3     'h0X      
+#   addr                  integral            32    'h200050  
+#   data                  da(integral)        5     -         
+#     [0]                 integral            128   'h9af9aa11
+#     [1]                 integral            128   'h9bf9bb22
+#     [2]                 integral            128   'h9cf9cc33
+#     [3]                 integral            128   'h9df9dd44
+#     [4]                 integral            128   'h9ef9ee55
+#   burst_length          integral            32    'h5       
+#   burst_type            integral            32    'h1       
+#   byte_en               da(integral)        5     -         
+#     [0]                 integral            16    'h3       
+#     [1]                 integral            16    'h3       
+#     [2]                 integral            16    'h3       
+#     [3]                 integral            16    'h3       
+#     [4]                 integral            16    'h3       
+#   byte_en_first_custom  integral            1     'h0       
+#   byte_en_last_custom   integral            1     'h0       
+#   byte_en_last          integral            16    'h0       
+#   tr_size_in_bytes      integral            32    'h2       
+#   transaction_cycles    integral            32    'h0       
+#   op_type               axi_op_type_t       32    AXI_WRITE 
+#   req_res               req_res_identifier  32    REQUEST   
+#   bresp                 integral            2     'h0X      
+#   rresp                 da(integral)        0     -         
+#   begin_time            time                64    110000    
+# ------------------------------------------------------------
 # 
-#               805000@@@@@@@@@@@@@@@@@_mon_aw burst_length =4 aw_len=4
-#               805000!!!!!!!!!!!!!!! mon_aw data_size =5 stobe_size=5
-# UVM_INFO axi_monitor.svh(420) @ 815000: uvm_test_top.env.master_agt_1.mon [uvm_monitor] monitor write packet respnse is =----------------------------------------------------------
-# Name                    Type               Size  Value    
-# ----------------------------------------------------------
-# t                       uvm_sequence_item  -     @4953    
-#   id                    integral           32    'h2      
-#   prot                  integral           3     'h0      
-#   addr                  integral           32    'h20     
-#   data                  da(integral)       5     -        
-#     [0]                 integral           128   'h11     
-#     [1]                 integral           128   'h0      
-#     [2]                 integral           128   'h0      
-#     [3]                 integral           128   'h0      
-#     [4]                 integral           128   'h0      
-#   burst_length          integral           32    'h5      
-#   burst_type            integral           32    'h1      
-#   byte_en               da(integral)       5     -        
-#     [0]                 integral           16    'h1      
-#     [1]                 integral           16    'h1      
-#     [2]                 integral           16    'h1      
-#     [3]                 integral           16    'h1      
-#     [4]                 integral           16    'h1      
-#   byte_en_first_custom  integral           1     'h0      
-#   byte_en_last_custom   integral           1     'h0      
-#   byte_en_last          integral           16    'h0      
-#   tr_size_in_bytes      integral           32    'h1      
-#   transaction_cycles    integral           32    'h30     
-#   op_type               axi_op_type_t      32    AXI_WRITE
-#   bresp                 integral           2     'h0      
-#   rresp                 da(integral)       0     -        
-# ----------------------------------------------------------
+#               605000@@@@@@@@@@@@@@@@@_mon_aw burst_length =4 aw_len=4
+#               605000!!!!!!!!!!!!!!! mon_aw data_size =10 stobe_size=5
+# UVM_INFO axi_monitor.svh(419) @ 615000: uvm_test_top.env.master_agt_0.mon [harish_7] its entering
+# UVM_INFO axi_monitor.svh(422) @ 615000: uvm_test_top.env.master_agt_0.mon [uvm_monitor] monitor write packet respnse is =-----------------------------------------------------------
+# Name                    Type                Size  Value    
+# -----------------------------------------------------------
+# t                       uvm_sequence_item   -     @4443    
+#   id                    integral            32    'h1      
+#   prot                  integral            3     'h0      
+#   addr                  integral            32    'h200028 
+#   data                  da(integral)        10    -        
+#     [0]                 integral            128   'h11     
+#     [1]                 integral            128   'haa     
+#     [2]                 integral            128   'h22     
+#     [3]                 integral            128   'hbb     
+#     [4]                 integral            128   'h33     
+#     [5]                 integral            128   'hcc     
+#     [6]                 integral            128   'h44     
+#     [7]                 integral            128   'hdd     
+#     [8]                 integral            128   'h55     
+#     [9]                 integral            128   'hee     
+#   burst_length          integral            32    'h5      
+#   burst_type            integral            32    'h1      
+#   byte_en               da(integral)        5     -        
+#     [0]                 integral            16    'h3      
+#     [1]                 integral            16    'h3      
+#     [2]                 integral            16    'h3      
+#     [3]                 integral            16    'h3      
+#     [4]                 integral            16    'h3      
+#   byte_en_first_custom  integral            1     'h0      
+#   byte_en_last_custom   integral            1     'h0      
+#   byte_en_last          integral            16    'h0      
+#   tr_size_in_bytes      integral            32    'h2      
+#   transaction_cycles    integral            32    'h2d     
+#   op_type               axi_op_type_t       32    AXI_WRITE
+#   req_res               req_res_identifier  32    RESPONSE 
+#   bresp                 integral            2     'h0      
+#   rresp                 da(integral)        0     -        
+# -----------------------------------------------------------
+# 
+# UVM_INFO axi_scoreboard.sv(247) @ 615000: uvm_test_top.env.scr [interconnect_scoreboard] actual and expected packets are same for AXI_WRITE RESPONSE following order for same ID's
+# UVM_INFO axi_scoreboard.sv(248) @ 615000: uvm_test_top.env.scr [interconnect_scoreboard] AXI_WRITE RESPONSE comparison failed due to data mismatch, expected is 
+# -----------------------------------------------------------
+# Name                    Type                Size  Value    
+# -----------------------------------------------------------
+# t                       uvm_sequence_item   -     @4323    
+#   id                    integral            32    'h1      
+#   prot                  integral            3     'h0      
+#   addr                  integral            32    'h28     
+#   data                  da(integral)        10    -        
+#     [0]                 integral            128   'h11     
+#     [1]                 integral            128   'haa     
+#     [2]                 integral            128   'h22     
+#     [3]                 integral            128   'hbb     
+#     [4]                 integral            128   'h33     
+#     [5]                 integral            128   'hcc     
+#     [6]                 integral            128   'h44     
+#     [7]                 integral            128   'hdd     
+#     [8]                 integral            128   'h55     
+#     [9]                 integral            128   'hee     
+#   burst_length          integral            32    'h5      
+#   burst_type            integral            32    'h1      
+#   byte_en               da(integral)        5     -        
+#     [0]                 integral            16    'h3      
+#     [1]                 integral            16    'hc      
+#     [2]                 integral            16    'h3      
+#     [3]                 integral            16    'hc      
+#     [4]                 integral            16    'h3      
+#   byte_en_first_custom  integral            1     'h0      
+#   byte_en_last_custom   integral            1     'h0      
+#   byte_en_last          integral            16    'h0      
+#   tr_size_in_bytes      integral            32    'h2      
+#   transaction_cycles    integral            32    'h14     
+#   op_type               axi_op_type_t       32    AXI_WRITE
+#   req_res               req_res_identifier  32    RESPONSE 
+#   bresp                 integral            2     'h0      
+#   rresp                 da(integral)        0     -        
+# -----------------------------------------------------------
+#  actual is 
+# -----------------------------------------------------------
+# Name                    Type                Size  Value    
+# -----------------------------------------------------------
+# t                       uvm_sequence_item   -     @4448    
+#   id                    integral            32    'h1      
+#   prot                  integral            3     'h0      
+#   addr                  integral            32    'h28     
+#   data                  da(integral)        10    -        
+#     [0]                 integral            128   'h11     
+#     [1]                 integral            128   'haa     
+#     [2]                 integral            128   'h22     
+#     [3]                 integral            128   'hbb     
+#     [4]                 integral            128   'h33     
+#     [5]                 integral            128   'hcc     
+#     [6]                 integral            128   'h44     
+#     [7]                 integral            128   'hdd     
+#     [8]                 integral            128   'h55     
+#     [9]                 integral            128   'hee     
+#   burst_length          integral            32    'h5      
+#   burst_type            integral            32    'h1      
+#   byte_en               da(integral)        5     -        
+#     [0]                 integral            16    'h3      
+#     [1]                 integral            16    'h3      
+#     [2]                 integral            16    'h3      
+#     [3]                 integral            16    'h3      
+#     [4]                 integral            16    'h3      
+#   byte_en_first_custom  integral            1     'h0      
+#   byte_en_last_custom   integral            1     'h0      
+#   byte_en_last          integral            16    'h0      
+#   tr_size_in_bytes      integral            32    'h2      
+#   transaction_cycles    integral            32    'h2d     
+#   op_type               axi_op_type_t       32    AXI_WRITE
+#   req_res               req_res_identifier  32    RESPONSE 
+#   bresp                 integral            2     'h0      
+#   rresp                 da(integral)        0     -        
+# -----------------------------------------------------------
 # 
 # from interface write task of aw channel 
-#               845000data_write_queue_array =17
-#               845000data_write_queue =11
-#               855000data_write_queue_array =17 8704
-#               855000data_write_queue =2200
-#               855000@@@@@@@@@@@@@@@@@_mon_aw burst_length =4 aw_len=4
-#               855000!!!!!!!!!!!!!!! mon_aw data_size =0 stobe_size=0
-#               865000data_write_queue_array =17 8704 3342336
-#               865000data_write_queue =330000
-#               875000data_write_queue_array =17 8704 3342336 1140850688
-#               875000data_write_queue =44000000
-#               885000data_write_queue_array =17 8704 3342336 1140850688 365072220160
-#               885000data_write_queue =5500000000
-#               885000##################$$$$$$$$$$$$$$$ data write[0] =17
-#               885000##################$$$$$$$$$$$$$$$ data write[1] =34
-#               885000##################$$$$$$$$$$$$$$$ data write[2] =51
-#               885000##################$$$$$$$$$$$$$$$ data write[3] =68
-#               885000##################$$$$$$$$$$$$$$$ data write[4] =85
-#               915000data_write_queue_array =17
-#               915000data_write_queue =11
-#               955000data_write_queue_array =17 8704
-#               955000data_write_queue =2200
-#               995000data_write_queue_array =17 8704 51
-#               995000data_write_queue =33
-#              1035000data_write_queue_array =17 8704 51 17408
-#              1035000data_write_queue =4400
-#              1075000data_write_queue_array =17 8704 51 17408 85
-#              1075000data_write_queue =55
-#              1075000##################$$$$$$$$$$$$$$$ data write[0] =17
-#              1075000##################$$$$$$$$$$$$$$$ data write[1] =34
-#              1075000##################$$$$$$$$$$$$$$$ data write[2] =51
-#              1075000##################$$$$$$$$$$$$$$$ data write[3] =68
-#              1075000##################$$$$$$$$$$$$$$$ data write[4] =85
-#              1085000@@@@@@@@@response
-# UVM_INFO axi_scoreboard.sv(266) @ 1085000: uvm_test_top.env.scr [interconnect_scoreboard] actual and expected packets are same for AXI_WRITE REQUEST
-# UVM_INFO axi_monitor.svh(480) @ 1105000: uvm_test_top.env.slave_cfg_0.mon [uvm_monitor] AXI write: addr: 0x30, data[0]: 0x11, byte_en: 0x1, tr_size_in_bytes: 1, burst_length: 5
-# UVM_INFO axi_monitor.svh(485) @ 1105000: uvm_test_top.env.slave_cfg_0.mon [uvm_monitor] AXI write burst data 0: 0x11
-# UVM_INFO axi_monitor.svh(485) @ 1105000: uvm_test_top.env.slave_cfg_0.mon [uvm_monitor] AXI write burst data 1: 0x0
-# UVM_INFO axi_monitor.svh(485) @ 1105000: uvm_test_top.env.slave_cfg_0.mon [uvm_monitor] AXI write burst data 2: 0x33
-# UVM_INFO axi_monitor.svh(485) @ 1105000: uvm_test_top.env.slave_cfg_0.mon [uvm_monitor] AXI write burst data 3: 0x0
-# UVM_INFO axi_monitor.svh(485) @ 1105000: uvm_test_top.env.slave_cfg_0.mon [uvm_monitor] AXI write burst data 4: 0x55
-# UVM_INFO axi_monitor.svh(508) @ 1105000: uvm_test_top.env.slave_cfg_0.mon [uvm_monitor] AXI write completed for transaction ID: 515, latency: 24 cycles
-# UVM_INFO axi_monitor.svh(420) @ 1105000: uvm_test_top.env.slave_cfg_0.mon [uvm_monitor] monitor write packet respnse is =----------------------------------------------------------
-# Name                    Type               Size  Value    
-# ----------------------------------------------------------
-# t                       uvm_sequence_item  -     @5598    
-#   id                    integral           32    'h203    
-#   prot                  integral           3     'h0      
-#   addr                  integral           32    'h30     
-#   data                  da(integral)       5     -        
-#     [0]                 integral           128   'h11     
-#     [1]                 integral           128   'h0      
-#     [2]                 integral           128   'h33     
-#     [3]                 integral           128   'h0      
-#     [4]                 integral           128   'h55     
-#   burst_length          integral           32    'h5      
-#   burst_type            integral           32    'h1      
-#   byte_en               da(integral)       5     -        
-#     [0]                 integral           16    'h1      
-#     [1]                 integral           16    'h1      
-#     [2]                 integral           16    'h1      
-#     [3]                 integral           16    'h1      
-#     [4]                 integral           16    'h1      
-#   byte_en_first_custom  integral           1     'h0      
-#   byte_en_last_custom   integral           1     'h0      
-#   byte_en_last          integral           16    'h0      
-#   tr_size_in_bytes      integral           32    'h1      
-#   transaction_cycles    integral           32    'h18     
-#   op_type               axi_op_type_t      32    AXI_WRITE
-#   bresp                 integral           2     'h0      
-#   rresp                 da(integral)       0     -        
-# ----------------------------------------------------------
+#               635000data_write_queue_array =43537
+#               635000data_write_queue =aa11
+#               645000data_write_queue_array =43537 47906
+#               645000data_write_queue =bb22
+#               655000data_write_queue_array =43537 47906 52275
+#               655000data_write_queue =cc33
+#               665000data_write_queue_array =43537 47906 52275 56644
+#               665000data_write_queue =dd44
+#               675000data_write_queue_array =43537 47906 52275 56644 61013
+#               675000data_write_queue =ee55
+# UVM_INFO axi_footprint_interface.sv(501) @ 675000: reporter [harish_6] '{238, 85, 221, 68, 204, 51, 187, 34, 170, 17}
+#               675000@@@@@@@@@@@@@@@@@_mon_aw burst_length =4 aw_len=4
+#               675000!!!!!!!!!!!!!!! mon_aw data_size =0 stobe_size=0
+#               725000data_write_queue_array =2853284369
+#               725000data_write_queue =aa11aa11
+#               765000data_write_queue_array =2853284369 3139615522
+#               765000data_write_queue =bb22bb22
+#               805000data_write_queue_array =2853284369 3139615522 3425946675
+#               805000data_write_queue =cc33cc33
+#               845000data_write_queue_array =2853284369 3139615522 3425946675 3712277828
+#               845000data_write_queue =dd44dd44
+#               885000data_write_queue_array =2853284369 3139615522 3425946675 3712277828 3998608981
+#               885000data_write_queue =ee55ee55
+# UVM_INFO axi_footprint_interface.sv(501) @ 885000: reporter [harish_6] '{238, 85, 221, 68, 204, 51, 187, 34, 170, 17}
+#               885000@@@@@@@@@response
+# UVM_INFO axi_scoreboard.sv(247) @ 895000: uvm_test_top.env.scr [interconnect_scoreboard] actual and expected packets are same for AXI_WRITE REQUEST following order for same ID's
+# UVM_INFO axi_scoreboard.sv(248) @ 895000: uvm_test_top.env.scr [interconnect_scoreboard] AXI_WRITE REQUEST comparison failed due to data mismatch, expected is 
+# -----------------------------------------------------------
+# Name                    Type                Size  Value    
+# -----------------------------------------------------------
+# t                       uvm_sequence_item   -     @4458    
+#   id                    integral            32    'h2      
+#   prot                  integral            3     'h0      
+#   addr                  integral            32    'h50     
+#   data                  da(integral)        10    -        
+#     [0]                 integral            128   'h11     
+#     [1]                 integral            128   'haa     
+#     [2]                 integral            128   'h22     
+#     [3]                 integral            128   'hbb     
+#     [4]                 integral            128   'h33     
+#     [5]                 integral            128   'hcc     
+#     [6]                 integral            128   'h44     
+#     [7]                 integral            128   'hdd     
+#     [8]                 integral            128   'h55     
+#     [9]                 integral            128   'hee     
+#   burst_length          integral            32    'h5      
+#   burst_type            integral            32    'h1      
+#   byte_en               da(integral)        5     -        
+#     [0]                 integral            16    'h3      
+#     [1]                 integral            16    'h3      
+#     [2]                 integral            16    'h3      
+#     [3]                 integral            16    'h3      
+#     [4]                 integral            16    'h3      
+#   byte_en_first_custom  integral            1     'h0      
+#   byte_en_last_custom   integral            1     'h0      
+#   byte_en_last          integral            16    'h0      
+#   tr_size_in_bytes      integral            32    'h2      
+#   transaction_cycles    integral            32    'h0      
+#   op_type               axi_op_type_t       32    AXI_WRITE
+#   req_res               req_res_identifier  32    REQUEST  
+#   bresp                 integral            2     'h0X     
+#   rresp                 da(integral)        0     -        
+# -----------------------------------------------------------
+#  actual is 
+# -----------------------------------------------------------
+# Name                    Type                Size  Value    
+# -----------------------------------------------------------
+# t                       uvm_sequence_item   -     @4248    
+#   id                    integral            32    'h2      
+#   prot                  integral            3     'h0      
+#   addr                  integral            32    'h50     
+#   data                  da(integral)        10    -        
+#     [0]                 integral            128   'h11     
+#     [1]                 integral            128   'haa     
+#     [2]                 integral            128   'h22     
+#     [3]                 integral            128   'hbb     
+#     [4]                 integral            128   'h33     
+#     [5]                 integral            128   'hcc     
+#     [6]                 integral            128   'h44     
+#     [7]                 integral            128   'hdd     
+#     [8]                 integral            128   'h55     
+#     [9]                 integral            128   'hee     
+#   burst_length          integral            32    'h5      
+#   burst_type            integral            32    'h1      
+#   byte_en               da(integral)        5     -        
+#     [0]                 integral            16    'h3      
+#     [1]                 integral            16    'hc      
+#     [2]                 integral            16    'h3      
+#     [3]                 integral            16    'hc      
+#     [4]                 integral            16    'h3      
+#   byte_en_first_custom  integral            1     'h0      
+#   byte_en_last_custom   integral            1     'h0      
+#   byte_en_last          integral            16    'h0      
+#   tr_size_in_bytes      integral            32    'h2      
+#   transaction_cycles    integral            32    'h0      
+#   op_type               axi_op_type_t       32    AXI_WRITE
+#   req_res               req_res_identifier  32    REQUEST  
+#   bresp                 integral            2     'h0X     
+#   rresp                 da(integral)        0     -        
+# -----------------------------------------------------------
+# 
+# UVM_INFO axi_monitor.svh(482) @ 895000: uvm_test_top.env.slave_agt_4.mon [uvm_monitor] AXI write: addr: 0x50, data[0]: 0x11, byte_en: 0x3, tr_size_in_bytes: 2, burst_length: 5
+# UVM_INFO axi_monitor.svh(487) @ 895000: uvm_test_top.env.slave_agt_4.mon [uvm_monitor] AXI write burst data 0: 0x11
+# UVM_INFO axi_monitor.svh(487) @ 895000: uvm_test_top.env.slave_agt_4.mon [uvm_monitor] AXI write burst data 1: 0xaa
+# UVM_INFO axi_monitor.svh(487) @ 895000: uvm_test_top.env.slave_agt_4.mon [uvm_monitor] AXI write burst data 2: 0x22
+# UVM_INFO axi_monitor.svh(487) @ 895000: uvm_test_top.env.slave_agt_4.mon [uvm_monitor] AXI write burst data 3: 0xbb
+# UVM_INFO axi_monitor.svh(487) @ 895000: uvm_test_top.env.slave_agt_4.mon [uvm_monitor] AXI write burst data 4: 0x33
+# UVM_INFO axi_monitor.svh(510) @ 895000: uvm_test_top.env.slave_agt_4.mon [uvm_monitor] AXI write completed for transaction ID: 2, latency: 24 cycles
+# UVM_INFO axi_monitor.svh(419) @ 895000: uvm_test_top.env.slave_agt_4.mon [harish_7] its entering
+# UVM_INFO axi_monitor.svh(422) @ 895000: uvm_test_top.env.slave_agt_4.mon [uvm_monitor] monitor write packet respnse is =-----------------------------------------------------------
+# Name                    Type                Size  Value    
+# -----------------------------------------------------------
+# t                       uvm_sequence_item   -     @5048    
+#   id                    integral            32    'h2      
+#   prot                  integral            3     'h0      
+#   addr                  integral            32    'h50     
+#   data                  da(integral)        10    -        
+#     [0]                 integral            128   'h11     
+#     [1]                 integral            128   'haa     
+#     [2]                 integral            128   'h22     
+#     [3]                 integral            128   'hbb     
+#     [4]                 integral            128   'h33     
+#     [5]                 integral            128   'hcc     
+#     [6]                 integral            128   'h44     
+#     [7]                 integral            128   'hdd     
+#     [8]                 integral            128   'h55     
+#     [9]                 integral            128   'hee     
+#   burst_length          integral            32    'h5      
+#   burst_type            integral            32    'h1      
+#   byte_en               da(integral)        5     -        
+#     [0]                 integral            16    'h3      
+#     [1]                 integral            16    'hc      
+#     [2]                 integral            16    'h3      
+#     [3]                 integral            16    'hc      
+#     [4]                 integral            16    'h3      
+#   byte_en_first_custom  integral            1     'h0      
+#   byte_en_last_custom   integral            1     'h0      
+#   byte_en_last          integral            16    'h0      
+#   tr_size_in_bytes      integral            32    'h2      
+#   transaction_cycles    integral            32    'h18     
+#   op_type               axi_op_type_t       32    AXI_WRITE
+#   req_res               req_res_identifier  32    RESPONSE 
+#   bresp                 integral            2     'h0      
+#   rresp                 da(integral)        0     -        
+# -----------------------------------------------------------
 # 
 # from interface write task of aw channel ......... 
-# UVM_INFO axi_master_driver.svh(295) @ 1135000: uvm_test_top.env.master_agt_1.drv [uvm_test_top.env.master_agt_1.drv] from driver process write task 
-#  -------------------------------------------------------------
-# Name                    Type               Size  Value       
-# -------------------------------------------------------------
-# axi_seq_item_tr         uvm_sequence_item  -     @3343       
-#   id                    integral           32    'h4         
-#   prot                  integral           3     'h0X        
-#   addr                  integral           32    'h40        
-#   data                  da(integral)       5     -           
-#     [0]                 integral           128   'h11        
-#     [1]                 integral           128   'h2200      
-#     [2]                 integral           128   'h330000    
-#     [3]                 integral           128   'h44000000  
-#     [4]                 integral           128   'h5500000000
-#   burst_length          integral           32    'h5         
-#   burst_type            integral           32    'h1         
-#   byte_en               da(integral)       5     -           
-#     [0]                 integral           16    'h1         
-#     [1]                 integral           16    'h2         
-#     [2]                 integral           16    'h4         
-#     [3]                 integral           16    'h8         
-#     [4]                 integral           16    'h10        
-#   byte_en_first_custom  integral           1     'h0         
-#   byte_en_last_custom   integral           1     'h0         
-#   byte_en_last          integral           16    'h0         
-#   tr_size_in_bytes      integral           32    'h1         
-#   transaction_cycles    integral           32    'h0         
-#   op_type               axi_op_type_t      32    AXI_WRITE   
-#   bresp                 integral           2     'h0X        
-#   rresp                 da(integral)       0     -           
-#   begin_time            time               64    170000      
-# -------------------------------------------------------------
+# UVM_INFO axi_master_driver.svh(295) @ 935000: uvm_test_top.env.master_agt_0.drv [uvm_test_top.env.master_agt_0.drv] from driver process write task 
+#  ------------------------------------------------------------
+# Name                    Type                Size  Value     
+# ------------------------------------------------------------
+# axi_seq_item_tr         uvm_sequence_item   -     @3273     
+#   id                    integral            32    'h3       
+#   prot                  integral            3     'h0X      
+#   addr                  integral            32    'h200078  
+#   data                  da(integral)        5     -         
+#     [0]                 integral            128   'h9af9aa11
+#     [1]                 integral            128   'h9bf9bb22
+#     [2]                 integral            128   'h9cf9cc33
+#     [3]                 integral            128   'h9df9dd44
+#     [4]                 integral            128   'h9ef9ee55
+#   burst_length          integral            32    'h5       
+#   burst_type            integral            32    'h1       
+#   byte_en               da(integral)        5     -         
+#     [0]                 integral            16    'h3       
+#     [1]                 integral            16    'h3       
+#     [2]                 integral            16    'h3       
+#     [3]                 integral            16    'h3       
+#     [4]                 integral            16    'h3       
+#   byte_en_first_custom  integral            1     'h0       
+#   byte_en_last_custom   integral            1     'h0       
+#   byte_en_last          integral            16    'h0       
+#   tr_size_in_bytes      integral            32    'h2       
+#   transaction_cycles    integral            32    'h0       
+#   op_type               axi_op_type_t       32    AXI_WRITE 
+#   req_res               req_res_identifier  32    REQUEST   
+#   bresp                 integral            2     'h0X      
+#   rresp                 da(integral)        0     -         
+#   begin_time            time                64    140000    
+# ------------------------------------------------------------
 # 
-#              1135000@@@@@@@@@@@@@@@@@_mon_aw burst_length =4 aw_len=4
-#              1135000!!!!!!!!!!!!!!! mon_aw data_size =5 stobe_size=5
-# UVM_INFO axi_monitor.svh(420) @ 1145000: uvm_test_top.env.master_agt_1.mon [uvm_monitor] monitor write packet respnse is =----------------------------------------------------------
-# Name                    Type               Size  Value    
-# ----------------------------------------------------------
-# t                       uvm_sequence_item  -     @5703    
-#   id                    integral           32    'h3      
-#   prot                  integral           3     'h0      
-#   addr                  integral           32    'h30     
-#   data                  da(integral)       5     -        
-#     [0]                 integral           128   'h11     
-#     [1]                 integral           128   'h0      
-#     [2]                 integral           128   'h0      
-#     [3]                 integral           128   'h0      
-#     [4]                 integral           128   'h0      
-#   burst_length          integral           32    'h5      
-#   burst_type            integral           32    'h1      
-#   byte_en               da(integral)       5     -        
-#     [0]                 integral           16    'h1      
-#     [1]                 integral           16    'h1      
-#     [2]                 integral           16    'h1      
-#     [3]                 integral           16    'h1      
-#     [4]                 integral           16    'h1      
-#   byte_en_first_custom  integral           1     'h0      
-#   byte_en_last_custom   integral           1     'h0      
-#   byte_en_last          integral           16    'h0      
-#   tr_size_in_bytes      integral           32    'h1      
-#   transaction_cycles    integral           32    'h3b     
-#   op_type               axi_op_type_t      32    AXI_WRITE
-#   bresp                 integral           2     'h0      
-#   rresp                 da(integral)       0     -        
-# ----------------------------------------------------------
+#               935000@@@@@@@@@@@@@@@@@_mon_aw burst_length =4 aw_len=4
+#               935000!!!!!!!!!!!!!!! mon_aw data_size =10 stobe_size=5
+# UVM_INFO axi_monitor.svh(419) @ 945000: uvm_test_top.env.master_agt_0.mon [harish_7] its entering
+# UVM_INFO axi_monitor.svh(422) @ 945000: uvm_test_top.env.master_agt_0.mon [uvm_monitor] monitor write packet respnse is =-----------------------------------------------------------
+# Name                    Type                Size  Value    
+# -----------------------------------------------------------
+# t                       uvm_sequence_item   -     @5173    
+#   id                    integral            32    'h2      
+#   prot                  integral            3     'h0      
+#   addr                  integral            32    'h200050 
+#   data                  da(integral)        10    -        
+#     [0]                 integral            128   'h11     
+#     [1]                 integral            128   'haa     
+#     [2]                 integral            128   'h22     
+#     [3]                 integral            128   'hbb     
+#     [4]                 integral            128   'h33     
+#     [5]                 integral            128   'hcc     
+#     [6]                 integral            128   'h44     
+#     [7]                 integral            128   'hdd     
+#     [8]                 integral            128   'h55     
+#     [9]                 integral            128   'hee     
+#   burst_length          integral            32    'h5      
+#   burst_type            integral            32    'h1      
+#   byte_en               da(integral)        5     -        
+#     [0]                 integral            16    'h3      
+#     [1]                 integral            16    'h3      
+#     [2]                 integral            16    'h3      
+#     [3]                 integral            16    'h3      
+#     [4]                 integral            16    'h3      
+#   byte_en_first_custom  integral            1     'h0      
+#   byte_en_last_custom   integral            1     'h0      
+#   byte_en_last          integral            16    'h0      
+#   tr_size_in_bytes      integral            32    'h2      
+#   transaction_cycles    integral            32    'h3a     
+#   op_type               axi_op_type_t       32    AXI_WRITE
+#   req_res               req_res_identifier  32    RESPONSE 
+#   bresp                 integral            2     'h0      
+#   rresp                 da(integral)        0     -        
+# -----------------------------------------------------------
+# 
+# UVM_INFO axi_scoreboard.sv(247) @ 945000: uvm_test_top.env.scr [interconnect_scoreboard] actual and expected packets are same for AXI_WRITE RESPONSE following order for same ID's
+# UVM_INFO axi_scoreboard.sv(248) @ 945000: uvm_test_top.env.scr [interconnect_scoreboard] AXI_WRITE RESPONSE comparison failed due to data mismatch, expected is 
+# -----------------------------------------------------------
+# Name                    Type                Size  Value    
+# -----------------------------------------------------------
+# t                       uvm_sequence_item   -     @5053    
+#   id                    integral            32    'h2      
+#   prot                  integral            3     'h0      
+#   addr                  integral            32    'h50     
+#   data                  da(integral)        10    -        
+#     [0]                 integral            128   'h11     
+#     [1]                 integral            128   'haa     
+#     [2]                 integral            128   'h22     
+#     [3]                 integral            128   'hbb     
+#     [4]                 integral            128   'h33     
+#     [5]                 integral            128   'hcc     
+#     [6]                 integral            128   'h44     
+#     [7]                 integral            128   'hdd     
+#     [8]                 integral            128   'h55     
+#     [9]                 integral            128   'hee     
+#   burst_length          integral            32    'h5      
+#   burst_type            integral            32    'h1      
+#   byte_en               da(integral)        5     -        
+#     [0]                 integral            16    'h3      
+#     [1]                 integral            16    'hc      
+#     [2]                 integral            16    'h3      
+#     [3]                 integral            16    'hc      
+#     [4]                 integral            16    'h3      
+#   byte_en_first_custom  integral            1     'h0      
+#   byte_en_last_custom   integral            1     'h0      
+#   byte_en_last          integral            16    'h0      
+#   tr_size_in_bytes      integral            32    'h2      
+#   transaction_cycles    integral            32    'h18     
+#   op_type               axi_op_type_t       32    AXI_WRITE
+#   req_res               req_res_identifier  32    RESPONSE 
+#   bresp                 integral            2     'h0      
+#   rresp                 da(integral)        0     -        
+# -----------------------------------------------------------
+#  actual is 
+# -----------------------------------------------------------
+# Name                    Type                Size  Value    
+# -----------------------------------------------------------
+# t                       uvm_sequence_item   -     @5178    
+#   id                    integral            32    'h2      
+#   prot                  integral            3     'h0      
+#   addr                  integral            32    'h50     
+#   data                  da(integral)        10    -        
+#     [0]                 integral            128   'h11     
+#     [1]                 integral            128   'haa     
+#     [2]                 integral            128   'h22     
+#     [3]                 integral            128   'hbb     
+#     [4]                 integral            128   'h33     
+#     [5]                 integral            128   'hcc     
+#     [6]                 integral            128   'h44     
+#     [7]                 integral            128   'hdd     
+#     [8]                 integral            128   'h55     
+#     [9]                 integral            128   'hee     
+#   burst_length          integral            32    'h5      
+#   burst_type            integral            32    'h1      
+#   byte_en               da(integral)        5     -        
+#     [0]                 integral            16    'h3      
+#     [1]                 integral            16    'h3      
+#     [2]                 integral            16    'h3      
+#     [3]                 integral            16    'h3      
+#     [4]                 integral            16    'h3      
+#   byte_en_first_custom  integral            1     'h0      
+#   byte_en_last_custom   integral            1     'h0      
+#   byte_en_last          integral            16    'h0      
+#   tr_size_in_bytes      integral            32    'h2      
+#   transaction_cycles    integral            32    'h3a     
+#   op_type               axi_op_type_t       32    AXI_WRITE
+#   req_res               req_res_identifier  32    RESPONSE 
+#   bresp                 integral            2     'h0      
+#   rresp                 da(integral)        0     -        
+# -----------------------------------------------------------
+# 
+#               955000data_write_queue_array =43537
+#               955000data_write_queue =aa11
+# from interface write task of aw channel 
+#               965000data_write_queue_array =43537 47906
+#               965000data_write_queue =bb22
+#               975000data_write_queue_array =43537 47906 52275
+#               975000data_write_queue =cc33
+#               985000data_write_queue_array =43537 47906 52275 56644
+#               985000data_write_queue =dd44
+#               985000@@@@@@@@@@@@@@@@@_mon_aw burst_length =4 aw_len=4
+#               985000!!!!!!!!!!!!!!! mon_aw data_size =0 stobe_size=0
+#               995000data_write_queue_array =43537 47906 52275 56644 61013
+#               995000data_write_queue =ee55
+# UVM_INFO axi_footprint_interface.sv(501) @ 995000: reporter [harish_6] '{238, 85, 221, 68, 204, 51, 187, 34, 170, 17}
+#              1025000data_write_queue_array =2853284369
+#              1025000data_write_queue =aa11aa11
+#              1055000data_write_queue_array =2853284369 3139615522
+#              1055000data_write_queue =bb22bb22
+#              1085000data_write_queue_array =2853284369 3139615522 3425946675
+#              1085000data_write_queue =cc33cc33
+#              1115000data_write_queue_array =2853284369 3139615522 3425946675 3712277828
+#              1115000data_write_queue =dd44dd44
+#              1145000data_write_queue_array =2853284369 3139615522 3425946675 3712277828 3998608981
+#              1145000data_write_queue =ee55ee55
+# UVM_INFO axi_footprint_interface.sv(501) @ 1145000: reporter [harish_6] '{238, 85, 221, 68, 204, 51, 187, 34, 170, 17}
+#              1155000@@@@@@@@@response
+# UVM_INFO axi_scoreboard.sv(247) @ 1155000: uvm_test_top.env.scr [interconnect_scoreboard] actual and expected packets are same for AXI_WRITE REQUEST following order for same ID's
+# UVM_INFO axi_scoreboard.sv(248) @ 1155000: uvm_test_top.env.scr [interconnect_scoreboard] AXI_WRITE REQUEST comparison failed due to data mismatch, expected is 
+# -----------------------------------------------------------
+# Name                    Type                Size  Value    
+# -----------------------------------------------------------
+# t                       uvm_sequence_item   -     @5203    
+#   id                    integral            32    'h3      
+#   prot                  integral            3     'h0      
+#   addr                  integral            32    'h78     
+#   data                  da(integral)        10    -        
+#     [0]                 integral            128   'h11     
+#     [1]                 integral            128   'haa     
+#     [2]                 integral            128   'h22     
+#     [3]                 integral            128   'hbb     
+#     [4]                 integral            128   'h33     
+#     [5]                 integral            128   'hcc     
+#     [6]                 integral            128   'h44     
+#     [7]                 integral            128   'hdd     
+#     [8]                 integral            128   'h55     
+#     [9]                 integral            128   'hee     
+#   burst_length          integral            32    'h5      
+#   burst_type            integral            32    'h1      
+#   byte_en               da(integral)        5     -        
+#     [0]                 integral            16    'h3      
+#     [1]                 integral            16    'h3      
+#     [2]                 integral            16    'h3      
+#     [3]                 integral            16    'h3      
+#     [4]                 integral            16    'h3      
+#   byte_en_first_custom  integral            1     'h0      
+#   byte_en_last_custom   integral            1     'h0      
+#   byte_en_last          integral            16    'h0      
+#   tr_size_in_bytes      integral            32    'h2      
+#   transaction_cycles    integral            32    'h0      
+#   op_type               axi_op_type_t       32    AXI_WRITE
+#   req_res               req_res_identifier  32    REQUEST  
+#   bresp                 integral            2     'h0X     
+#   rresp                 da(integral)        0     -        
+# -----------------------------------------------------------
+#  actual is 
+# -----------------------------------------------------------
+# Name                    Type                Size  Value    
+# -----------------------------------------------------------
+# t                       uvm_sequence_item   -     @5038    
+#   id                    integral            32    'h3      
+#   prot                  integral            3     'h0      
+#   addr                  integral            32    'h78     
+#   data                  da(integral)        10    -        
+#     [0]                 integral            128   'h11     
+#     [1]                 integral            128   'haa     
+#     [2]                 integral            128   'h22     
+#     [3]                 integral            128   'hbb     
+#     [4]                 integral            128   'h33     
+#     [5]                 integral            128   'hcc     
+#     [6]                 integral            128   'h44     
+#     [7]                 integral            128   'hdd     
+#     [8]                 integral            128   'h55     
+#     [9]                 integral            128   'hee     
+#   burst_length          integral            32    'h5      
+#   burst_type            integral            32    'h1      
+#   byte_en               da(integral)        5     -        
+#     [0]                 integral            16    'h3      
+#     [1]                 integral            16    'hc      
+#     [2]                 integral            16    'h3      
+#     [3]                 integral            16    'hc      
+#     [4]                 integral            16    'h3      
+#   byte_en_first_custom  integral            1     'h0      
+#   byte_en_last_custom   integral            1     'h0      
+#   byte_en_last          integral            16    'h0      
+#   tr_size_in_bytes      integral            32    'h2      
+#   transaction_cycles    integral            32    'h0      
+#   op_type               axi_op_type_t       32    AXI_WRITE
+#   req_res               req_res_identifier  32    REQUEST  
+#   bresp                 integral            2     'h0X     
+#   rresp                 da(integral)        0     -        
+# -----------------------------------------------------------
+# 
+# UVM_INFO axi_monitor.svh(482) @ 1175000: uvm_test_top.env.slave_agt_4.mon [uvm_monitor] AXI write: addr: 0x78, data[0]: 0x11, byte_en: 0x3, tr_size_in_bytes: 2, burst_length: 5
+# UVM_INFO axi_monitor.svh(487) @ 1175000: uvm_test_top.env.slave_agt_4.mon [uvm_monitor] AXI write burst data 0: 0x11
+# UVM_INFO axi_monitor.svh(487) @ 1175000: uvm_test_top.env.slave_agt_4.mon [uvm_monitor] AXI write burst data 1: 0xaa
+# UVM_INFO axi_monitor.svh(487) @ 1175000: uvm_test_top.env.slave_agt_4.mon [uvm_monitor] AXI write burst data 2: 0x22
+# UVM_INFO axi_monitor.svh(487) @ 1175000: uvm_test_top.env.slave_agt_4.mon [uvm_monitor] AXI write burst data 3: 0xbb
+# UVM_INFO axi_monitor.svh(487) @ 1175000: uvm_test_top.env.slave_agt_4.mon [uvm_monitor] AXI write burst data 4: 0x33
+# UVM_INFO axi_monitor.svh(510) @ 1175000: uvm_test_top.env.slave_agt_4.mon [uvm_monitor] AXI write completed for transaction ID: 3, latency: 18 cycles
+# UVM_INFO axi_monitor.svh(419) @ 1175000: uvm_test_top.env.slave_agt_4.mon [harish_7] its entering
+# UVM_INFO axi_monitor.svh(422) @ 1175000: uvm_test_top.env.slave_agt_4.mon [uvm_monitor] monitor write packet respnse is =-----------------------------------------------------------
+# Name                    Type                Size  Value    
+# -----------------------------------------------------------
+# t                       uvm_sequence_item   -     @5718    
+#   id                    integral            32    'h3      
+#   prot                  integral            3     'h0      
+#   addr                  integral            32    'h78     
+#   data                  da(integral)        10    -        
+#     [0]                 integral            128   'h11     
+#     [1]                 integral            128   'haa     
+#     [2]                 integral            128   'h22     
+#     [3]                 integral            128   'hbb     
+#     [4]                 integral            128   'h33     
+#     [5]                 integral            128   'hcc     
+#     [6]                 integral            128   'h44     
+#     [7]                 integral            128   'hdd     
+#     [8]                 integral            128   'h55     
+#     [9]                 integral            128   'hee     
+#   burst_length          integral            32    'h5      
+#   burst_type            integral            32    'h1      
+#   byte_en               da(integral)        5     -        
+#     [0]                 integral            16    'h3      
+#     [1]                 integral            16    'hc      
+#     [2]                 integral            16    'h3      
+#     [3]                 integral            16    'hc      
+#     [4]                 integral            16    'h3      
+#   byte_en_first_custom  integral            1     'h0      
+#   byte_en_last_custom   integral            1     'h0      
+#   byte_en_last          integral            16    'h0      
+#   tr_size_in_bytes      integral            32    'h2      
+#   transaction_cycles    integral            32    'h12     
+#   op_type               axi_op_type_t       32    AXI_WRITE
+#   req_res               req_res_identifier  32    RESPONSE 
+#   bresp                 integral            2     'h0      
+#   rresp                 da(integral)        0     -        
+# -----------------------------------------------------------
+# 
+# from interface write task of aw channel ......... 
+# UVM_INFO axi_master_driver.svh(295) @ 1205000: uvm_test_top.env.master_agt_0.drv [uvm_test_top.env.master_agt_0.drv] from driver process write task 
+#  ------------------------------------------------------------
+# Name                    Type                Size  Value     
+# ------------------------------------------------------------
+# axi_seq_item_tr         uvm_sequence_item   -     @3343     
+#   id                    integral            32    'h4       
+#   prot                  integral            3     'h0X      
+#   addr                  integral            32    'h2000a0  
+#   data                  da(integral)        5     -         
+#     [0]                 integral            128   'h9af9aa11
+#     [1]                 integral            128   'h9bf9bb22
+#     [2]                 integral            128   'h9cf9cc33
+#     [3]                 integral            128   'h9df9dd44
+#     [4]                 integral            128   'h9ef9ee55
+#   burst_length          integral            32    'h5       
+#   burst_type            integral            32    'h1       
+#   byte_en               da(integral)        5     -         
+#     [0]                 integral            16    'h3       
+#     [1]                 integral            16    'h3       
+#     [2]                 integral            16    'h3       
+#     [3]                 integral            16    'h3       
+#     [4]                 integral            16    'h3       
+#   byte_en_first_custom  integral            1     'h0       
+#   byte_en_last_custom   integral            1     'h0       
+#   byte_en_last          integral            16    'h0       
+#   tr_size_in_bytes      integral            32    'h2       
+#   transaction_cycles    integral            32    'h0       
+#   op_type               axi_op_type_t       32    AXI_WRITE 
+#   req_res               req_res_identifier  32    REQUEST   
+#   bresp                 integral            2     'h0X      
+#   rresp                 da(integral)        0     -         
+#   begin_time            time                64    170000    
+# ------------------------------------------------------------
 # 
 #              1205000@@@@@@@@@@@@@@@@@_mon_aw burst_length =4 aw_len=4
-#              1205000!!!!!!!!!!!!!!! mon_aw data_size =0 stobe_size=0
-#              1245000data_write_queue_array =17
-#              1245000data_write_queue =11
-#              1275000data_write_queue_array =17 8704
-#              1275000data_write_queue =2200
-#              1305000data_write_queue_array =17 8704 51
-#              1305000data_write_queue =33
-#              1335000data_write_queue_array =17 8704 51 17408
-#              1335000data_write_queue =4400
-#              1365000data_write_queue_array =17 8704 51 17408 85
-#              1365000data_write_queue =55
-#              1365000##################$$$$$$$$$$$$$$$ data write[0] =17
-#              1365000##################$$$$$$$$$$$$$$$ data write[1] =34
-#              1365000##################$$$$$$$$$$$$$$$ data write[2] =51
-#              1365000##################$$$$$$$$$$$$$$$ data write[3] =68
-#              1365000##################$$$$$$$$$$$$$$$ data write[4] =85
-# UVM_INFO axi_scoreboard.sv(266) @ 1375000: uvm_test_top.env.scr [interconnect_scoreboard] actual and expected packets are same for AXI_WRITE REQUEST
-#              1385000@@@@@@@@@response
-# UVM_INFO axi_monitor.svh(480) @ 1405000: uvm_test_top.env.slave_cfg_0.mon [uvm_monitor] AXI write: addr: 0x40, data[0]: 0x11, byte_en: 0x1, tr_size_in_bytes: 1, burst_length: 5
-# UVM_INFO axi_monitor.svh(485) @ 1405000: uvm_test_top.env.slave_cfg_0.mon [uvm_monitor] AXI write burst data 0: 0x11
-# UVM_INFO axi_monitor.svh(485) @ 1405000: uvm_test_top.env.slave_cfg_0.mon [uvm_monitor] AXI write burst data 1: 0x0
-# UVM_INFO axi_monitor.svh(485) @ 1405000: uvm_test_top.env.slave_cfg_0.mon [uvm_monitor] AXI write burst data 2: 0x33
-# UVM_INFO axi_monitor.svh(485) @ 1405000: uvm_test_top.env.slave_cfg_0.mon [uvm_monitor] AXI write burst data 3: 0x0
-# UVM_INFO axi_monitor.svh(485) @ 1405000: uvm_test_top.env.slave_cfg_0.mon [uvm_monitor] AXI write burst data 4: 0x55
-# UVM_INFO axi_monitor.svh(508) @ 1405000: uvm_test_top.env.slave_cfg_0.mon [uvm_monitor] AXI write completed for transaction ID: 516, latency: 21 cycles
-# UVM_INFO axi_monitor.svh(420) @ 1405000: uvm_test_top.env.slave_cfg_0.mon [uvm_monitor] monitor write packet respnse is =----------------------------------------------------------
-# Name                    Type               Size  Value    
-# ----------------------------------------------------------
-# t                       uvm_sequence_item  -     @6318    
-#   id                    integral           32    'h204    
-#   prot                  integral           3     'h0      
-#   addr                  integral           32    'h40     
-#   data                  da(integral)       5     -        
-#     [0]                 integral           128   'h11     
-#     [1]                 integral           128   'h0      
-#     [2]                 integral           128   'h33     
-#     [3]                 integral           128   'h0      
-#     [4]                 integral           128   'h55     
-#   burst_length          integral           32    'h5      
-#   burst_type            integral           32    'h1      
-#   byte_en               da(integral)       5     -        
-#     [0]                 integral           16    'h1      
-#     [1]                 integral           16    'h1      
-#     [2]                 integral           16    'h1      
-#     [3]                 integral           16    'h1      
-#     [4]                 integral           16    'h1      
-#   byte_en_first_custom  integral           1     'h0      
-#   byte_en_last_custom   integral           1     'h0      
-#   byte_en_last          integral           16    'h0      
-#   tr_size_in_bytes      integral           32    'h1      
-#   transaction_cycles    integral           32    'h15     
-#   op_type               axi_op_type_t      32    AXI_WRITE
-#   bresp                 integral           2     'h0      
-#   rresp                 da(integral)       0     -        
-# ----------------------------------------------------------
+#              1205000!!!!!!!!!!!!!!! mon_aw data_size =10 stobe_size=5
+# UVM_INFO axi_monitor.svh(419) @ 1215000: uvm_test_top.env.master_agt_0.mon [harish_7] its entering
+# UVM_INFO axi_monitor.svh(422) @ 1215000: uvm_test_top.env.master_agt_0.mon [uvm_monitor] monitor write packet respnse is =-----------------------------------------------------------
+# Name                    Type                Size  Value    
+# -----------------------------------------------------------
+# t                       uvm_sequence_item   -     @5843    
+#   id                    integral            32    'h3      
+#   prot                  integral            3     'h0      
+#   addr                  integral            32    'h200078 
+#   data                  da(integral)        10    -        
+#     [0]                 integral            128   'h11     
+#     [1]                 integral            128   'haa     
+#     [2]                 integral            128   'h22     
+#     [3]                 integral            128   'hbb     
+#     [4]                 integral            128   'h33     
+#     [5]                 integral            128   'hcc     
+#     [6]                 integral            128   'h44     
+#     [7]                 integral            128   'hdd     
+#     [8]                 integral            128   'h55     
+#     [9]                 integral            128   'hee     
+#   burst_length          integral            32    'h5      
+#   burst_type            integral            32    'h1      
+#   byte_en               da(integral)        5     -        
+#     [0]                 integral            16    'h3      
+#     [1]                 integral            16    'h3      
+#     [2]                 integral            16    'h3      
+#     [3]                 integral            16    'h3      
+#     [4]                 integral            16    'h3      
+#   byte_en_first_custom  integral            1     'h0      
+#   byte_en_last_custom   integral            1     'h0      
+#   byte_en_last          integral            16    'h0      
+#   tr_size_in_bytes      integral            32    'h2      
+#   transaction_cycles    integral            32    'h38     
+#   op_type               axi_op_type_t       32    AXI_WRITE
+#   req_res               req_res_identifier  32    RESPONSE 
+#   bresp                 integral            2     'h0      
+#   rresp                 da(integral)        0     -        
+# -----------------------------------------------------------
 # 
-# UVM_INFO axi_monitor.svh(420) @ 1445000: uvm_test_top.env.master_agt_1.mon [uvm_monitor] monitor write packet respnse is =----------------------------------------------------------
-# Name                    Type               Size  Value    
-# ----------------------------------------------------------
-# t                       uvm_sequence_item  -     @6423    
-#   id                    integral           32    'h4      
-#   prot                  integral           3     'h0      
-#   addr                  integral           32    'h40     
-#   data                  da(integral)       5     -        
-#     [0]                 integral           128   'h11     
-#     [1]                 integral           128   'h0      
-#     [2]                 integral           128   'h0      
-#     [3]                 integral           128   'h0      
-#     [4]                 integral           128   'h0      
-#   burst_length          integral           32    'h5      
-#   burst_type            integral           32    'h1      
-#   byte_en               da(integral)       5     -        
-#     [0]                 integral           16    'h1      
-#     [1]                 integral           16    'h1      
-#     [2]                 integral           16    'h1      
-#     [3]                 integral           16    'h1      
-#     [4]                 integral           16    'h1      
-#   byte_en_first_custom  integral           1     'h0      
-#   byte_en_last_custom   integral           1     'h0      
-#   byte_en_last          integral           16    'h0      
-#   tr_size_in_bytes      integral           32    'h1      
-#   transaction_cycles    integral           32    'h3a     
-#   op_type               axi_op_type_t      32    AXI_WRITE
-#   bresp                 integral           2     'h0      
-#   rresp                 da(integral)       0     -        
-# ----------------------------------------------------------
+# UVM_INFO axi_scoreboard.sv(247) @ 1215000: uvm_test_top.env.scr [interconnect_scoreboard] actual and expected packets are same for AXI_WRITE RESPONSE following order for same ID's
+# UVM_INFO axi_scoreboard.sv(248) @ 1215000: uvm_test_top.env.scr [interconnect_scoreboard] AXI_WRITE RESPONSE comparison failed due to data mismatch, expected is 
+# -----------------------------------------------------------
+# Name                    Type                Size  Value    
+# -----------------------------------------------------------
+# t                       uvm_sequence_item   -     @5723    
+#   id                    integral            32    'h3      
+#   prot                  integral            3     'h0      
+#   addr                  integral            32    'h78     
+#   data                  da(integral)        10    -        
+#     [0]                 integral            128   'h11     
+#     [1]                 integral            128   'haa     
+#     [2]                 integral            128   'h22     
+#     [3]                 integral            128   'hbb     
+#     [4]                 integral            128   'h33     
+#     [5]                 integral            128   'hcc     
+#     [6]                 integral            128   'h44     
+#     [7]                 integral            128   'hdd     
+#     [8]                 integral            128   'h55     
+#     [9]                 integral            128   'hee     
+#   burst_length          integral            32    'h5      
+#   burst_type            integral            32    'h1      
+#   byte_en               da(integral)        5     -        
+#     [0]                 integral            16    'h3      
+#     [1]                 integral            16    'hc      
+#     [2]                 integral            16    'h3      
+#     [3]                 integral            16    'hc      
+#     [4]                 integral            16    'h3      
+#   byte_en_first_custom  integral            1     'h0      
+#   byte_en_last_custom   integral            1     'h0      
+#   byte_en_last          integral            16    'h0      
+#   tr_size_in_bytes      integral            32    'h2      
+#   transaction_cycles    integral            32    'h12     
+#   op_type               axi_op_type_t       32    AXI_WRITE
+#   req_res               req_res_identifier  32    RESPONSE 
+#   bresp                 integral            2     'h0      
+#   rresp                 da(integral)        0     -        
+# -----------------------------------------------------------
+#  actual is 
+# -----------------------------------------------------------
+# Name                    Type                Size  Value    
+# -----------------------------------------------------------
+# t                       uvm_sequence_item   -     @5848    
+#   id                    integral            32    'h3      
+#   prot                  integral            3     'h0      
+#   addr                  integral            32    'h78     
+#   data                  da(integral)        10    -        
+#     [0]                 integral            128   'h11     
+#     [1]                 integral            128   'haa     
+#     [2]                 integral            128   'h22     
+#     [3]                 integral            128   'hbb     
+#     [4]                 integral            128   'h33     
+#     [5]                 integral            128   'hcc     
+#     [6]                 integral            128   'h44     
+#     [7]                 integral            128   'hdd     
+#     [8]                 integral            128   'h55     
+#     [9]                 integral            128   'hee     
+#   burst_length          integral            32    'h5      
+#   burst_type            integral            32    'h1      
+#   byte_en               da(integral)        5     -        
+#     [0]                 integral            16    'h3      
+#     [1]                 integral            16    'h3      
+#     [2]                 integral            16    'h3      
+#     [3]                 integral            16    'h3      
+#     [4]                 integral            16    'h3      
+#   byte_en_first_custom  integral            1     'h0      
+#   byte_en_last_custom   integral            1     'h0      
+#   byte_en_last          integral            16    'h0      
+#   tr_size_in_bytes      integral            32    'h2      
+#   transaction_cycles    integral            32    'h38     
+#   op_type               axi_op_type_t       32    AXI_WRITE
+#   req_res               req_res_identifier  32    RESPONSE 
+#   bresp                 integral            2     'h0      
+#   rresp                 da(integral)        0     -        
+# -----------------------------------------------------------
 # 
-# UVM_INFO verilog_src/uvm-1.1d/src/base/uvm_objection.svh(1267) @ 5485000: reporter [TEST_DONE] 'run' phase is ready to proceed to the 'extract' phase
-# UVM_INFO axi_monitor.svh(604) @ 5485000: uvm_test_top.env.master_agt_0.mon [uvm_monitor] BW calculation is based on the maximum bus width (cfg.data_width) without idle periods
-# UVM_INFO axi_monitor.svh(616) @ 5485000: uvm_test_top.env.master_agt_0.mon [uvm_monitor] No write transactions observed
-# UVM_INFO axi_monitor.svh(629) @ 5485000: uvm_test_top.env.master_agt_0.mon [uvm_monitor] No read transactions observed
-# UVM_INFO axi_monitor.svh(604) @ 5485000: uvm_test_top.env.master_agt_1.mon [uvm_monitor] BW calculation is based on the maximum bus width (cfg.data_width) without idle periods
-# UVM_INFO axi_monitor.svh(614) @ 5485000: uvm_test_top.env.master_agt_1.mon [uvm_monitor] Average write bandwidth: 621.098340 MBytes/s
-# UVM_INFO axi_monitor.svh(629) @ 5485000: uvm_test_top.env.master_agt_1.mon [uvm_monitor] No read transactions observed
-# UVM_INFO axi_monitor.svh(604) @ 5485000: uvm_test_top.env.master_agt_2.mon [uvm_monitor] BW calculation is based on the maximum bus width (cfg.data_width) without idle periods
-# UVM_INFO axi_monitor.svh(616) @ 5485000: uvm_test_top.env.master_agt_2.mon [uvm_monitor] No write transactions observed
-# UVM_INFO axi_monitor.svh(629) @ 5485000: uvm_test_top.env.master_agt_2.mon [uvm_monitor] No read transactions observed
-# UVM_INFO axi_monitor.svh(604) @ 5485000: uvm_test_top.env.master_agt_3.mon [uvm_monitor] BW calculation is based on the maximum bus width (cfg.data_width) without idle periods
-# UVM_INFO axi_monitor.svh(616) @ 5485000: uvm_test_top.env.master_agt_3.mon [uvm_monitor] No write transactions observed
-# UVM_INFO axi_monitor.svh(629) @ 5485000: uvm_test_top.env.master_agt_3.mon [uvm_monitor] No read transactions observed
-# UVM_INFO axi_scoreboard.sv(286) @ 5485000: uvm_test_top.env.scr [uvm_test_top.env.scr] count=10
+#              1275000@@@@@@@@@@@@@@@@@_mon_aw burst_length =4 aw_len=4
+#              1275000!!!!!!!!!!!!!!! mon_aw data_size =0 stobe_size=0
+#              1315000data_write_queue_array =2853284369
+#              1315000data_write_queue =aa11aa11
+#              1355000data_write_queue_array =2853284369 3139615522
+#              1355000data_write_queue =bb22bb22
+#              1395000data_write_queue_array =2853284369 3139615522 3425946675
+#              1395000data_write_queue =cc33cc33
+#              1435000data_write_queue_array =2853284369 3139615522 3425946675 3712277828
+#              1435000data_write_queue =dd44dd44
+#              1475000data_write_queue_array =2853284369 3139615522 3425946675 3712277828 3998608981
+#              1475000data_write_queue =ee55ee55
+# UVM_INFO axi_footprint_interface.sv(501) @ 1475000: reporter [harish_6] '{238, 85, 221, 68, 204, 51, 187, 34, 170, 17}
+# UVM_INFO axi_scoreboard.sv(247) @ 1485000: uvm_test_top.env.scr [interconnect_scoreboard] actual and expected packets are same for AXI_WRITE REQUEST following order for same ID's
+# UVM_INFO axi_scoreboard.sv(248) @ 1485000: uvm_test_top.env.scr [interconnect_scoreboard] AXI_WRITE REQUEST comparison failed due to data mismatch, expected is 
+# -----------------------------------------------------------
+# Name                    Type                Size  Value    
+# -----------------------------------------------------------
+# t                       uvm_sequence_item   -     @5858    
+#   id                    integral            32    'h4      
+#   prot                  integral            3     'h0      
+#   addr                  integral            32    'ha0     
+#   data                  da(integral)        10    -        
+#     [0]                 integral            128   'h11     
+#     [1]                 integral            128   'haa     
+#     [2]                 integral            128   'h22     
+#     [3]                 integral            128   'hbb     
+#     [4]                 integral            128   'h33     
+#     [5]                 integral            128   'hcc     
+#     [6]                 integral            128   'h44     
+#     [7]                 integral            128   'hdd     
+#     [8]                 integral            128   'h55     
+#     [9]                 integral            128   'hee     
+#   burst_length          integral            32    'h5      
+#   burst_type            integral            32    'h1      
+#   byte_en               da(integral)        5     -        
+#     [0]                 integral            16    'h3      
+#     [1]                 integral            16    'h3      
+#     [2]                 integral            16    'h3      
+#     [3]                 integral            16    'h3      
+#     [4]                 integral            16    'h3      
+#   byte_en_first_custom  integral            1     'h0      
+#   byte_en_last_custom   integral            1     'h0      
+#   byte_en_last          integral            16    'h0      
+#   tr_size_in_bytes      integral            32    'h2      
+#   transaction_cycles    integral            32    'h0      
+#   op_type               axi_op_type_t       32    AXI_WRITE
+#   req_res               req_res_identifier  32    REQUEST  
+#   bresp                 integral            2     'h0X     
+#   rresp                 da(integral)        0     -        
+# -----------------------------------------------------------
+#  actual is 
+# -----------------------------------------------------------
+# Name                    Type                Size  Value    
+# -----------------------------------------------------------
+# t                       uvm_sequence_item   -     @5648    
+#   id                    integral            32    'h4      
+#   prot                  integral            3     'h0      
+#   addr                  integral            32    'ha0     
+#   data                  da(integral)        10    -        
+#     [0]                 integral            128   'h11     
+#     [1]                 integral            128   'haa     
+#     [2]                 integral            128   'h22     
+#     [3]                 integral            128   'hbb     
+#     [4]                 integral            128   'h33     
+#     [5]                 integral            128   'hcc     
+#     [6]                 integral            128   'h44     
+#     [7]                 integral            128   'hdd     
+#     [8]                 integral            128   'h55     
+#     [9]                 integral            128   'hee     
+#   burst_length          integral            32    'h5      
+#   burst_type            integral            32    'h1      
+#   byte_en               da(integral)        5     -        
+#     [0]                 integral            16    'h3      
+#     [1]                 integral            16    'hc      
+#     [2]                 integral            16    'h3      
+#     [3]                 integral            16    'hc      
+#     [4]                 integral            16    'h3      
+#   byte_en_first_custom  integral            1     'h0      
+#   byte_en_last_custom   integral            1     'h0      
+#   byte_en_last          integral            16    'h0      
+#   tr_size_in_bytes      integral            32    'h2      
+#   transaction_cycles    integral            32    'h0      
+#   op_type               axi_op_type_t       32    AXI_WRITE
+#   req_res               req_res_identifier  32    REQUEST  
+#   bresp                 integral            2     'h0X     
+#   rresp                 da(integral)        0     -        
+# -----------------------------------------------------------
+# 
+#              1505000@@@@@@@@@response
+# UVM_INFO axi_monitor.svh(482) @ 1525000: uvm_test_top.env.slave_agt_4.mon [uvm_monitor] AXI write: addr: 0xa0, data[0]: 0x11, byte_en: 0x3, tr_size_in_bytes: 2, burst_length: 5
+# UVM_INFO axi_monitor.svh(487) @ 1525000: uvm_test_top.env.slave_agt_4.mon [uvm_monitor] AXI write burst data 0: 0x11
+# UVM_INFO axi_monitor.svh(487) @ 1525000: uvm_test_top.env.slave_agt_4.mon [uvm_monitor] AXI write burst data 1: 0xaa
+# UVM_INFO axi_monitor.svh(487) @ 1525000: uvm_test_top.env.slave_agt_4.mon [uvm_monitor] AXI write burst data 2: 0x22
+# UVM_INFO axi_monitor.svh(487) @ 1525000: uvm_test_top.env.slave_agt_4.mon [uvm_monitor] AXI write burst data 3: 0xbb
+# UVM_INFO axi_monitor.svh(487) @ 1525000: uvm_test_top.env.slave_agt_4.mon [uvm_monitor] AXI write burst data 4: 0x33
+# UVM_INFO axi_monitor.svh(510) @ 1525000: uvm_test_top.env.slave_agt_4.mon [uvm_monitor] AXI write completed for transaction ID: 4, latency: 26 cycles
+# UVM_INFO axi_monitor.svh(419) @ 1525000: uvm_test_top.env.slave_agt_4.mon [harish_7] its entering
+# UVM_INFO axi_monitor.svh(422) @ 1525000: uvm_test_top.env.slave_agt_4.mon [uvm_monitor] monitor write packet respnse is =-----------------------------------------------------------
+# Name                    Type                Size  Value    
+# -----------------------------------------------------------
+# t                       uvm_sequence_item   -     @6548    
+#   id                    integral            32    'h4      
+#   prot                  integral            3     'h0      
+#   addr                  integral            32    'ha0     
+#   data                  da(integral)        10    -        
+#     [0]                 integral            128   'h11     
+#     [1]                 integral            128   'haa     
+#     [2]                 integral            128   'h22     
+#     [3]                 integral            128   'hbb     
+#     [4]                 integral            128   'h33     
+#     [5]                 integral            128   'hcc     
+#     [6]                 integral            128   'h44     
+#     [7]                 integral            128   'hdd     
+#     [8]                 integral            128   'h55     
+#     [9]                 integral            128   'hee     
+#   burst_length          integral            32    'h5      
+#   burst_type            integral            32    'h1      
+#   byte_en               da(integral)        5     -        
+#     [0]                 integral            16    'h3      
+#     [1]                 integral            16    'hc      
+#     [2]                 integral            16    'h3      
+#     [3]                 integral            16    'hc      
+#     [4]                 integral            16    'h3      
+#   byte_en_first_custom  integral            1     'h0      
+#   byte_en_last_custom   integral            1     'h0      
+#   byte_en_last          integral            16    'h0      
+#   tr_size_in_bytes      integral            32    'h2      
+#   transaction_cycles    integral            32    'h1a     
+#   op_type               axi_op_type_t       32    AXI_WRITE
+#   req_res               req_res_identifier  32    RESPONSE 
+#   bresp                 integral            2     'h0      
+#   rresp                 da(integral)        0     -        
+# -----------------------------------------------------------
+# 
+# UVM_INFO axi_monitor.svh(419) @ 1565000: uvm_test_top.env.master_agt_0.mon [harish_7] its entering
+# UVM_INFO axi_monitor.svh(422) @ 1565000: uvm_test_top.env.master_agt_0.mon [uvm_monitor] monitor write packet respnse is =-----------------------------------------------------------
+# Name                    Type                Size  Value    
+# -----------------------------------------------------------
+# t                       uvm_sequence_item   -     @6653    
+#   id                    integral            32    'h4      
+#   prot                  integral            3     'h0      
+#   addr                  integral            32    'h2000a0 
+#   data                  da(integral)        10    -        
+#     [0]                 integral            128   'h11     
+#     [1]                 integral            128   'haa     
+#     [2]                 integral            128   'h22     
+#     [3]                 integral            128   'hbb     
+#     [4]                 integral            128   'h33     
+#     [5]                 integral            128   'hcc     
+#     [6]                 integral            128   'h44     
+#     [7]                 integral            128   'hdd     
+#     [8]                 integral            128   'h55     
+#     [9]                 integral            128   'hee     
+#   burst_length          integral            32    'h5      
+#   burst_type            integral            32    'h1      
+#   byte_en               da(integral)        5     -        
+#     [0]                 integral            16    'h3      
+#     [1]                 integral            16    'h3      
+#     [2]                 integral            16    'h3      
+#     [3]                 integral            16    'h3      
+#     [4]                 integral            16    'h3      
+#   byte_en_first_custom  integral            1     'h0      
+#   byte_en_last_custom   integral            1     'h0      
+#   byte_en_last          integral            16    'h0      
+#   tr_size_in_bytes      integral            32    'h2      
+#   transaction_cycles    integral            32    'h3a     
+#   op_type               axi_op_type_t       32    AXI_WRITE
+#   req_res               req_res_identifier  32    RESPONSE 
+#   bresp                 integral            2     'h0      
+#   rresp                 da(integral)        0     -        
+# -----------------------------------------------------------
+# 
+# UVM_INFO axi_scoreboard.sv(247) @ 1565000: uvm_test_top.env.scr [interconnect_scoreboard] actual and expected packets are same for AXI_WRITE RESPONSE following order for same ID's
+# UVM_INFO axi_scoreboard.sv(248) @ 1565000: uvm_test_top.env.scr [interconnect_scoreboard] AXI_WRITE RESPONSE comparison failed due to data mismatch, expected is 
+# -----------------------------------------------------------
+# Name                    Type                Size  Value    
+# -----------------------------------------------------------
+# t                       uvm_sequence_item   -     @6553    
+#   id                    integral            32    'h4      
+#   prot                  integral            3     'h0      
+#   addr                  integral            32    'ha0     
+#   data                  da(integral)        10    -        
+#     [0]                 integral            128   'h11     
+#     [1]                 integral            128   'haa     
+#     [2]                 integral            128   'h22     
+#     [3]                 integral            128   'hbb     
+#     [4]                 integral            128   'h33     
+#     [5]                 integral            128   'hcc     
+#     [6]                 integral            128   'h44     
+#     [7]                 integral            128   'hdd     
+#     [8]                 integral            128   'h55     
+#     [9]                 integral            128   'hee     
+#   burst_length          integral            32    'h5      
+#   burst_type            integral            32    'h1      
+#   byte_en               da(integral)        5     -        
+#     [0]                 integral            16    'h3      
+#     [1]                 integral            16    'hc      
+#     [2]                 integral            16    'h3      
+#     [3]                 integral            16    'hc      
+#     [4]                 integral            16    'h3      
+#   byte_en_first_custom  integral            1     'h0      
+#   byte_en_last_custom   integral            1     'h0      
+#   byte_en_last          integral            16    'h0      
+#   tr_size_in_bytes      integral            32    'h2      
+#   transaction_cycles    integral            32    'h1a     
+#   op_type               axi_op_type_t       32    AXI_WRITE
+#   req_res               req_res_identifier  32    RESPONSE 
+#   bresp                 integral            2     'h0      
+#   rresp                 da(integral)        0     -        
+# -----------------------------------------------------------
+#  actual is 
+# -----------------------------------------------------------
+# Name                    Type                Size  Value    
+# -----------------------------------------------------------
+# t                       uvm_sequence_item   -     @6658    
+#   id                    integral            32    'h4      
+#   prot                  integral            3     'h0      
+#   addr                  integral            32    'ha0     
+#   data                  da(integral)        10    -        
+#     [0]                 integral            128   'h11     
+#     [1]                 integral            128   'haa     
+#     [2]                 integral            128   'h22     
+#     [3]                 integral            128   'hbb     
+#     [4]                 integral            128   'h33     
+#     [5]                 integral            128   'hcc     
+#     [6]                 integral            128   'h44     
+#     [7]                 integral            128   'hdd     
+#     [8]                 integral            128   'h55     
+#     [9]                 integral            128   'hee     
+#   burst_length          integral            32    'h5      
+#   burst_type            integral            32    'h1      
+#   byte_en               da(integral)        5     -        
+#     [0]                 integral            16    'h3      
+#     [1]                 integral            16    'h3      
+#     [2]                 integral            16    'h3      
+#     [3]                 integral            16    'h3      
+#     [4]                 integral            16    'h3      
+#   byte_en_first_custom  integral            1     'h0      
+#   byte_en_last_custom   integral            1     'h0      
+#   byte_en_last          integral            16    'h0      
+#   tr_size_in_bytes      integral            32    'h2      
+#   transaction_cycles    integral            32    'h3a     
+#   op_type               axi_op_type_t       32    AXI_WRITE
+#   req_res               req_res_identifier  32    RESPONSE 
+#   bresp                 integral            2     'h0      
+#   rresp                 da(integral)        0     -        
+# -----------------------------------------------------------
+# 
+# UVM_INFO verilog_src/uvm-1.1d/src/base/uvm_objection.svh(1267) @ 5200000: reporter [TEST_DONE] 'run' phase is ready to proceed to the 'extract' phase
+# UVM_INFO axi_monitor.svh(606) @ 5200000: uvm_test_top.env.master_agt_0.mon [uvm_monitor] BW calculation is based on the maximum bus width (cfg.data_width) without idle periods
+# UVM_INFO axi_monitor.svh(616) @ 5200000: uvm_test_top.env.master_agt_0.mon [uvm_monitor] Average write bandwidth: 84.457014 MBytes/s
+# UVM_INFO axi_monitor.svh(631) @ 5200000: uvm_test_top.env.master_agt_0.mon [uvm_monitor] No read transactions observed
+# UVM_INFO axi_monitor.svh(606) @ 5200000: uvm_test_top.env.master_agt_1.mon [uvm_monitor] BW calculation is based on the maximum bus width (cfg.data_width) without idle periods
+# UVM_INFO axi_monitor.svh(618) @ 5200000: uvm_test_top.env.master_agt_1.mon [uvm_monitor] No write transactions observed
+# UVM_INFO axi_monitor.svh(631) @ 5200000: uvm_test_top.env.master_agt_1.mon [uvm_monitor] No read transactions observed
+# UVM_INFO axi_monitor.svh(606) @ 5200000: uvm_test_top.env.master_agt_2.mon [uvm_monitor] BW calculation is based on the maximum bus width (cfg.data_width) without idle periods
+# UVM_INFO axi_monitor.svh(618) @ 5200000: uvm_test_top.env.master_agt_2.mon [uvm_monitor] No write transactions observed
+# UVM_INFO axi_monitor.svh(631) @ 5200000: uvm_test_top.env.master_agt_2.mon [uvm_monitor] No read transactions observed
+# UVM_INFO axi_monitor.svh(606) @ 5200000: uvm_test_top.env.master_agt_3.mon [uvm_monitor] BW calculation is based on the maximum bus width (cfg.data_width) without idle periods
+# UVM_INFO axi_monitor.svh(618) @ 5200000: uvm_test_top.env.master_agt_3.mon [uvm_monitor] No write transactions observed
+# UVM_INFO axi_monitor.svh(631) @ 5200000: uvm_test_top.env.master_agt_3.mon [uvm_monitor] No read transactions observed
+# UVM_INFO axi_scoreboard.sv(286) @ 5200000: uvm_test_top.env.scr [uvm_test_top.env.scr] count=10
 # 
 # --- UVM Report Summary ---
 # 
 # ** Report counts by severity
-# UVM_INFO :   93
+# UVM_INFO :  123
 # UVM_WARNING :    4
 # UVM_ERROR :    0
 # UVM_FATAL :    0
@@ -1417,13 +2120,14 @@
 # [TPRGED]     4
 # [TRACE]     1
 # [UVMTOP]     1
-# [interconnect_scoreboard]     6
+# [harish_6]    10
+# [harish_7]    10
+# [interconnect_scoreboard]    20
 # [uvm_driver #(REQ,RSP)]     4
 # [uvm_monitor]    57
-# [uvm_test_top]     4
 # [uvm_test_top.env.master_agt_0]     1
+# [uvm_test_top.env.master_agt_0.drv]     5
 # [uvm_test_top.env.master_agt_1]     1
-# [uvm_test_top.env.master_agt_1.drv]     5
 # [uvm_test_top.env.master_agt_2]     1
 # [uvm_test_top.env.master_agt_3]     1
 # [uvm_test_top.env.scr]     1
@@ -1434,6 +2138,6 @@
 # [uvm_test_top.env.slave_agt_5]     1
 # [uvm_test_top.env.slave_cfg_0]     1
 # ** Note: $finish    : /home/harish/Desktop/28-06-2022/questasim/linux_x86_64/../verilog_src/uvm-1.1d/src/base/uvm_root.svh(430)
-#    Time: 5485 ns  Iteration: 54  Instance: /axi_interconnect_top
-# End time: 10:46:58 on Mar 06,2024, Elapsed time: 0:00:10
-# Errors: 0, Warnings: 120
+#    Time: 5200 ns  Iteration: 54  Instance: /axi_interconnect_top
+# End time: 07:05:00 on Mar 07,2024, Elapsed time: 0:00:07
+# Errors: 0, Warnings: 100

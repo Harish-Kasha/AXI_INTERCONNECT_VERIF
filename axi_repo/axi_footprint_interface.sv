@@ -469,6 +469,7 @@ interface axi_footprint_interface #(int DW=32, int AW=32, int ID_W =10);
       automatic int i = 0;
       bit [1023:0] qu_data[$];    
       bit [1023:0] qu_storb[$];      
+      bit [7:0] qu_8_data[$];      
       bit [1023:0] temp_data; 
       bit [1023:0] temp,temp1,shift,vale,data;
       int storb;   
@@ -485,24 +486,38 @@ interface axi_footprint_interface #(int DW=32, int AW=32, int ID_W =10);
             i++;
             if (axi_monitor_cb.wlast === 1'b1 || !(t.use_last_signaling)) begin
               t.byte_en =new[qu_storb.size()];
+              t.data =new[qu_data.size()];
               foreach(t.byte_en[i]) t.byte_en[i] = qu_storb.pop_front();
-
-              foreach(t.byte_en[i])   
-              begin 
-                 foreach(t.byte_en[i][j]) if(t.byte_en[i][j] == 1'b1) data_size_in_bytes++; 
+              foreach(t.data[i]) t.data[i] = qu_data.pop_front();
+              
+            for(int i=0;i<t.data.size;i++)
+            begin
+              temp_data = t.data[i];
+              for(int j=0;j<$size(axi_monitor_cb.wstrb);j++) 
+              begin
+                 if(t.byte_en[i][j]==1'b1) qu_8_data.push_front(temp_data[j*8+:8]);
               end
-              t.data =new[data_size_in_bytes];
+            end
+            `uvm_info("harish_6",$sformatf("%p",qu_8_data),UVM_NONE)
+            
+              t.data =new[qu_8_data.size()];
+              foreach(t.data[i]) t.data[i] = qu_8_data.pop_back();
+              //foreach(t.byte_en[i])   
+              //begin 
+              //   foreach(t.byte_en[i][j]) if(t.byte_en[i][j] == 1'b1) data_size_in_bytes++; 
+              //end
+              //t.data =new[data_size_in_bytes];
 
-              foreach(t.data[i]) begin
-	        temp_data = qu_data.pop_front();
-                foreach(t.byte_en[i][j])
-                begin
-                   if(t.byte_en[i][j] == 1'b1)    t.data[i]         = temp_data[j*8+:8];
-                   //else                           t.data[i][j*8+:8] = 8'h00;
-                end
-                $display($time,"##################$$$$$$$$$$$$$$$ data write[%0d] =%0d",i,t.data[i]);
-              end
-              data_size_in_bytes = 0;
+              //foreach(t.data[i]) begin
+	      //  temp_data = qu_data.pop_front();
+              //  foreach(t.byte_en[i][j])
+              //  begin
+              //     if(t.byte_en[i][j] == 1'b1)    t.data[i]         = temp_data[j*8+:8];
+              //     //else                           t.data[i][j*8+:8] = 8'h00;
+              //  end
+              //  $display($time,"##################$$$$$$$$$$$$$$$ data write[%0d] =%0d",i,t.data[i]);
+              //end
+              //data_size_in_bytes = 0;
             //if (axi_monitor_cb.wlast === 1'b1 || !(t.use_last_signaling)) begin
             //  
             //  t.data =new[qu_data.size()];

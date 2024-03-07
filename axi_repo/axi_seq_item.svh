@@ -47,15 +47,16 @@ class axi_seq_item extends uvm_sequence_item;
        `uvm_field_int (prot, UVM_ALL_ON | UVM_NOCOMPARE);
        `uvm_field_int (addr, UVM_ALL_ON);
        `uvm_field_array_int (data,   UVM_ALL_ON);
-       `uvm_field_int (burst_length, UVM_ALL_ON);
+       `uvm_field_int (burst_length, UVM_ALL_ON| UVM_NOCOMPARE);
        `uvm_field_int (burst_type, UVM_ALL_ON);
        `uvm_field_array_int (byte_en,   UVM_ALL_ON| UVM_NOCOMPARE);
        `uvm_field_int (byte_en_first_custom,   UVM_ALL_ON);
        `uvm_field_int (byte_en_last_custom,   UVM_ALL_ON);
        `uvm_field_int (byte_en_last, UVM_ALL_ON);
-       `uvm_field_int (tr_size_in_bytes,   UVM_ALL_ON);
+       `uvm_field_int (tr_size_in_bytes,   UVM_ALL_ON| UVM_NOCOMPARE);
        `uvm_field_int (transaction_cycles,   UVM_ALL_ON | UVM_NOCOMPARE);
        `uvm_field_enum(axi_op_type_t, op_type, UVM_ALL_ON);
+       `uvm_field_enum(req_res_identifier, req_res, UVM_ALL_ON| UVM_NOCOMPARE);
        `uvm_field_int (bresp, UVM_ALL_ON);
        `uvm_field_array_int (rresp, UVM_ALL_ON);
    `uvm_object_utils_end
