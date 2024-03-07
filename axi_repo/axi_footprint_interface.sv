@@ -498,7 +498,6 @@ interface axi_footprint_interface #(int DW=32, int AW=32, int ID_W =10);
                  if(t.byte_en[i][j]==1'b1) qu_8_data.push_front(temp_data[j*8+:8]);
               end
             end
-            `uvm_info("harish_6",$sformatf("%p",qu_8_data),UVM_NONE)
             
               t.data =new[qu_8_data.size()];
               foreach(t.data[i]) t.data[i] = qu_8_data.pop_back();

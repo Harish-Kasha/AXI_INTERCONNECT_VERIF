@@ -15670,3 +15670,132 @@ t                       uvm_sequence_item  -     @6318
 
 ------------------------------****************************END****************************************----------------------------
 
+
+
+------------------------****************************START****************************************-------------------------
+monitor [write packet=0]
+-----------------------------------------------------------
+Name                    Type                Size  Value    
+-----------------------------------------------------------
+t                       uvm_sequence_item   -     @3568    
+  id                    integral            32    'h0      
+  prot                  integral            3     'h0      
+  addr                  integral            32    'h0      
+  data                  da(integral)        10    -        
+    [0]                 integral            128   'h11     
+    [1]                 integral            128   'haa     
+    [2]                 integral            128   'h22     
+    [3]                 integral            128   'hbb     
+    [4]                 integral            128   'h33     
+    [5]                 integral            128   'hcc     
+    [6]                 integral            128   'h44     
+    [7]                 integral            128   'hdd     
+    [8]                 integral            128   'h55     
+    [9]                 integral            128   'hee     
+  burst_length          integral            32    'h5      
+  burst_type            integral            32    'h1      
+  byte_en               da(integral)        5     -        
+    [0]                 integral            16    'h3      
+    [1]                 integral            16    'h3      
+    [2]                 integral            16    'h3      
+    [3]                 integral            16    'h3      
+    [4]                 integral            16    'h3      
+  byte_en_first_custom  integral            1     'h0      
+  byte_en_last_custom   integral            1     'h0      
+  byte_en_last          integral            16    'h0      
+  tr_size_in_bytes      integral            32    'h2      
+  transaction_cycles    integral            32    'hd      
+  op_type               axi_op_type_t       32    AXI_WRITE
+  req_res               req_res_identifier  32    REQUEST  
+  bresp                 integral            2     'h0      
+  rresp                 da(integral)        0     -        
+-----------------------------------------------------------
+
+------------------------------****************************END****************************************----------------------------
+
+
+
+------------------------****************************START****************************************-------------------------
+monitor [write packet=0]
+-----------------------------------------------------------
+Name                    Type                Size  Value    
+-----------------------------------------------------------
+t                       uvm_sequence_item   -     @3568    
+  id                    integral            32    'h0      
+  prot                  integral            3     'h0      
+  addr                  integral            32    'h0      
+  data                  da(integral)        10    -        
+    [0]                 integral            128   'h11     
+    [1]                 integral            128   'haa     
+    [2]                 integral            128   'h22     
+    [3]                 integral            128   'hbb     
+    [4]                 integral            128   'h33     
+    [5]                 integral            128   'hcc     
+    [6]                 integral            128   'h44     
+    [7]                 integral            128   'hdd     
+    [8]                 integral            128   'h55     
+    [9]                 integral            128   'hee     
+  burst_length          integral            32    'h5      
+  burst_type            integral            32    'h1      
+  byte_en               da(integral)        5     -        
+    [0]                 integral            16    'h3      
+    [1]                 integral            16    'h3      
+    [2]                 integral            16    'h3      
+    [3]                 integral            16    'h3      
+    [4]                 integral            16    'h3      
+  byte_en_first_custom  integral            1     'h0      
+  byte_en_last_custom   integral            1     'h0      
+  byte_en_last          integral            16    'h0      
+  tr_size_in_bytes      integral            32    'h2      
+  transaction_cycles    integral            32    'hd      
+  op_type               axi_op_type_t       32    AXI_WRITE
+  req_res               req_res_identifier  32    REQUEST  
+  bresp                 integral            2     'h0      
+  rresp                 da(integral)        0     -        
+-----------------------------------------------------------
+
+------------------------------****************************END****************************************----------------------------
+
+
+
+------------------------****************************START****************************************-------------------------
+monitor [write packet=0]
+-----------------------------------------------------------
+Name                    Type                Size  Value    
+-----------------------------------------------------------
+t                       uvm_sequence_item   -     @3568    
+  id                    integral            32    'h0      
+  prot                  integral            3     'h0      
+  addr                  integral            32    'h0      
+  data                  da(integral)        10    -        
+    [0]                 integral            128   'h11     
+    [1]                 integral            128   'haa     
+    [2]                 integral            128   'h22     
+    [3]                 integral            128   'hbb     
+    [4]                 integral            128   'h33     
+    [5]                 integral            128   'hcc     
+    [6]                 integral            128   'h44     
+    [7]                 integral            128   'hdd     
+    [8]                 integral            128   'h55     
+    [9]                 integral            128   'hee     
+  burst_length          integral            32    'h5      
+  burst_type            integral            32    'h1      
+  byte_en               da(integral)        5     -        
+    [0]                 integral            16    'h3      
+    [1]                 integral            16    'h3      
+    [2]                 integral            16    'h3      
+    [3]                 integral            16    'h3      
+    [4]                 integral            16    'h3      
+  byte_en_first_custom  integral            1     'h0      
+  byte_en_last_custom   integral            1     'h0      
+  byte_en_last          integral            16    'h0      
+  tr_size_in_bytes      integral            32    'h2      
+  transaction_cycles    integral            32    'hd      
+  op_type               axi_op_type_t       32    AXI_WRITE
+  req_res               req_res_identifier  32    REQUEST  
+  bresp                 integral            2     'h0      
+  rresp                 da(integral)        0     -        
+-----------------------------------------------------------
+
+------------------------------****************************END****************************************----------------------------
+

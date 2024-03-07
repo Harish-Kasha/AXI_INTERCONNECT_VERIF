@@ -141,6 +141,7 @@ int count;
       end
       else if(pkt.op_type==AXI_READ && pkt.req_res == REQUEST)  
       begin
+         pkt.addr = ({M_ADDR_W{1'b1}} >> (M_ADDR_W-S_ADDR_W[q_num])) & pkt.addr;
          //pkt.addr = {{(M_ADDR_W-S_ADDR_W[q_num]){1'b0}},{S_ADDR_W[q_num]{1'b1}}} & pkt.addr;
          read_req_q[q_num].push_back(pkt);
       end

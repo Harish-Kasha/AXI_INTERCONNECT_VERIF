@@ -237,7 +237,7 @@ parameter MAX_M_STRB_WIDTH=16
     wire [M_COUNT-1:0]               c_a_axi_arready;
     wire [M_COUNT*M_ID_WIDTH-1:0]    c_a_axi_rid;
     //logic [SUM_M_R_D_WIDTH-1:0]      c_a_axi_rdata;
-    logic [MAX_M_RD_WIDTH*M_COUNT-1:0]    c_a_axi_rdata;
+    logic [CROSSBAR_D_WIDTH*M_COUNT-1:0]    c_a_axi_rdata;
     wire [M_COUNT*2-1:0]             c_a_axi_rresp;
     wire [M_COUNT-1:0]               c_a_axi_rlast;
     wire [M_COUNT*RUSER_WIDTH-1:0]   c_a_axi_ruser;
@@ -564,7 +564,7 @@ parameter MAX_M_STRB_WIDTH=16
             .s_axi_arvalid(c_a_axi_arvalid[n]),
             .s_axi_arready(c_a_axi_arready[n]),
             .s_axi_rid(c_a_axi_rid[M_ID_WIDTH*n+:M_ID_WIDTH]),
-            .s_axi_rdata(c_a_axi_rdata[MAX_M_RD_WIDTH*n+:MAX_M_RD_WIDTH]),
+            .s_axi_rdata(c_a_axi_rdata[CROSSBAR_D_WIDTH*n+:CROSSBAR_D_WIDTH]),
             .s_axi_rresp(c_a_axi_rresp[n*2+:2]),
             .s_axi_rlast(c_a_axi_rlast[n]),
             .s_axi_ruser(c_a_axi_ruser[n*RUSER_WIDTH+: RUSER_WIDTH]),

@@ -55,7 +55,7 @@ endclass
       #50ns;
       // master 0 --> 16 transactions of write and read to slave 0   
      // pipelined write
- /*     burst_length = 5;
+      burst_length = 5;
       wr_data = new[burst_length];   
       wr_data[0] = 16'h0001; 
       wr_data[1] = 16'h0002; 
@@ -81,29 +81,12 @@ endclass
    `uvm_info(get_full_name,"from test after the pipeline write seq",UVM_NONE)
       foreach (tr[ii]) `uvm_info("TEST", $sformatf("bresp: %0d", tr[ii].bresp), UVM_LOW)
       #200ns;
-*/
 
-      burst_length = 5;
-      wr_data = new[burst_length];   
-      wr_data[0] = 'h9AF9AA11; 
-      wr_data[1] = 'h9BF9BB22; 
-      wr_data[2] = 'h9CF9CC33; 
-      wr_data[3] = 'h9DF9DD44; 
-      wr_data[4] = 'h9EF9EE55; 
+      //for(int i = 0; i < 5; i++) begin
+      //   pw_seq.write_burst('h200000+(i*40), wr_data,burst_length, 'd3, env.master_agt_0.sqr,2);
+      //   #30ns;
+      //end
 
-      //wr_data[0] = 128'h0011; 
-      //wr_data[1] = 128'h0022; 
-      //wr_data[2] = 128'h0033; 
-      //wr_data[3] = 128'h0044; 
-      //wr_data[4] = 128'h0055; 
-
-
-
-      //pw_seq.write_burst( 'h200000, wr_data,burst_length, 'd3, env.master_agt_0.sqr,2);
-      for(int i = 0; i < 5; i++) begin
-         pw_seq.write_burst('h200000+(i*40), wr_data,burst_length, 'd3, env.master_agt_0.sqr,2);
-         #30ns;
-      end
  //  `uvm_info(get_full_name,"from test after the pipeline write resp of 5",UVM_NONE)
  //     env.master_agt_1.sqr.get_write_responses(tr, 5, 0);
 

@@ -1,0 +1,38 @@
+monitor [read packet]
+----------------------------------------------------------
+Name                    Type                Size  Value   
+----------------------------------------------------------
+t                       uvm_sequence_item   -     @4743   
+  id                    integral            32    'h0     
+  prot                  integral            3     'h0X    
+  addr                  integral            32    'h0     
+  data                  da(integral)        5     -       
+    [0]                 integral            128   'haa11  
+    [1]                 integral            128   'hbb22  
+    [2]                 integral            128   'hcc33  
+    [3]                 integral            128   'hdd44  
+    [4]                 integral            128   'hee55  
+  burst_length          integral            32    'h5     
+  burst_type            integral            32    'h1     
+  byte_en               da(integral)        5     -       
+    [0]                 integral            16    'h0     
+    [1]                 integral            16    'h0     
+    [2]                 integral            16    'h0     
+    [3]                 integral            16    'h0     
+    [4]                 integral            16    'h0     
+  byte_en_first_custom  integral            1     'h0     
+  byte_en_last_custom   integral            1     'h0     
+  byte_en_last          integral            16    'h0     
+  tr_size_in_bytes      integral            32    'h2     
+  transaction_cycles    integral            32    'h1d    
+  op_type               axi_op_type_t       32    AXI_READ
+  req_res               req_res_identifier  32    RESPONSE
+  bresp                 integral            2     'h0X    
+  rresp                 da(integral)        5     -       
+    [0]                 integral            2     'h0     
+    [1]                 integral            2     'h0     
+    [2]                 integral            2     'h0     
+    [3]                 integral            2     'h0     
+    [4]                 integral            2     'h0     
+----------------------------------------------------------
+
