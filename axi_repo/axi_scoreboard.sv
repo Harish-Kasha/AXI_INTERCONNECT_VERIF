@@ -130,7 +130,7 @@ int count;
       endcase
       if(pkt.req_res == RESPONSE)
       begin
-         if(pkt.op_type == AXI_WRITE) pkt.addr = ({M_ADDR_W{1'b1}} >> (M_ADDR_W-S_ADDR_W[q_num])) & pkt.addr;
+         pkt.addr = ({M_ADDR_W{1'b1}} >> (M_ADDR_W-S_ADDR_W[q_num])) & pkt.addr;
          pkt_compare(pkt,pkt.id[(S_ID_WIDTH-1)-:$clog2(NO_M)]);
       end
       else if(pkt.op_type==AXI_WRITE && pkt.req_res == REQUEST) 

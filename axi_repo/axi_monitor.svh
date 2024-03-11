@@ -214,8 +214,8 @@ task axi_monitor:: get_reads();
       t.id = arid_rid_counter++;
    
    t.burst_length += 1;
-   t.data = new[t.burst_length];
-   t.rresp = new[t.burst_length];
+   //t.data = new[t.burst_length];
+   //t.rresp = new[t.burst_length];
    t.op_type = AXI_READ;
          
    @(axi_vif.axi_monitor_cb);
@@ -425,7 +425,19 @@ endtask : post_process_axi_write_pkt
 
 task axi_monitor:: post_process_axi_read_pkt(axi_seq_item t);
    axi_seq_item rd_tr;
-   bit[`AXI_MAX_AW-1:0] beat_address;
+   bit [`AXI_MAX_AW-1:0]     beat_address;
+   logic [`AXI_MAX_AW-1:0]   Start_Address;
+   logic [31:0]              Number_Bytes;
+   logic [31:0]              Burst_Length;
+   logic [7:0]               Data_Bus_Bytes;
+   logic [31:0]              addr;
+   logic [31:0]              Aligned_Address;
+   bit                       aligned;
+   logic [31:0]              dtsize;
+   logic [7:0]               Lower_Byte_Lane;
+   logic [7:0]               Upper_Byte_Lane;
+   logic [7:0]               temp_data[$];
+   logic [7:0]               temp_rresp[$];
 
    rd_tr = axi_seq_item::type_id::create("rd_tr", this);
 
@@ -435,22 +447,57 @@ task axi_monitor:: post_process_axi_read_pkt(axi_seq_item t);
    shifted_rd_data = new[rd_tr.burst_length];
    shifted_rd_data = rd_tr.data;
    
+   Data_Bus_Bytes = $size(axi_vif.axi_monitor_cb.rdata)/8;
+
+    Number_Bytes = rd_tr.tr_size_in_bytes;
+
+    // Calculate Aligned_Address
+    Aligned_Address = (rd_tr.addr / rd_tr.tr_size_in_bytes) * rd_tr.tr_size_in_bytes;
+    aligned = (Aligned_Address == rd_tr.addr);
+
+    Start_Address = rd_tr.addr;
+
+    // Calculate dtsize
+    dtsize = rd_tr.tr_size_in_bytes * rd_tr.burst_length;
+
+
+        for (int n = 1; n <= rd_tr.burst_length; n++) begin
+            Lower_Byte_Lane = Start_Address - (Start_Address / Data_Bus_Bytes) * Data_Bus_Bytes;
+            if (aligned) begin
+                Upper_Byte_Lane = Lower_Byte_Lane + Number_Bytes - 1;
+            end else begin
+                Upper_Byte_Lane = Aligned_Address + Number_Bytes - 1 - (Start_Address / Data_Bus_Bytes) * Data_Bus_Bytes;
+            end
+            Start_Address += Number_Bytes;
+            aligned = 1; // All transfers after the first are aligned
+            for (int i = Lower_Byte_Lane; i <= Upper_Byte_Lane; i++) begin
+                temp_data.push_front(rd_tr.data[n-1][i*8+:8]);
+                temp_rresp.push_front(rd_tr.rresp[n-1]);
+            end
+        end
+
+
+       rd_tr.data  = new[temp_data.size()];
+       rd_tr.rresp = new[temp_data.size()];
+
+       foreach(rd_tr.data[i])   rd_tr.data[i]  = temp_data.pop_back();
+       foreach(rd_tr.rresp[i])  rd_tr.rresp[i] = temp_rresp.pop_back();
    // Shift each data beat
-   beat_address = rd_tr.addr;
-   for (int i = 0; i < rd_tr.burst_length; i++) begin
-      axi_common::shift_data_right(beat_address, shifted_rd_data[i], rd_tr.data[i], rd_tr.tr_size_in_bytes, 0, cfg.data_width); //`AXI_MAX_DW);
-      if (i == 0 && (beat_address % rd_tr.tr_size_in_bytes != 0)) // Unaligned transfer, next addresses of burst are aligned
-        beat_address = (beat_address + rd_tr.tr_size_in_bytes) - (beat_address % rd_tr.tr_size_in_bytes);
-      else
-        beat_address = beat_address + rd_tr.tr_size_in_bytes;
-   end
-   
-   // Clear unused upper data bits
-   for (int j = 0; j < rd_tr.burst_length; j++) begin
-      for(int i = `AXI_MAX_DW-1; i >= rd_tr.tr_size_in_bytes*8; i--)
-        if (rd_tr.byte_en[j][i/8] !== 1'b1)
-          rd_tr.data[j][i] = 0;
-   end
+   //beat_address = rd_tr.addr;
+   //for (int i = 0; i < rd_tr.burst_length; i++) begin
+   //   axi_common::shift_data_right(beat_address, shifted_rd_data[i], rd_tr.data[i], rd_tr.tr_size_in_bytes, 0, cfg.data_width); //`AXI_MAX_DW);
+   //   if (i == 0 && (beat_address % rd_tr.tr_size_in_bytes != 0)) // Unaligned transfer, next addresses of burst are aligned
+   //     beat_address = (beat_address + rd_tr.tr_size_in_bytes) - (beat_address % rd_tr.tr_size_in_bytes);
+   //   else
+   //     beat_address = beat_address + rd_tr.tr_size_in_bytes;
+   //end
+   //
+   //// Clear unused upper data bits
+   //for (int j = 0; j < rd_tr.burst_length; j++) begin
+   //   for(int i = `AXI_MAX_DW-1; i >= rd_tr.tr_size_in_bytes*8; i--)
+   //     if (rd_tr.byte_en[j][i/8] !== 1'b1)
+   //       rd_tr.data[j][i] = 0;
+   //end
 
 
    rd_tr.req_res = RESPONSE; 
