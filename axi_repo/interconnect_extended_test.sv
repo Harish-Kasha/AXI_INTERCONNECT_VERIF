@@ -9,7 +9,10 @@ class axi_interconnect_basic_test extends axi_interconnect_base_test;
    extern function new(string name, uvm_component parent = null);
    extern virtual function void build_phase(uvm_phase phase);
    extern task run_phase (uvm_phase phase);
-
+bit [31:0] arr1[6];
+      bit [31:0] arr_address1[6];
+      bit [31:0] arr_address2[6];
+      bit [31:0] arr_address3[6];
 endclass
 
    //constructor
@@ -39,8 +42,8 @@ endclass
       //master read and write sequences handles
       axi_master_write_seq   wr_seq;
       axi_master_read_seq    rd_seq;
-      axi_pipeline_write_seq pw_seq;
-      axi_pipeline_read_seq  pr_seq;
+      axi_pipeline_write_seq pw_seq,pw_seq1,pw_seq2,pw_seq3;
+      axi_pipeline_read_seq  pr_seq,pr_seq1,pr_seq2,pr_seq3;
    
    
       `uvm_info("TRACE"," Interconnect_extended_test is running. Using read and write sequences", UVM_LOW);
@@ -50,12 +53,18 @@ endclass
       rd_seq = axi_master_read_seq::type_id::create("rd_seq");
       wr_seq = axi_master_write_seq::type_id::create("wr_seq");
       pw_seq = axi_pipeline_write_seq::type_id::create("pw_seq");
+      pw_seq1 = axi_pipeline_write_seq::type_id::create("pw_seq1");
+      pw_seq2 = axi_pipeline_write_seq::type_id::create("pw_seq2");
+      pw_seq3 = axi_pipeline_write_seq::type_id::create("pw_seq3");
       pr_seq = axi_pipeline_read_seq::type_id::create("pr_seq");
+      pr_seq1 = axi_pipeline_read_seq::type_id::create("pr_seq1");
+      pr_seq2 = axi_pipeline_read_seq::type_id::create("pr_seq2");
+      pr_seq3 = axi_pipeline_read_seq::type_id::create("pr_seq3");
       
       #50ns;
       // master 0 --> 16 transactions of write and read to slave 0   
      // pipelined write
- /*     burst_length = 5;
+      burst_length = 5;
       wr_data = new[burst_length];   
       wr_data[0] = 16'h0001; 
       wr_data[1] = 16'h0002; 
@@ -64,13 +73,412 @@ endclass
       wr_data[4] = 16'h0005; 
 
 
-
+     
       //data = 16'h0;
+   fork
+      begin
       for(int i = 0; i < 5; i++) begin
          data = data + 1;
          pw_seq.write_burst(i*128, wr_data,burst_length, 2'b11, env.master_agt_0.sqr,2);
          #30ns;
       end
+
+      #10000;
+      for(int i = 0; i < 5; i++) begin
+         pr_seq.read_burst(i*128,burst_length,env.master_agt_0.sqr,2);
+         #30ns;
+      end
+      end
+      
+     begin
+       for(int i = 0; i < 5; i++) begin
+         data = data + 1;
+         pw_seq1.write_burst(i*128, wr_data,burst_length, 2'b11, env.master_agt_1.sqr,2);
+         #30ns;
+      end
+
+      #10000;
+      for(int i = 0; i < 5; i++) begin
+         pr_seq1.read_burst(i*128,burst_length,env.master_agt_1.sqr,2);
+         #30ns;
+      end
+     end
+
+     
+     begin
+      for(int i = 0; i < 5; i++) begin
+         data = data + 1;
+         pw_seq2.write_burst(i*128, wr_data,burst_length, 2'b11, env.master_agt_2.sqr,2);
+         #30ns;
+      end
+
+      #10000;
+      for(int i = 0; i < 5; i++) begin
+         pr_seq2.read_burst(i*128,burst_length,env.master_agt_2.sqr,2);
+         #30ns;
+      end
+     end
+ 
+     begin     
+      for(int i = 0; i < 5; i++) begin
+         data = data + 1;
+         pw_seq3.write_burst(i*128, wr_data,burst_length, 1'b1, env.master_agt_3.sqr,1);
+         #30ns;
+      end
+
+      #10000;
+      for(int i = 0; i < 5; i++) begin
+         pr_seq3.read_burst(i*128,burst_length,env.master_agt_3.sqr,1);
+         #30ns;
+      end
+     end
+    join
+
+     // all master to slave 1
+      for(int i = 0; i < 5; i++) begin
+         data = data + 1;
+         pw_seq.write_burst('h2000+(i*4), wr_data,burst_length, 2'b11, env.master_agt_0.sqr,2);
+         #30ns;
+      end
+
+      #10000;
+      for(int i = 0; i < 5; i++) begin
+         pr_seq.read_burst('h2000+(i*4),burst_length,env.master_agt_0.sqr,2);
+         #30ns;
+      end
+      
+       for(int i = 0; i < 5; i++) begin
+         data = data + 1;
+         pw_seq.write_burst('h2000+(i*4), wr_data,burst_length, 2'b11, env.master_agt_1.sqr,2);
+         #30ns;
+      end
+
+      #10000;
+      for(int i = 0; i < 5; i++) begin
+         pr_seq.read_burst('h2000+(i*4),burst_length,env.master_agt_1.sqr,2);
+         #30ns;
+      end
+
+       for(int i = 0; i < 5; i++) begin
+         data = data + 1;
+         pw_seq.write_burst('h2000+(i*4), wr_data,burst_length, 2'b11, env.master_agt_2.sqr,2);
+         #30ns;
+      end
+
+      #10000;
+      for(int i = 0; i < 5; i++) begin
+         pr_seq.read_burst('h2000+(i*4),burst_length,env.master_agt_2.sqr,2);
+         #30ns;
+      end
+
+      for(int i = 0; i < 5; i++) begin
+         data = data + 1;
+         pw_seq.write_burst('h2000+(i*4), wr_data,burst_length, 1, env.master_agt_3.sqr,1);
+         #30ns;
+      end
+
+      #10000;
+      for(int i = 0; i < 5; i++) begin
+         pr_seq.read_burst('h2000+(i*4),burst_length,env.master_agt_3.sqr,1);
+         #30ns;
+      end
+
+// to slave 2
+
+     for(int i = 0; i < 5; i++) begin
+         data = data + 1;
+         pw_seq.write_burst('h4000+(i*4), wr_data,burst_length, 2'b11, env.master_agt_0.sqr,2);
+         #30ns;
+      end
+
+      #10000;
+      for(int i = 0; i < 5; i++) begin
+         pr_seq.read_burst('h4000+(i*4),burst_length,env.master_agt_0.sqr,2);
+         #30ns;
+      end
+
+       for(int i = 0; i < 5; i++) begin
+         data = data + 1;
+         pw_seq.write_burst('h4000+(i*4), wr_data,burst_length, 2'b11, env.master_agt_1.sqr,2);
+         #30ns;
+      end
+
+      #10000;
+      for(int i = 0; i < 5; i++) begin
+         pr_seq.read_burst('h4000+(i*4),burst_length,env.master_agt_1.sqr,2);
+         #30ns;
+      end
+
+       for(int i = 0; i < 5; i++) begin
+         data = data + 1;
+         pw_seq.write_burst('h4000+(i*4), wr_data,burst_length, 2'b11, env.master_agt_2.sqr,2);
+         #30ns;
+      end
+
+      #10000;
+      for(int i = 0; i < 5; i++) begin
+         pr_seq.read_burst('h4000+(i*4),burst_length,env.master_agt_2.sqr,2);
+         #30ns;
+      end
+
+        for(int i = 0; i < 5; i++) begin
+         data = data + 1;
+         pw_seq.write_burst('h4000+(i*4), wr_data,burst_length, 1, env.master_agt_3.sqr,1);
+         #30ns;
+      end
+
+      #10000;
+      for(int i = 0; i < 5; i++) begin
+         pr_seq.read_burst('h4000+(i*4),burst_length,env.master_agt_3.sqr,1);
+         #30ns;
+      end
+
+
+
+
+
+
+     //all master to slave 3
+          for(int i = 0; i < 5; i++) begin
+         pw_seq.write_burst('h100000+(i*4), wr_data,burst_length, 2'b11, env.master_agt_0.sqr,2);
+         #30ns;
+      end
+
+      #10000;
+      for(int i = 0; i < 5; i++) begin
+         pr_seq.read_burst('h100000+(i*4),burst_length,env.master_agt_0.sqr,2);
+         #30ns;
+      end
+
+          for(int i = 0; i < 5; i++) begin
+         pw_seq.write_burst('h100000+(i*4), wr_data,burst_length, 2'b11, env.master_agt_1.sqr,2);
+         #30ns;
+      end
+
+      #10000;
+      for(int i = 0; i < 5; i++) begin
+         pr_seq.read_burst('h100000+(i*4),burst_length,env.master_agt_1.sqr,2);
+         #30ns;
+      end
+
+
+        for(int i = 0; i < 5; i++) begin
+         pw_seq.write_burst('h100000+(i*4), wr_data,burst_length, 2'b11, env.master_agt_2.sqr,2);
+         #30ns;
+      end
+
+      #10000;
+      for(int i = 0; i < 5; i++) begin
+         pr_seq.read_burst('h100000+(i*4),burst_length,env.master_agt_2.sqr,2);
+         #30ns;
+      end
+
+
+         for(int i = 0; i < 5; i++) begin
+         pw_seq.write_burst('h100000+(i*4), wr_data,burst_length, 1, env.master_agt_3.sqr,1);
+         #30ns;
+      end
+
+      #10000;
+      for(int i = 0; i < 5; i++) begin
+         pr_seq.read_burst('h100000+(i*4),burst_length,env.master_agt_3.sqr,1);
+         #30ns;
+      end
+
+
+
+    // all master to slave s4
+
+     for(int i = 0; i < 5; i++) begin
+         pw_seq.write_burst('h200000+(i*4), wr_data,burst_length, 2'b11, env.master_agt_0.sqr,2);
+         #30ns;
+      end
+
+      #10000;
+      for(int i = 0; i < 5; i++) begin
+         pr_seq.read_burst('h200000+(i*4),burst_length,env.master_agt_0.sqr,2);
+         #30ns;
+      end
+
+
+      for(int i = 0; i < 5; i++) begin
+         pw_seq.write_burst('h200000+(i*4), wr_data,burst_length, 2'b11, env.master_agt_1.sqr,2);
+         #30ns;
+      end
+
+      #10000;
+      for(int i = 0; i < 5; i++) begin
+         pr_seq.read_burst('h200000+(i*4),burst_length,env.master_agt_1.sqr,2);
+         #30ns;
+      end
+
+       for(int i = 0; i < 5; i++) begin
+         pw_seq.write_burst('h200000+(i*4), wr_data,burst_length, 2'b11, env.master_agt_2.sqr,2);
+         #30ns;
+      end
+
+      #10000;
+      for(int i = 0; i < 5; i++) begin
+         pr_seq.read_burst('h200000+(i*4),burst_length,env.master_agt_2.sqr,2);
+         #30ns;
+      end
+
+
+       for(int i = 0; i < 5; i++) begin
+         pw_seq.write_burst('h200000+(i*4), wr_data,burst_length, 1, env.master_agt_3.sqr,1);
+         #30ns;
+      end
+
+      #10000;
+      for(int i = 0; i < 5; i++) begin
+         pr_seq.read_burst('h200000+(i*4),burst_length,env.master_agt_3.sqr,1);
+         #30ns;
+      end
+
+
+
+      // all master to slave 5 
+      for(int i = 0; i < 5; i++) begin
+         pw_seq.write_burst('h202000+(i*4), wr_data,burst_length, 2'b11, env.master_agt_0.sqr,2);
+         #30ns;
+      end
+
+      #10000;
+      for(int i = 0; i < 5; i++) begin
+         pr_seq.read_burst('h202000+(i*4),burst_length,env.master_agt_0.sqr,2);
+         #30ns;
+      end
+
+
+       for(int i = 0; i < 5; i++) begin
+         pw_seq.write_burst('h202000+(i*4), wr_data,burst_length, 2'b11, env.master_agt_1.sqr,2);
+         #30ns;
+      end
+
+      #10000;
+      for(int i = 0; i < 5; i++) begin
+         pr_seq.read_burst('h202000+(i*4),burst_length,env.master_agt_1.sqr,2);
+         #30ns;
+      end
+     
+      for(int i = 0; i < 5; i++) begin
+         pw_seq.write_burst('h202000+(i*4), wr_data,burst_length, 2'b11, env.master_agt_2.sqr,2);
+         #30ns;
+      end
+
+      #10000;
+      for(int i = 0; i < 5; i++) begin
+         pr_seq.read_burst('h202000+(i*4),burst_length,env.master_agt_2.sqr,2);
+         #30ns;
+      end
+
+
+       for(int i = 0; i < 5; i++) begin
+         pw_seq.write_burst('h202000+(i*4), wr_data,burst_length, 1, env.master_agt_3.sqr,1);
+         #30ns;
+      end
+
+      #10000;
+      for(int i = 0; i < 5; i++) begin
+         pr_seq.read_burst('h202000+(i*4),burst_length,env.master_agt_3.sqr,1);
+         #30ns;
+      end
+
+
+arr1={'h0,'h2000,'h4000,'h100000,'h200000,'h202000};
+      burst_length=1;
+      //data = 16'h0;
+      for(int i = 0; i < 6; i++) begin
+        burst_length=burst_length+i;
+        `uvm_info(get_type_name,$sformatf("value of burst_length=%0d",burst_length),UVM_LOW)
+        wr_data=new[burst_length];
+        foreach(wr_data[i])         wr_data[i]=i;
+         pw_seq.write_burst(arr1[i], wr_data,burst_length, 2'b11, env.master_agt_0.sqr,2);
+         #30ns;
+      end
+     #1000;
+      for(int j=0;j<6;j++)begin
+         int burst_length=1;
+         burst_length=burst_length+j;
+          pr_seq.read_burst(arr1[j], burst_length, env.master_agt_0.sqr,2);
+      end
+   #1000;
+ 
+     //int arr_address;
+ 
+    arr_address1={'h40,'h2040,'h4040,'h100040,'h200040,'h202040};  
+for(int i = 0; i < 6; i++) begin
+        int burst_length=1;
+        burst_length=burst_length+i;
+        `uvm_info(get_type_name,$sformatf("value of burst_length=%0d",burst_length),UVM_LOW)
+        wr_data=new[burst_length];
+        foreach(wr_data[i])begin
+          wr_data[i]=i;
+        end
+         pw_seq.write_burst(arr_address1[i], wr_data,burst_length, 16'h1111, env.master_agt_1.sqr,16);
+         #30ns;
+      end
+     #1000;
+      for(int j=0;j<6;j++)begin
+         int burst_length=1;
+         $display("value of &&&&&&&&&&&&&&&&&&&&&&&&&%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% =0d ",burst_length);
+         burst_length=burst_length+j;
+          pr_seq.read_burst(arr_address1[j], burst_length, env.master_agt_1.sqr,4);
+      end
+   #1000;
+ 
+ 
+arr_address2={'h80,'h2080,'h4080,'h100080,'h200080,'h202080};
+for(int i = 0; i < 6; i++) begin
+        int burst_length=1;
+        burst_length=burst_length+i;
+        `uvm_info(get_type_name,$sformatf("value of burst_length=%0d",burst_length),UVM_LOW)
+        wr_data=new[burst_length];
+        foreach(wr_data[i])begin
+          wr_data[i]=i;
+        end
+         pw_seq.write_burst(arr_address2[i], wr_data,burst_length, 4'b1111, env.master_agt_2.sqr,4);
+         #30ns;
+      end
+     #1000;
+      for(int j=0;j<6;j++)begin
+         int burst_length=1;
+         burst_length=burst_length+j;
+          pr_seq.read_burst(arr_address2[j], burst_length, env.master_agt_2.sqr,4);
+      end
+#1000;
+arr_address3={'h120,'h2120,'h4120,'h100120,'h200120,'h202120};
+for(int i = 0; i < 6; i++) begin
+        int burst_length=1;
+        burst_length=burst_length+i;
+        `uvm_info(get_type_name,$sformatf("value of burst_length=%0d",burst_length),UVM_LOW)
+        wr_data=new[burst_length];
+        foreach(wr_data[i])begin
+          wr_data[i]=i;
+        end
+         pw_seq.write_burst(arr_address3[i], wr_data,burst_length, 'b1, env.master_agt_3.sqr,1);
+         #30ns;
+      end
+     #1000;
+      for(int j=0;j<6;j++)begin
+         int burst_length=1;
+         burst_length=burst_length+j;
+          pr_seq.read_burst(arr_address3[j], burst_length, env.master_agt_3.sqr,1);
+      end
+  #1000;
+     
+
+
+
+
+
+
+
+       
+
+
+
+/*
    `uvm_info(get_full_name,"from test after the pipeline write resp of 5",UVM_NONE)
       env.master_agt_0.sqr.get_write_responses(tr, 5, 0);
 
@@ -81,9 +489,11 @@ endclass
    `uvm_info(get_full_name,"from test after the pipeline write seq",UVM_NONE)
       foreach (tr[ii]) `uvm_info("TEST", $sformatf("bresp: %0d", tr[ii].bresp), UVM_LOW)
       #200ns;
+
 */
 
-      burst_length = 5;
+
+     /* burst_length = 5;
       wr_data = new[burst_length];   
       wr_data[0] = 'h9AF9AA11; 
       wr_data[1] = 'h9BF9BB22; 
@@ -108,7 +518,7 @@ endclass
       pw_seq.write_burst( 'h002000, wr_data,burst_length, 'd3, env.master_agt_0.sqr,2);
       #10000;
       pr_seq.read_burst('h002000, burst_length, env.master_agt_0.sqr,2);
-
+*/
 
 
       //for(int i = 0; i < 5; i++) begin
@@ -274,6 +684,7 @@ endclass
       phase.drop_objection (this);
      
    endtask
+
 
 
 
