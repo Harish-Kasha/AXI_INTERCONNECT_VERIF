@@ -45,7 +45,7 @@ parameter COUPLER_REG_INSTANCE=0,
 parameter MAX_M_A_WIDTH=20,
 parameter MAX_M_WD_WIDTH=128,
 parameter MAX_M_RD_WIDTH=64, // update  this it is important to update
-parameter MAX_S_RD_WIDTH=32, // update  this it is important to update
+parameter MAX_S_RD_WIDTH=128, // update  this it is important to update
 parameter MAX_M_STRB_WIDTH=16
     // Forward ID through adapter
 	      
