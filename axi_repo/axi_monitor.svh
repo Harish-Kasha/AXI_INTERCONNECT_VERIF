@@ -452,8 +452,7 @@ task axi_monitor:: post_process_axi_read_pkt(axi_seq_item t);
     Number_Bytes = rd_tr.tr_size_in_bytes;
 
     // Calculate Aligned_Address
-    Aligned_Address = (rd_tr.addr / rd_tr.tr_size_in_bytes) * rd_tr.tr_size_in_bytes;
-    aligned = (Aligned_Address == rd_tr.addr);
+    Aligned_Address = ($floor(rd_tr.addr / rd_tr.tr_size_in_bytes)) * rd_tr.tr_size_in_bytes;
 
     Start_Address = rd_tr.addr;
 
@@ -462,16 +461,20 @@ task axi_monitor:: post_process_axi_read_pkt(axi_seq_item t);
 
 
         for (int n = 1; n <= rd_tr.burst_length; n++) begin
-            Lower_Byte_Lane = Start_Address - (Start_Address / Data_Bus_Bytes) * Data_Bus_Bytes;
-            if (aligned) begin
-                Upper_Byte_Lane = Lower_Byte_Lane + Number_Bytes - 1;
-            end else begin
-                Upper_Byte_Lane = Aligned_Address + Number_Bytes - 1 - (Start_Address / Data_Bus_Bytes) * Data_Bus_Bytes;
-            end
-            Start_Address += Number_Bytes;
-            aligned = 1; // All transfers after the first are aligned
+          if(n==1) begin
+            Lower_Byte_Lane = Start_Address -($floor(Start_Address/Data_Bus_Bytes))* Data_Bus_Bytes;
+            Upper_Byte_Lane = Aligned_Address +( Number_Bytes - 1) - ($floor(Start_Address / Data_Bus_Bytes)) * Data_Bus_Bytes;
+          end
+          else begin
+            Start_Address =Aligned_Address+(n-1)* Number_Bytes;
+            Lower_Byte_Lane=Start_Address-($floor(Start_Address/Data_Bus_Bytes))*Data_Bus_Bytes;
+            Upper_Byte_Lane = Lower_Byte_Lane + (Number_Bytes - 1);
+          end
+           
+            // All transfers after the first are aligned
             for (int i = Lower_Byte_Lane; i <= Upper_Byte_Lane; i++) begin
                 temp_data.push_front(rd_tr.data[n-1][i*8+:8]);
+                 slave_data=rd_tr.data[n-1][i*8+:8]; 
                 temp_rresp.push_front(rd_tr.rresp[n-1]);
             end
         end
@@ -480,7 +483,10 @@ task axi_monitor:: post_process_axi_read_pkt(axi_seq_item t);
        rd_tr.data  = new[temp_data.size()];
        rd_tr.rresp = new[temp_data.size()];
 
-       foreach(rd_tr.data[i])   rd_tr.data[i]  = temp_data.pop_back();
+       foreach(rd_tr.data[i]) 
+                 rd_tr.data[i]  = temp_data.pop_back();
+                
+
        foreach(rd_tr.rresp[i])  rd_tr.rresp[i] = temp_rresp.pop_back();
    // Shift each data beat
    //beat_address = rd_tr.addr;
