@@ -59,6 +59,7 @@ package axi_agent_pkg;
 `include "axi_pipeline_write_seq.svh"
 `include "axi_pipeline_read_seq.svh"
 `include "axi_burst_write_seq.svh"
+`include "dma_config_seq.sv"
 
 // Master
 `include "axi_master_driver.svh"

@@ -68,6 +68,7 @@ function void axi_interconnect_base_test::build_phase(uvm_phase phase);
       master_cfg_1.master_i      = 1;
       master_cfg_2.data_width 	 = m_array[2];
       master_cfg_2.master_i      = 2;
+      master_cfg_2.is_active     = UVM_PASSIVE;
       master_cfg_3.data_width 	 = m_array[3];
       master_cfg_3.master_i      = 3;
    
@@ -101,7 +102,7 @@ function void axi_interconnect_base_test::build_phase(uvm_phase phase);
    slave_cfg_0 = axi_agent_configuration #(S_DATA_W[0],S_ADDR_W[0],S_ID_WIDTH)::type_id::create("slave_cfg_0");
    slave_cfg_1 = axi_agent_configuration #(S_DATA_W[1],S_ADDR_W[1],S_ID_WIDTH)::type_id::create("slave_cfg_1");
    slave_cfg_2 = axi_agent_configuration #(S_DATA_W[2],S_ADDR_W[2],S_ID_WIDTH)::type_id::create("slave_cfg_2");
-   slave_cfg_3= axi_agent_configuration #(S_DATA_W[3],S_ADDR_W[3],S_ID_WIDTH)::type_id::create("slave_cfg_3");
+   slave_cfg_3 = axi_agent_configuration #(S_DATA_W[3],S_ADDR_W[3],S_ID_WIDTH)::type_id::create("slave_cfg_3");
    slave_cfg_4 = axi_agent_configuration #(S_DATA_W[4],S_ADDR_W[4],S_ID_WIDTH)::type_id::create("slave_cfg_4");
    slave_cfg_5 = axi_agent_configuration #(S_DATA_W[5],S_ADDR_W[5],S_ID_WIDTH)::type_id::create("slave_cfg_5");
   
@@ -163,6 +164,7 @@ function void axi_interconnect_base_test::build_phase(uvm_phase phase);
       slave_cfg_5.addr_to_cause_error = 32'hEEEEEEEE; 
       slave_cfg_5.master   = 0;
       slave_cfg_5.slave_i = 5;
+      slave_cfg_5.is_active     = UVM_PASSIVE;
 
     //  slave_cfg_3.is_active = UVM_PASSIVE;  //passive agent creation--> making last slave agent as passive
    
