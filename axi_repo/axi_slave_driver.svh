@@ -64,6 +64,7 @@ class axi_slave_driver #(int D_W= 32,int A_W=32,int ID_W = 10)extends uvm_driver
    
    extern function void reset();
    extern function void restart();
+   extern task check_reset();
 
 endclass: axi_slave_driver
 
@@ -110,8 +111,16 @@ task axi_slave_driver::run_phase(uvm_phase phase);
    `uvm_info (get_type_name(),"axi_slave_driver: run_phase is running...", UVM_DEBUG);
 
    axi_vif.slave_drive_idle();
-   get_and_drive();
-
+   forever begin
+      @(posedge axi_vif.aresetn);
+      fork
+        get_and_drive();
+      join_none
+      @(negedge axi_vif.aresetn);
+      disable fork;
+      check_reset();
+   end
+  
 endtask // run_phase
 
 task axi_slave_driver::get_and_drive ();
@@ -143,8 +152,31 @@ task axi_slave_driver::get_and_drive ();
       begin
          forever process_write_resp();
       end
+      begin
+         forever check_reset();
+      end
+
    join
  
+endtask
+
+task axi_slave_driver::check_reset();
+    while(axi_vif.aresetn === 1)@(axi_vif.axi_slave_cb);
+    if(axi_vif.aresetn === 0)begin
+      fork
+         req_write_q = new();
+         rsp_write_q = new();
+         req_read_q  = new();
+         rsp_read_q  = new();
+
+         r_q.delete();
+         b_q.delete();
+
+      join
+
+    end	
+//`uvm_info(get_full_name,"(((((((((((((((((((((end)))))))))))))))))",UVM_NONE)
+
 endtask
 
 task axi_slave_driver:: get_read_transactions();

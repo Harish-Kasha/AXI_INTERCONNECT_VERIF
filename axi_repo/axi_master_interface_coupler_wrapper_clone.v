@@ -482,6 +482,7 @@ module axi_master_interface_coupler_wrapper #(
   axi_adapter # (
 	   .S_R_DATA_WIDTH(CROSSBAR_D_WIDTH),
 	   .ADDR_WIDTH(ADDR_WIDTH),
+	   .STRB_WIDTH(STRB_WIDTH),
 	   .ID_WIDTH(ID_WIDTH),
 	   .S_W_DATA_WIDTH(CROSSBAR_D_WIDTH),
 	   .M_W_DATA_WIDTH(W_DATA_WIDTH),

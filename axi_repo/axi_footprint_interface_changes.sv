@@ -282,7 +282,187 @@ interface axi_footprint_interface #(int DW=32, int AW=32, int ID_W =10);
       rvalid  <= 0;
       rlast  <= 0;
    endtask
-  
+
+   task slv_reset();
+     if(axi_master_cb.aresetn===1)begin
+      axi_master_cb.arvalid <= 1'b1;      
+     end
+
+     if(axi_slave_cb.aresetn===1)begin
+      axi_slave_cb.rvalid <= 1'b1;      
+     end
+     
+   endtask
+   /*task slv_reset();
+     if(axi_slave_cb.aresetn===1)begin
+      //axi_slave_cb.arvalid <= 1'b1;
+      axi_slave_cb.rvalid <= 1'b1;      
+     end
+   endtask*/
+
+
+/*   task master_reset();
+     if(axi_master_cb.aresetn==0)begin
+      axi_master_cb.awvalid <= 1'b0;
+      axi_master_cb.wvalid <= 1'b0;      
+     end
+     else if(axi_master_cb.aresetn==1)begin
+      axi_master_cb.awvalid <= 1'b1;
+      axi_master_cb.wvalid <= 1'b1;      
+     end
+   endtask*/
+
+  /* task automatic m_aw (ref axi_seq_item t);
+     if(axi_master_cb.aresetn==1)begin
+        repeat(t.delay_vars.m_aw_start_delay) @(axi_master_cb);
+        $display($time,"from interface write task of aw channel");
+        axi_master_cb.awid <= t.id;
+        axi_master_cb.awaddr <= t.addr;
+        axi_master_cb.awsize <= $clog2(t.tr_size_in_bytes);
+        axi_master_cb.awvalid <= 1'b1;
+        axi_master_cb.awlen <= t.burst_length-1;
+        axi_master_cb.awburst <= 2'b01; //TODO: ATM INCR BURST SUPPORTED ONLY
+        @(axi_master_cb);
+
+        if (awvalid == 1'b0) @(axi_master_cb);
+
+        while (axi_master_cb.awready !== 1'b1) begin
+           @(axi_master_cb);
+        end
+ 
+        axi_master_cb.awid <= 0;
+        axi_master_cb.awvalid <= 1'b0;
+        axi_master_cb.awaddr <= 0;
+        axi_master_cb.awsize <= 0;
+        axi_master_cb.awlen <= 0;
+        axi_master_cb.awburst <= 0;
+      end
+
+      if(axi_master_cb.aresetn==0)begin
+        $display($time,"from interface reset write task of aw channel");
+        axi_master_cb.awid <= t.id;
+        axi_master_cb.awaddr <= t.addr;
+        axi_master_cb.awsize <= $clog2(t.tr_size_in_bytes);
+        axi_master_cb.awvalid <= 1'b0;
+        axi_master_cb.awlen <= t.burst_length-1;
+        axi_master_cb.awburst <= 2'b01; //TODO: ATM INCR BURST SUPPORTED ONLY
+
+        @(axi_master_cb);
+
+
+       /* if(axi_master_cb.aresetn==1)begin
+        axi_master_cb.awvalid <= 1'b1;
+        end
+       // else begin
+        axi_master_cb.awid <= 0;
+        axi_master_cb.awvalid <= 1'b0;
+        axi_master_cb.awaddr <= 0;
+        axi_master_cb.awsize <= 0;
+        axi_master_cb.awlen <= 0;
+        axi_master_cb.awburst <= 0;
+      //  end
+
+      end
+
+   endtask : m_aw
+
+   task automatic m_w (ref axi_seq_item t);
+      
+      if(axi_master_cb.aresetn==1)begin
+        repeat(t.delay_vars.m_w_start_delay) @(axi_master_cb);
+
+        for (int i = 0; i < t.burst_length; i++) begin
+
+          // if (i > 0)
+              //repeat(t.delay_vars.m_w_beat_delay) @(axi_master_cb);
+
+           axi_master_cb.wdata <= t.data[i];
+           axi_master_cb.wvalid <= 1'b1;
+           axi_master_cb.wstrb <= t.byte_en[i];
+
+           if (i == t.burst_length-1)
+              axi_master_cb.wlast <= 1'b1;
+
+           @(axi_master_cb);
+
+           if (wvalid == 1'b0)
+              @(axi_master_cb);
+
+           while (axi_master_cb.wready !== 1'b1) begin
+              @(axi_master_cb);
+           end
+        end
+           axi_master_cb.wdata <= 0;
+           axi_master_cb.wvalid <= 1'b0;
+           axi_master_cb.wstrb <= 0;
+           axi_master_cb.wlast <= 1'b0;
+      end
+
+      if(axi_master_cb.aresetn==0)begin
+
+        for (int i = 0; i < t.burst_length; i++) begin
+           axi_master_cb.wdata <= t.data[i];
+           axi_master_cb.wvalid <= 1'b0;
+           axi_master_cb.wstrb <= t.byte_en[i];
+
+           if (i == t.burst_length-1)
+              axi_master_cb.wlast <= 1'b1;
+
+           @(axi_master_cb);
+          
+          /*if(axi_master_cb.aresetn==1)begin
+          axi_master_cb.wvalid <= 1'b1;
+          end
+         end
+           axi_master_cb.wdata <= 0;
+           axi_master_cb.wvalid <= 1'b0;
+           axi_master_cb.wstrb <= 0;
+           axi_master_cb.wlast <= 1'b0;
+
+       end
+
+   endtask : m_w
+
+   task automatic m_b (ref axi_seq_item t);
+     if(axi_master_cb.aresetn==1)begin
+
+        if (t.delay_vars.m_b_start_delay === 0) begin
+           axi_master_cb.bready <= 1'b1;
+           @(axi_master_cb);
+        end
+        
+        while (axi_master_cb.bvalid !== 1'b1) begin
+           @(axi_master_cb);
+        end
+
+        if (t.delay_vars.m_b_start_delay > 0) begin
+           repeat(t.delay_vars.m_b_start_delay) @(axi_master_cb);
+           axi_master_cb.bready <= 1'b1;
+           @(axi_master_cb);
+        end
+        t.id = axi_master_cb.bid;
+        t.bresp = axi_master_cb.bresp;
+
+        /* if(axi_master_cb.aresetn==0)
+           axi_master_cb.bready <= 1'b0;
+         else
+           axi_master_cb.bready <= 1'b1;
+
+     end     
+     if(axi_master_cb.aresetn==0)begin
+
+   
+      t.id = axi_master_cb.bid;
+      t.bresp = axi_master_cb.bresp;
+      axi_master_cb.bready <= 1'b0;
+
+      /*if(axi_master_cb.aresetn==1)begin
+          axi_master_cb.bready <= 1'b1;
+      end
+      end
+
+   endtask : m_b*/
+
   /* task automatic m_aw (ref axi_seq_item t);
 
       repeat(t.delay_vars.m_aw_start_delay) @(axi_master_cb);
@@ -290,20 +470,33 @@ interface axi_footprint_interface #(int DW=32, int AW=32, int ID_W =10);
       axi_master_cb.awid <= t.id;
       axi_master_cb.awaddr <= t.addr;
       axi_master_cb.awsize <= $clog2(t.tr_size_in_bytes);
-      axi_master_cb.awvalid <= 1'b1;
+     // axi_master_cb.awvalid <= 1'b1;
       axi_master_cb.awlen <= t.burst_length-1;
       axi_master_cb.awburst <= 2'b01; //TODO: ATM INCR BURST SUPPORTED ONLY
+      if(axi_master_cb.aresetn==1)begin
+        axi_master_cb.awvalid <= 1'b1;
+        @(axi_master_cb);
+        if (awvalid == 1'b0) @(axi_master_cb);
 
-      $display("from interface write task of aw channel",);
-      @(axi_master_cb);
-
-      if (awvalid == 1'b0) @(axi_master_cb);
-
-      while (axi_master_cb.awready !== 1'b1) begin
+        while (axi_master_cb.awready !== 1'b1) begin
          @(axi_master_cb);
+        end
+        while (axi_master_cb.aresetn === 1'b0) begin
+         axi_master_cb.awvalid <= 1'b0;         
+         @(axi_master_cb);
+        end
       end
+      else begin
+        axi_master_cb.awvalid <= 1'b0;    
+        @(axi_master_cb);
+        while (axi_master_cb.aresetn === 1'b1) begin
+         axi_master_cb.awvalid <= 1'b1;         
+         @(axi_master_cb);
+        end
 
-      $display("from interface write task of aw channel .........",);
+      end
+      
+      
       axi_master_cb.awid <= 0;
       axi_master_cb.awvalid <= 1'b0;
       axi_master_cb.awaddr <= 0;
@@ -312,8 +505,102 @@ interface axi_footprint_interface #(int DW=32, int AW=32, int ID_W =10);
       axi_master_cb.awburst <= 0;
    endtask : m_aw*/
 
+/*task automatic m_aw (ref axi_seq_item t);
+    repeat(t.delay_vars.m_aw_start_delay) @(axi_master_cb);
 
-         
+    axi_master_cb.awid <= t.id;
+    axi_master_cb.awaddr <= t.addr;
+    axi_master_cb.awsize <= $clog2(t.tr_size_in_bytes);
+    axi_master_cb.awlen <= t.burst_length-1;
+    axi_master_cb.awburst <= 2'b01; //TODO: ATM INCR BURST SUPPORTED ONLY
+
+    if(axi_master_cb.aresetn == 1'b0) begin
+        axi_master_cb.awvalid <= 1'b0; // Reset asserted, set awvalid to 0
+    end
+    else begin
+        axi_master_cb.awvalid <= 1'b1; // Reset deasserted, set awvalid to 1
+        @(axi_master_cb); // Wait for one clock cycle
+
+       while (axi_master_cb.awready !== 1'b1) begin
+            @(axi_master_cb); // Wait until awready is high
+
+        while (axi_master_cb.aresetn === 1'b0) begin
+            axi_master_cb.awvalid <= 1'b0; // Set awvalid to 0
+
+     //   while (axi_master_cb.awready !== 1'b1) begin
+       //     @(axi_master_cb); // Wait until awready is high
+        end
+
+        // Reset is deasserted, wait for it to be asserted again
+      //  while (axi_master_cb.aresetn === 1'b1) begin
+          //  axi_master_cb.awvalid <= 1'b0; // Set awvalid to 0
+            //@(axi_master_cb); // Wait for one clock cycle
+        end
+    end
+
+    // Reset or not, clean up the signals
+    axi_master_cb.awid <= 0;
+    axi_master_cb.awvalid <= 1'b0;
+    axi_master_cb.awaddr <= 0;
+    axi_master_cb.awsize <= 0;
+    axi_master_cb.awlen <= 0;
+    axi_master_cb.awburst <= 0;
+endtask : m_aw*/
+
+      
+
+  
+
+   /*task automatic m_w (ref axi_seq_item t);
+
+      repeat(t.delay_vars.m_w_start_delay) @(axi_master_cb);
+
+      for (int i = 0; i < t.burst_length; i++) begin
+
+         if (i > 0)
+            repeat(t.delay_vars.m_w_beat_delay) @(axi_master_cb);
+
+         axi_master_cb.wdata <= t.data[i];
+        // axi_master_cb.wvalid <= 1'b1;
+         axi_master_cb.wstrb <= t.byte_en[i];
+         axi_master_cb.wvalid <= (axi_master_cb.aresetn) ? 1'b1 : 1'b0;
+         @(axi_master_cb);
+           if (i == t.burst_length-1)
+              axi_master_cb.wlast <= 1'b1;
+
+           @(axi_master_cb);
+          if(axi_master_cb.aresetn === 1)begin
+           if (wvalid == 1'b0)
+              @(axi_master_cb);
+
+           while (axi_master_cb.wready !== 1'b1) begin
+             if(axi_master_cb.aresetn === 1'b0) axi_master_cb.wvalid <= 0;
+             else axi_master_cb.wvalid <= 1;
+             @(axi_master_cb);
+           end
+            if(axi_master_cb.aresetn === 1'b0) axi_master_cb.wvalid <= 0;
+            else axi_master_cb.wvalid <= 1;
+         end
+         else 
+            axi_master_cb.wvalid <= 1'b0;
+         end
+
+       /*  else if(axi_master_cb.aresetn==0)begin
+           axi_master_cb.wvalid <= 1'b0;
+
+           if (i == t.burst_length-1)
+              axi_master_cb.wlast <= 1'b1;
+
+           @(axi_master_cb);
+         end
+       end
+         @(axi_master_cb);        
+         axi_master_cb.wdata <= 0;
+         axi_master_cb.wvalid <= 1'b0;
+         axi_master_cb.wstrb <= 0;
+         axi_master_cb.wlast <= 1'b0;
+    endtask : m_w*/
+
    task automatic m_aw (ref axi_seq_item t);
       repeat(t.delay_vars.m_aw_start_delay) @(axi_master_cb);
 
@@ -356,40 +643,74 @@ interface axi_footprint_interface #(int DW=32, int AW=32, int ID_W =10);
      axi_master_cb.awburst <= 0;
    endtask : m_aw
 
-   /*task automatic m_w (ref axi_seq_item t);
+  /* task automatic m_w (ref axi_seq_item t);
+      bit temp;
 
-      repeat(t.delay_vars.m_w_start_delay) @(axi_master_cb);
+     repeat(t.delay_vars.m_w_start_delay) @(axi_master_cb);
 
-      for (int i = 0; i < t.burst_length; i++) begin
+     for (int i = 0; i < t.burst_length; i++) begin
 
-        // if (i > 0)
-            //repeat(t.delay_vars.m_w_beat_delay) @(axi_master_cb);
-
-         axi_master_cb.wdata <= t.data[i];
-         axi_master_cb.wvalid <= 1'b1;
-         axi_master_cb.wstrb <= t.byte_en[i];
-
-         if (i == t.burst_length-1)
-            axi_master_cb.wlast <= 1'b1;
-
-         @(axi_master_cb);
-
-         if (wvalid == 1'b0)
-            @(axi_master_cb);
-
-         while (axi_master_cb.wready !== 1'b1) begin
-            @(axi_master_cb);
+       if(axi_master_cb.aresetn === 1 && i==0) begin
+           temp = 1;
+           axi_master_cb.wvalid <=1;
+          end
+          else if(axi_master_cb.aresetn === 0 && i==0) begin
+           temp = 0;
+           axi_master_cb.wvalid <=0;   
+          end          
+       
+        if(axi_master_cb.aresetn === 1)begin 
+          axi_master_cb.wdata <= t.data[i];
+          // $monitor("master write data = %0h",axi_master_cb.wdata);
+          axi_master_cb.wstrb <= t.byte_en[i];      
+        end 
+        else begin
+          axi_master_cb.wdata <= axi_master_cb.wdata ;
+          // $monitor("master write data = %0h",axi_master_cb.wdata);
+          axi_master_cb.wstrb <= 0;      
+        end
+        //axi_master_cb.wvalid <= (axi_master_cb.aresetn) ? 1'b1 : 1'b0;
+      // if(axi_master_cb.aresetn === 1)begin 
+        if (i == t.burst_length-1) axi_master_cb.wlast <= 1'b1;
+     //  end
+        @(axi_master_cb);
+       if (axi_master_cb.wlast == 1) begin
+           break;
+        end
+         if(!temp && i < t.burst_length)begin
+           axi_master_cb.wvalid <=0;
          end
-      end
-         axi_master_cb.wdata <= 0;
-         axi_master_cb.wvalid <= 1'b0;
-         axi_master_cb.wstrb <= 0;
-         axi_master_cb.wlast <= 1'b0;
-     // end
-   endtask : m_w*/
+       else begin
 
-    
+         if(axi_master_cb.aresetn === 1)begin          
+           axi_master_cb.wvalid <= 1;     
+           if (wvalid == 1'b0)
+              @(axi_master_cb);
+
+           while (axi_master_cb.wready !== 1'b1) begin
+               if(axi_master_cb.aresetn === 1'b0)begin
+                  axi_master_cb.wvalid <= 0;     
+                  break;
+                end        
+               else axi_master_cb.wvalid <= 1;
+ 
+              @(axi_master_cb);
+           end
+              if(axi_master_cb.aresetn === 1'b0) axi_master_cb.wvalid <= 0;
+              else axi_master_cb.wvalid <= 1;
+         end
+         else 
+            axi_master_cb.wvalid <= 1'b0;
+       end
+     end
+     axi_master_cb.wdata <= 0;
+     axi_master_cb.wvalid <= 1'b0;
+     axi_master_cb.wstrb <= 0;
+     axi_master_cb.wlast <= 1'b0;
+   endtask : m_w*/
+  
    task automatic m_w (ref axi_seq_item t);
+      bit rst;
       int count;
       int num;
 
@@ -475,34 +796,6 @@ interface axi_footprint_interface #(int DW=32, int AW=32, int ID_W =10);
 
    endtask : m_b
 
-  /* task automatic m_ar (ref axi_seq_item t);
-
-      repeat(t.delay_vars.m_ar_start_delay) @(axi_master_cb);
-
-      axi_master_cb.arid <= t.id;
-      axi_master_cb.araddr <= t.addr;
-      axi_master_cb.arvalid <= 1'b1;
-      axi_master_cb.arsize <= $clog2(t.tr_size_in_bytes);
-      axi_master_cb.arlen <= t.burst_length-1;
-      axi_master_cb.arburst <= 2'b01; //TODO: ATM INCR BURST SUPPORTED ONLY
-
-      @(axi_master_cb);
-
-      if (arvalid == 1'b0)
-         @(axi_master_cb);
-
-      while (axi_master_cb.arready !== 1'b1) begin
-         @(axi_master_cb);
-      end
-
-      axi_master_cb.arid <= 0;
-      axi_master_cb.arvalid <= 1'b0;
-      axi_master_cb.araddr <= 0;
-      axi_master_cb.arsize <= 0;
-      axi_master_cb.arlen <= 0;
-      axi_master_cb.arburst <= 0;
-   endtask : m_ar*/
-
 
    task automatic m_ar (ref axi_seq_item t);
 
@@ -528,12 +821,13 @@ interface axi_footprint_interface #(int DW=32, int AW=32, int ID_W =10);
             else axi_master_cb.arvalid <= 1;
             @(axi_master_cb);
          end
-            if(axi_master_cb.aresetn === 1'b0) axi_master_cb.arvalid <= 0;
-            else axi_master_cb.arvalid <= 1;
+            if(axi_master_cb.aresetn === 1'b0) axi_master_cb.awvalid <= 0;
+            else axi_master_cb.awvalid <= 1;
        end
        else begin
-           axi_master_cb.arvalid <= 1'b0; 
+           axi_master_cb.wvalid <= 1'b0; 
            @(axi_master_cb);
+          // break;
        end     
 
       axi_master_cb.arid <= 0;
@@ -584,7 +878,13 @@ interface axi_footprint_interface #(int DW=32, int AW=32, int ID_W =10);
 
    endtask : m_r
    
-   
+   /*task check_reset();
+   //  forever begin
+     while(axi_monitor_cb.aresetn === 1)@(axi_monitor_cb);
+    // break;
+   //  end
+   endtask*/
+
 
    task automatic mon_aw (ref axi_seq_item t);
   // int burst_value;
@@ -609,8 +909,6 @@ interface axi_footprint_interface #(int DW=32, int AW=32, int ID_W =10);
          $display($time,"!!!!!!!!!!!!!!! mon_aw data_size =%0d stobe_size=%0d",t.data.size,t.byte_en.size);
        
       end else begin
-            //`uvm_fatal("AXI MONITOR :: AW", "AWVALID lowered before AWREADY was set")
-
             `uvm_error("AXI MONITOR :: AW", "AWVALID lowered before AWREADY was set")
       end
    endtask : mon_aw
@@ -701,8 +999,7 @@ interface axi_footprint_interface #(int DW=32, int AW=32, int ID_W =10);
             end
          end
             else begin
-          //  `uvm_fatal("AXI MONITOR :: W", "WVALID lowered before WREADY was set")
-            `uvm_error("AXI MONITOR :: W", "WVALID lowered before WREADY was set")
+            `uvm_fatal("AXI MONITOR :: W", "WVALID lowered before WREADY was set")
             end
        end
    endtask : mon_w
@@ -715,8 +1012,7 @@ interface axi_footprint_interface #(int DW=32, int AW=32, int ID_W =10);
       t.bresp = axi_monitor_cb.bresp;
       t.end_time= $realtime();
       end else begin
-        // `uvm_fatal("AXI MONITOR :: B", "BVALID lowered before BREADY was set")
-         `uvm_error("AXI MONITOR :: B", "BVALID lowered before BREADY was set")
+         `uvm_fatal("AXI MONITOR :: B", "BVALID lowered before BREADY was set")
       end
    endtask : mon_b
 
@@ -732,7 +1028,6 @@ interface axi_footprint_interface #(int DW=32, int AW=32, int ID_W =10);
          t.burst_type = axi_monitor_cb.arburst;
          t.id = axi_monitor_cb.arid;
       end else begin
-       //  `uvm_fatal("AXI MONITOR :: AR", "ARVALID lowered before ARREADY was set")
          `uvm_error("AXI MONITOR :: AR", "ARVALID lowered before ARREADY was set")
       end
    endtask : mon_ar
@@ -774,8 +1069,7 @@ interface axi_footprint_interface #(int DW=32, int AW=32, int ID_W =10);
             end
          end
          else begin
-         //   `uvm_fatal("AXI MONITOR :: R", "RVALID lowered before RREADY was set")
-            `uvm_error("AXI MONITOR :: R", "RVALID lowered before RREADY was set")
+            `uvm_fatal("AXI MONITOR :: R", "RVALID lowered before RREADY was set")
          end
       end
    endtask : mon_r
@@ -842,7 +1136,46 @@ interface axi_footprint_interface #(int DW=32, int AW=32, int ID_W =10);
       end
    endtask : s_w
 
-   /*task automatic s_b (ref axi_seq_item t);
+   task automatic s_b (ref axi_seq_item t);
+
+      repeat (t.delay_vars.s_b_start_delay) @(axi_slave_cb);
+      if(axi_slave_cb.aresetn ===1)begin      
+        axi_slave_cb.bvalid <= 1'b1;
+        axi_slave_cb.bid <= t.id;
+        axi_slave_cb.bresp <= t.bresp;
+      end
+      else begin
+        axi_slave_cb.bvalid <= 1'b0;
+        axi_slave_cb.bid <= axi_slave_cb.bid ;
+        axi_slave_cb.bresp <= axi_slave_cb.bresp;
+      end
+      //axi_slave_cb.bvalid <= (axi_slave_cb.aresetn) ? 1'b1 : 1'b0;
+     // $display($time,"@@@@valid=%0d",axi_slave_cb.bvalid);
+
+      @(axi_slave_cb);
+      if(axi_slave_cb.aresetn ===1)begin
+        axi_slave_cb.bvalid <= 1;
+        if(bvalid == 0) @(axi_slave_cb);
+        while (axi_slave_cb.bready !== 1'b1)begin
+          if(axi_slave_cb.aresetn === 1'b0) begin
+           axi_slave_cb.bvalid <= 0;
+           break;
+          end
+          else axi_slave_cb.bvalid <= 1;
+          @(axi_slave_cb);
+        end
+         //if(axi_slave_cb.aresetn === 1'b0) axi_slave_cb.bvalid <= 0;
+         //else axi_slave_cb.bvalid <= 1;
+      end
+
+     
+      axi_slave_cb.bvalid <= 1'b0;
+      axi_slave_cb.bid <= 0;
+      axi_slave_cb.bresp <= 0;
+   endtask : s_b
+
+ 
+ /*   task automatic s_b (ref axi_seq_item t);
 
       repeat (t.delay_vars.s_b_start_delay) @(axi_slave_cb);
       $display($time,"@@@@@@@@@response");
@@ -859,41 +1192,77 @@ interface axi_footprint_interface #(int DW=32, int AW=32, int ID_W =10);
       axi_slave_cb.bresp <= 0;
    endtask : s_b*/
 
-   task automatic s_b (ref axi_seq_item t);
+  
+
+  /*task automatic s_b (ref axi_seq_item t);
 
       repeat (t.delay_vars.s_b_start_delay) @(axi_slave_cb);
-      if(axi_slave_cb.aresetn ===1)begin      
-        axi_slave_cb.bvalid <= 1'b1;
-        axi_slave_cb.bid <= t.id;
-        axi_slave_cb.bresp <= t.bresp;
-      end
-      else begin
-        axi_slave_cb.bvalid <= 1'b0;
-        axi_slave_cb.bid <= axi_slave_cb.bid ;
-        axi_slave_cb.bresp <= axi_slave_cb.bresp;
-      end
-    
+      $display($time,"@@@@@@@@@response");
+     // axi_slave_cb.bvalid <= 1'b1;
+      axi_slave_cb.bid <= t.id;
+      axi_slave_cb.bresp <= t.bresp;
+      axi_slave_cb.bvalid <= (axi_slave_cb.aresetn) ? 1'b1 : 1'b0;
+      $display($time,"@@@@valid=%0d",axi_slave_cb.bvalid);
+
       @(axi_slave_cb);
       if(axi_slave_cb.aresetn ===1)begin
-        axi_slave_cb.bvalid <= 1;
-        if(bvalid == 0) @(axi_slave_cb);
-        while (axi_slave_cb.bready !== 1'b1)begin
-          if(axi_slave_cb.aresetn === 1'b0) begin
-           axi_slave_cb.bvalid <= 0;
-           break;
-          end
-          else axi_slave_cb.bvalid <= 1;
-          @(axi_slave_cb);
+      axi_slave_cb.bvalid <= 1;
+      if(bvalid == 0) @(axi_slave_cb);
+      while (!(axi_slave_cb.bready === 1'b1))begin
+        if(axi_slave_cb.aresetn === 1'b0) begin
+         axi_slave_cb.bvalid <= 0;
+         break;
         end
+        else axi_slave_cb.bvalid <= 1;
+        @(axi_slave_cb);
       end
+       if(axi_slave_cb.aresetn === 1'b0) axi_slave_cb.bvalid <= 0;
+        else axi_slave_cb.bvalid <= 1;
+      end
+      else
+        axi_slave_cb.bvalid <= 0;
 
-     
       axi_slave_cb.bvalid <= 1'b0;
       axi_slave_cb.bid <= 0;
       axi_slave_cb.bresp <= 0;
-   endtask : s_b
+   endtask : s_b*/
 
- 
+
+
+  /* task automatic s_b (ref axi_seq_item t);
+
+        $display("from_slave_bresp");
+     // if(axi_slave_cb.aresetn===1)begin
+
+        repeat (t.delay_vars.s_b_start_delay) @(axi_slave_cb);
+        axi_slave_cb.bid <= t.id;
+        axi_slave_cb.bresp <= t.bresp;
+
+        $display("from_slave_bresp_1");
+        /*if(axi_slave_cb.aresetn==0)
+          axi_slave_cb.bvalid <= 1'b0;
+        else
+        axi_slave_cb.bvalid <= 1'b1;
+        
+        @(axi_slave_cb);
+        if(bvalid == 0) @(axi_slave_cb);
+        while (!(axi_slave_cb.bready === 1'b1)) @(axi_slave_cb);
+         
+        axi_slave_cb.bvalid <= 1'b0;
+        axi_slave_cb.bid <= 0;
+        axi_slave_cb.bresp <= 0;
+     // end
+  
+      if(axi_slave_cb.aresetn===0)begin
+        $display("from_slave_bresp_2");
+      axi_slave_cb.bvalid <= 1'b0;
+      axi_slave_cb.bid <= t.id;
+      axi_slave_cb.bresp <= t.bresp;
+      /*if(axi_slave_cb.aresetn==1)begin
+        axi_slave_cb.bvalid <= 1'b1;
+      end
+      end
+   endtask : s_b*/
    task automatic s_ar (ref axi_seq_item t);
     
 
@@ -924,42 +1293,83 @@ interface axi_footprint_interface #(int DW=32, int AW=32, int ID_W =10);
       axi_slave_cb.arready <= 1'b0;
    endtask : s_ar
 
- /* task automatic s_r (ref axi_seq_item t);
-
+  /* task automatic s_r (ref axi_seq_item t);
+      logic temp,rst;
       repeat(t.delay_vars.s_r_start_delay) @(axi_slave_cb);
 
       for(int i = 0; i < t.burst_length; i++) begin
 
          if(i > 0)
 	   begin
-	     //repeat(t.delay_vars.s_r_beat_delay) @(axi_slave_cb);
-	     repeat(5) @(axi_slave_cb);
+	     repeat(t.delay_vars.s_r_beat_delay) @(axi_slave_cb);
+	     //repeat(5) @(axi_slave_cb);
 	   end
 
-         axi_slave_cb.rvalid <= 1'b1;
+        // axi_slave_cb.rvalid <= 1'b1;
+          if(axi_slave_cb.aresetn === 1 && i==0) begin
+           temp = 1;
+           axi_slave_cb.rvalid <=1;
+          end
+          else if(axi_slave_cb.aresetn === 0 && i==0) begin
+           temp = 0;
+           axi_slave_cb.rvalid <=0;   
+          end          
+        if(axi_slave_cb.aresetn === 1)begin
          axi_slave_cb.rdata <= t.data[i];
          axi_slave_cb.rid <= t.id;
          axi_slave_cb.rresp <= t.rresp[i];
+        end
+        else begin
+         axi_slave_cb.rdata <= axi_slave_cb.rdata;
+         axi_slave_cb.rid <= t.id;
+         axi_slave_cb.rresp <= t.rresp[i];
+        end
 
+        
+        // axi_slave_cb.rvalid <= (axi_master_cb.aresetn) ? 1'b1 : 1'b0;
+         
          if (i == t.burst_length-1) axi_slave_cb.rlast <= 1'b1;
 
          @(axi_slave_cb);
-
-         if (rvalid == 1'b0)
-            @(axi_slave_cb);
-
-         while (axi_slave_cb.rready !== 1'b1) begin
-            @(axi_slave_cb);
+         if (axi_slave_cb.rlast == 1) begin
+           break;
          end
 
+         if(!temp && i < t.burst_length)begin
+           axi_slave_cb.rvalid <=0;
+         end
+         else begin
+               
+         if(axi_slave_cb.aresetn === 1 && !rst)begin          
+            axi_slave_cb.rvalid <= 1;
+            if (rvalid == 1'b0)
+               @(axi_slave_cb);
+
+            while (axi_slave_cb.rready !== 1'b1) begin
+	       if(axi_slave_cb.aresetn === 1'b0)begin
+                 axi_slave_cb.rvalid <= 0;     
+                 break;
+               end        
+               else axi_slave_cb.rvalid <= 1;
+               @(axi_slave_cb);
+            end
+            if(axi_slave_cb.aresetn === 1'b0) axi_slave_cb.rvalid <= 0;
+            else axi_slave_cb.rvalid <= 1;
+         end
+         else begin 
+            rst = 1;
+            axi_slave_cb.rvalid <= 1'b0;
+         end
+         end
+      end
          axi_slave_cb.rdata <= 0;
          axi_slave_cb.rid <= 0;
          axi_slave_cb.rlast <= 1'b0;
          axi_slave_cb.rresp <= 0;
          axi_slave_cb.rvalid <= 1'b0;
-      end
 
    endtask : s_r*/
+
 
    task automatic s_r (ref axi_seq_item t);
       bit rst;
@@ -983,6 +1393,7 @@ interface axi_footprint_interface #(int DW=32, int AW=32, int ID_W =10);
             axi_slave_cb.rid <= t.id;
             axi_slave_cb.rresp <= t.rresp[i];
             axi_slave_cb.rvalid <=0;
+           // if (i == t.burst_length-1) axi_slave_cb.rlast <= 1'b1;
             @(axi_slave_cb);
           end
           break;
@@ -1009,14 +1420,17 @@ interface axi_footprint_interface #(int DW=32, int AW=32, int ID_W =10);
           end        
         end
         if(axi_slave_cb.aresetn === 0)begin            
+           // rst 		<= 1;  
             num = t.burst_length - count ;
             for(int i=0; i < num; i++)begin
               axi_slave_cb.rdata  <= axi_slave_cb.rdata;
               axi_slave_cb.rid    <= t.id;
               axi_slave_cb.rresp  <= axi_slave_cb.rresp  ;
               axi_slave_cb.rvalid <= 0;
+              //if (i == num-1) axi_slave_cb.rlast <= 1'b1;
               @(axi_slave_cb);
             end
+          //end
           break;
         end        
       end
@@ -1025,6 +1439,7 @@ interface axi_footprint_interface #(int DW=32, int AW=32, int ID_W =10);
          axi_slave_cb.rlast <= 1'b0;
          axi_slave_cb.rresp <= 0;
          axi_slave_cb.rvalid <= 1'b0;
+     // end
 
    endtask : s_r
 

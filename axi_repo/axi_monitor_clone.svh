@@ -46,14 +46,9 @@ class axi_monitor #(int D_W= 32,int A_W=32,int ID_W = 10) extends uvm_monitor;
    real clk;
    real timescale;
    
-   int file_m_wr_req,file_m_rd_req;
-   int file_s_wr_req,file_s_rd_req;
-   int file_m_wr_resp,file_m_rd_resp;
-   int file_s_wr_resp,file_s_rd_resp;
-   int count_m_wr_req,count_s_wr_req;
-   int count_m_rd_req,count_s_rd_req;
-   int count_m_wr_resp,count_s_wr_resp;
-   int count_m_rd_resp,count_s_rd_resp;
+   int file_m_wr,file_rd;
+   int file_s_wr;
+   int count_m,count_s;
 
    extern function new(string name, uvm_component parent);
    extern virtual function void build_phase(uvm_phase phase);
@@ -70,13 +65,11 @@ class axi_monitor #(int D_W= 32,int A_W=32,int ID_W = 10) extends uvm_monitor;
    extern task get_write_responses();
    extern task get_read_responses();
    extern task get_writes();
-   extern task check_reset();
    extern task get_reads();
    extern task match_writes();
    extern task match_reads();
    extern task feel_the_beat();
-   extern function int get_abs_resolution(); 
-
+   extern function int get_abs_resolution();
    
 endclass
 
@@ -120,16 +113,7 @@ endfunction : build_phase
 
 task axi_monitor::run_phase(uvm_phase phase);
    super.run_phase (phase);
-   forever begin
-      @(posedge axi_vif.aresetn);
-      fork
-         axi_monitor();
-      join_none
-      @(negedge axi_vif.aresetn);
-      disable fork;
-      check_reset();
-   end
-
+   axi_monitor();
 endtask : run_phase
 
 task axi_monitor::axi_monitor();
@@ -150,35 +134,10 @@ task axi_monitor::axi_monitor();
       forever get_reads();
       forever match_reads();
       forever match_writes();
-      forever feel_the_beat(); 
-      forever check_reset();
+      forever feel_the_beat();
    join
 
 endtask
-
-task axi_monitor::check_reset();
-    while(axi_vif.aresetn === 1)@(axi_vif.axi_monitor_cb);
-    if(axi_vif.aresetn === 0)begin
-      fork
-         req_write_q = new();
-         rsp_write_q = new();
-         req_read_q  = new();
-
-         rsp_read_q  = new();
-
-         r_q.delete();
-
-         b_q.delete();
-         all_w.delete();
-         all_r.delete();
-      join
-
-    end	
-//`uvm_info(get_full_name,"(((((((((((((((((((((end)))))))))))))))))",UVM_NONE)
-
-endtask
-
-
 
 function int axi_monitor::get_abs_resolution();
       time tmp;
@@ -263,25 +222,8 @@ task axi_monitor:: get_reads();
    t.end_of_rw = $realtime();
   
    req_read_q.put(t);
-   if(cfg.master == 1)begin
-     file_m_rd_req= $fopen($sformatf("mon_master_%0d_read_req_log.txt",cfg.master_i),"a");
-  
-     $fdisplay(file_m_rd_req,"\n\n------------------------****************************START****************************************-------------------------\nmonitor [read resp packet=%0d]\n%s\n------------------------------****************************END****************************************----------------------------\n",count_m_rd_req,t.sprint);  
-     count_m_rd_req++; 
- 
-   end
-   else begin
-     file_s_rd_req= $fopen($sformatf("mon_slave_%0d_read_req_log.txt",cfg.slave_i),"a");
-    
-     $fdisplay(file_s_rd_req,"\n\n------------------------****************************START****************************************-------------------------\nmonitor [read resp packet=%0d]\n%s\n------------------------------****************************END****************************************----------------------------\n",count_s_rd_req,t.sprint);  
-     count_s_rd_req++; 
- 
-   end
-
-   if(axi_vif.aresetn === 1) begin
    axi_analysis_port.write(t);
-    `uvm_info(get_type_name,$sformatf("monitor read req packet is =%0s",t.sprint),UVM_NONE) 
-   end
+  
 endtask : get_reads
 
 task axi_monitor:: match_reads();
@@ -348,61 +290,26 @@ task axi_monitor:: get_writes();
    t = axi_seq_item::type_id::create("t", this);
    
    t.use_last_signaling = cfg.last_signaling_used;
-  // fork
-     fork
+   fork
       begin
          axi_vif.mon_aw(t);
       end
       begin
          axi_vif.mon_w(t);
       end
-    join
-    //  check_reset();
- //  join_any
-   
-  /* if(axi_vif.axi_vif.axi_monitor_cb.aresetn === 0) begin
-     disable fork;
-     t=null();
-   end*/
+   join
+   // Internal ID counter in case of AXI Lite
+   if(cfg.last_signaling_used == 0)
+      t.id = awid_bid_counter++;
 
-   //else begin
-     // Internal ID counter in case of AXI Lite
-     if(cfg.last_signaling_used == 0)
-        t.id = awid_bid_counter++;
-
-     t.burst_length += 1;
-     t.op_type = AXI_WRITE;
-     
-     @(axi_vif.axi_monitor_cb);
-     t.end_of_rw = $realtime();
-   //  if(axi_vif.axi_monitor_cb.aresetn === 0) t=null();
-      // while(req_write_q.try_get(t));
-     //end
-    
-    // else begin
-     
-     if(cfg.master == 1)begin
-       file_m_wr_req= $fopen($sformatf("mon_master_%0d_write__req_log.txt",cfg.master_i),"a");
-      
-       $fdisplay(file_m_wr_req,"\n\n------------------------****************************START****************************************-------------------------\nmonitor [write req packet=%0d]\n%s\n------------------------------****************************END****************************************----------------------------\n",count_m_wr_req,t.sprint);  
-       count_m_wr_req++; 
- 
-     end
-     else begin
-       file_s_wr_req= $fopen($sformatf("mon_slave_%0d_write_req_log.txt",cfg.slave_i),"a");
-      
-       $fdisplay(file_s_wr_req,"\n\n------------------------****************************START****************************************-------------------------\nmonitor [write req packet=%0d]\n%s\n------------------------------****************************END****************************************----------------------------\n",count_s_wr_resp,t.sprint);  
-       count_s_wr_req++; 
- 
-     end
-   //  `uvm_info(get_name,$sformatf("write req packet is \n %s",t.sprint),UVM_LOW)
+   t.burst_length += 1;
+   t.op_type = AXI_WRITE;
    
-     if(axi_vif.aresetn === 1)begin
-       axi_analysis_port.write(t);  
-       `uvm_info(get_name,$sformatf("write req packet is \n %s",t.sprint),UVM_LOW)
-     end
-     req_write_q.put(t);
-  // end
+   @(axi_vif.axi_monitor_cb);
+   t.end_of_rw = $realtime();
+   axi_analysis_port.write(t);
+   req_write_q.put(t);
+   
 endtask : get_writes
 
 task axi_monitor:: match_writes();
@@ -453,7 +360,7 @@ task axi_monitor:: post_process_axi_write_pkt(axi_seq_item t);
    
    //byte_en = new[wr_tr.burst_length];
    //wr_data = new[wr_tr.burst_length];
- //  address = new[wr_tr.burst_length];
+   //address = new[wr_tr.burst_length];
    //byte_en = wr_tr.byte_en;
    //wr_data = wr_tr.data;
    //
@@ -476,7 +383,7 @@ task axi_monitor:: post_process_axi_write_pkt(axi_seq_item t);
    //  beat_address = wr_tr.addr;
    //  for (int i = 0; i < wr_tr.burst_length; i++) begin
    //     axi_common::shift_data_right(beat_address, wr_data[i], wr_tr.data[i], wr_tr.tr_size_in_bytes, 0, cfg.data_width); 
-    //    address[i] = beat_address;
+   //     address[i] = beat_address;
    //     if (i == 0 && (beat_address % wr_tr.tr_size_in_bytes != 0)) // Unaligned transfer, next addresses of burst are aligned
    //       beat_address = (beat_address + wr_tr.tr_size_in_bytes) - (beat_address % wr_tr.tr_size_in_bytes);
    //     else
@@ -495,28 +402,25 @@ task axi_monitor:: post_process_axi_write_pkt(axi_seq_item t);
    if(cfg.log_verbosity != "none")
       publish_write_transaction(wr_tr);
    if(cfg.master == 1)begin
-   file_m_wr_resp= $fopen($sformatf("mon_master_%0d_write__resp_log.txt",cfg.master_i),"a");
+   file_m_wr= $fopen($sformatf("mon_master_%0d_write_log.txt",cfg.master_i),"a");
   
-   $fdisplay(file_m_wr_resp,"\n\n------------------------****************************START****************************************-------------------------\nmonitor [write resp packet=%0d]\n%s\n------------------------------****************************END****************************************----------------------------\n",count_m_wr_resp,wr_tr.sprint);  
-   count_m_wr_resp++; 
+   $fdisplay(file_m_wr,"\n\n------------------------****************************START****************************************-------------------------\nmonitor [write packet=%0d]\n%s\n------------------------------****************************END****************************************----------------------------\n",count_m,wr_tr.sprint);  
+   count_m++; 
  
    end
    else begin
-   file_s_wr_resp= $fopen($sformatf("mon_slave_%0d_write_resp_log.txt",cfg.slave_i),"a");
+   file_s_wr= $fopen($sformatf("mon_slave_%0d_write_log.txt",cfg.slave_i),"a");
   
-   $fdisplay(file_s_wr_resp,"\n\n------------------------****************************START****************************************-------------------------\nmonitor [write resp packet=%0d]\n%s\n------------------------------****************************END****************************************----------------------------\n",count_s_wr_resp,wr_tr.sprint);  
-   count_s_wr_resp++; 
+   $fdisplay(file_s_wr,"\n\n------------------------****************************START****************************************-------------------------\nmonitor [write packet=%0d]\n%s\n------------------------------****************************END****************************************----------------------------\n",count_s,wr_tr.sprint);  
+   count_s++; 
  
    end
 
     
    wr_tr.req_res = RESPONSE;
-//  `uvm_info(get_type_name,$sformatf("monitor write packet respnse is =%0s",wr_tr.sprint),UVM_NONE) 
-    if(axi_vif.aresetn === 1)begin 
-    axi_analysis_port.write(wr_tr);
-    `uvm_info(get_type_name,$sformatf("monitor write packet respnse is =%0s",wr_tr.sprint),UVM_NONE) 
-    end
-   
+  `uvm_info(get_type_name,$sformatf("monitor write packet respnse is =%0s",wr_tr.sprint),UVM_NONE) 
+   axi_analysis_port.write(wr_tr);
+       
 endtask : post_process_axi_write_pkt
 
 task axi_monitor:: post_process_axi_read_pkt(axi_seq_item t);
@@ -534,8 +438,7 @@ task axi_monitor:: post_process_axi_read_pkt(axi_seq_item t);
    logic [7:0]               Upper_Byte_Lane;
    logic [7:0]               temp_data[$];
    logic [7:0]               temp_rresp[$];
-   //int 			     slave_data;
-  
+
    rd_tr = axi_seq_item::type_id::create("rd_tr", this);
 
    $cast(rd_tr, t.clone());
@@ -550,59 +453,28 @@ task axi_monitor:: post_process_axi_read_pkt(axi_seq_item t);
 
     // Calculate Aligned_Address
     Aligned_Address = ($floor(rd_tr.addr / rd_tr.tr_size_in_bytes)) * rd_tr.tr_size_in_bytes;
-    aligned = (Aligned_Address == rd_tr.addr);
 
     Start_Address = rd_tr.addr;
 
     // Calculate dtsize
     dtsize = rd_tr.tr_size_in_bytes * rd_tr.burst_length;
-	for (int n = 1; n <= rd_tr.burst_length; n++) begin
+
+
+        for (int n = 1; n <= rd_tr.burst_length; n++) begin
           if(n==1) begin
-            //`uvm_info(get_type_name(),$sformatf("value of Address=%0d",Start_Address),UVM_LOW)
-            //`uvm_info(get_type_name(),$sformatf("value of data_bus_bytes=%0d",Data_Bus_Bytes),UVM_LOW)
             Lower_Byte_Lane = Start_Address -($floor(Start_Address/Data_Bus_Bytes))* Data_Bus_Bytes;
             Upper_Byte_Lane = Aligned_Address +( Number_Bytes - 1) - ($floor(Start_Address / Data_Bus_Bytes)) * Data_Bus_Bytes;
           end
           else begin
             Start_Address =Aligned_Address+(n-1)* Number_Bytes;
-            //`uvm_info(get_type_name(),$sformatf("value of second_transfer=%0d",Start_Address),UVM_LOW)
-            //   B=($floor(Start_Address / Data_Bus_Bytes));
-            //`uvm_info(get_type_name(),$sformatf("value of B=%0d",B),UVM_LOW)
             Lower_Byte_Lane=Start_Address-($floor(Start_Address/Data_Bus_Bytes))*Data_Bus_Bytes;
             Upper_Byte_Lane = Lower_Byte_Lane + (Number_Bytes - 1);
-            end
+          end
            
             // All transfers after the first are aligned
-            //`uvm_info(get_type_name(),$sformatf("lower_byte_lane=%0h and upper_byte-lane=%0h",Lower_Byte_Lane,Upper_Byte_Lane),UVM_LOW)
             for (int i = Lower_Byte_Lane; i <= Upper_Byte_Lane; i++) begin
                 temp_data.push_front(rd_tr.data[n-1][i*8+:8]);
-               //  slave_data=rd_tr.data[n-1][i*8+:8];
-              //   `uvm_info(get_type_name(),$sformatf("value_checking=%0h",slave_data),UVM_LOW)
-                temp_rresp.push_front(rd_tr.rresp[n-1]);
-            end
-        end
-
-
-       rd_tr.data  = new[temp_data.size()];
-       rd_tr.rresp = new[temp_rresp.size()];
-
-       foreach(rd_tr.data[i])   begin
-                 rd_tr.data[i]  = temp_data.pop_back();
-                // `uvm_info(get_type_name(),$sformatf("checking_value=%0h",rd_tr.data[i]),UVM_LOW)
-            end
-
-       foreach(rd_tr.rresp[i])  rd_tr.rresp[i] = temp_rresp.pop_back();
-        /*for (int n = 1; n <= rd_tr.burst_length; n++) begin
-            Lower_Byte_Lane = Start_Address - ($floor(Start_Address / Data_Bus_Bytes)) * Data_Bus_Bytes;
-            if (aligned) begin
-                Upper_Byte_Lane = Lower_Byte_Lane + Number_Bytes - 1;
-            end else begin
-                Upper_Byte_Lane = Aligned_Address + Number_Bytes - 1 - ($floor(Start_Address / Data_Bus_Bytes)) * Data_Bus_Bytes;
-            end
-            Start_Address =n + Number_Bytes;
-            aligned = 1; // All transfers after the first are aligned
-            for (int i = Lower_Byte_Lane; i <= Upper_Byte_Lane; i++) begin
-                temp_data.push_front(rd_tr.data[n-1][i*8+:8]);
+                 slave_data=rd_tr.data[n-1][i*8+:8]; 
                 temp_rresp.push_front(rd_tr.rresp[n-1]);
             end
         end
@@ -611,8 +483,11 @@ task axi_monitor:: post_process_axi_read_pkt(axi_seq_item t);
        rd_tr.data  = new[temp_data.size()];
        rd_tr.rresp = new[temp_data.size()];
 
-       foreach(rd_tr.data[i])   rd_tr.data[i]  = temp_data.pop_back();
-       foreach(rd_tr.rresp[i])  rd_tr.rresp[i] = temp_rresp.pop_back();*/
+       foreach(rd_tr.data[i]) 
+                 rd_tr.data[i]  = temp_data.pop_back();
+                
+
+       foreach(rd_tr.rresp[i])  rd_tr.rresp[i] = temp_rresp.pop_back();
    // Shift each data beat
    //beat_address = rd_tr.addr;
    //for (int i = 0; i < rd_tr.burst_length; i++) begin
@@ -630,28 +505,15 @@ task axi_monitor:: post_process_axi_read_pkt(axi_seq_item t);
    //       rd_tr.data[j][i] = 0;
    //end
 
-   if(cfg.master == 1)begin
-     file_m_rd_resp= $fopen($sformatf("mon_master_%0d_read_resp_log.txt",cfg.master_i),"a");
-  
-     $fdisplay(file_m_rd_resp,"\n\n------------------------****************************START****************************************-------------------------\nmonitor [read resp packet=%0d]\n%s\n------------------------------****************************END****************************************----------------------------\n",count_m_rd_resp,rd_tr.sprint);  
-     count_m_rd_resp++; 
- 
-   end
-   else begin
-     file_s_rd_resp= $fopen($sformatf("mon_slave_%0d_read_resp_log.txt",cfg.slave_i),"a");
-    
-     $fdisplay(file_s_rd_resp,"\n\n------------------------****************************START****************************************-------------------------\nmonitor [read resp packet=%0d]\n%s\n------------------------------****************************END****************************************----------------------------\n",count_s_rd_resp,rd_tr.sprint);  
-     count_s_rd_resp++; 
-   end
 
    rd_tr.req_res = RESPONSE; 
-    if(axi_vif.aresetn === 1)begin
-    axi_analysis_port.write(rd_tr);
-    `uvm_info(get_type_name,$sformatf("monitor read packet respnse is =%0s",rd_tr.sprint),UVM_NONE) 
-    end
+   axi_analysis_port.write(rd_tr);
+
    if(cfg.log_verbosity != "none")
       publish_read_transaction(rd_tr);
-  
+   file_rd= $fopen("mon_read_log.txt","w");
+   $fdisplay(file_rd,"monitor [read packet]\n%s",rd_tr.sprint);    
+
 
 endtask : post_process_axi_read_pkt
 
@@ -781,14 +643,9 @@ function void axi_monitor::report_phase(uvm_phase phase);
    if(cfg.has_perf_analysis == 1) begin
       perf_report();
    end
-   $fclose(file_m_wr_req);
-   $fclose(file_s_wr_req);
-   $fclose(file_m_wr_resp);
-   $fclose(file_s_wr_resp);
-   $fclose(file_m_wr_req);
-   $fclose(file_s_wr_req);
-   $fclose(file_m_wr_resp);
-   $fclose(file_s_wr_resp);
+   $fclose(file_rd);
+   $fclose(file_m_wr);
+   $fclose(file_s_wr);
 endfunction : report_phase
 
 function void axi_monitor::perf_report();

@@ -39,10 +39,10 @@ import uvm_pkg::*;
      
    // Reset and set
    initial begin
-      aresetn = 1'b0;
-      aclk    = 1'b0;
-      repeat(5) @(posedge aclk);
       aresetn = 1'b1;
+      aclk    = 1'b0;
+      repeat(2) @(posedge aclk);
+      aresetn = 1'b0;
    end
 
    
@@ -116,13 +116,12 @@ import uvm_pkg::*;
                               .SUM_M_R_D_WIDTH(SUM_S_DATA_W),
                               .SUM_M_W_D_WIDTH(SUM_S_DATA_W),
                               .SUM_M_A_WIDTH(SUM_S_ADDR_W),
-			      .SUM_M_STRB_WIDTH(SUM_S_STRB_W),
-			      .SUM_S_STRB_WIDTH(SUM_M_STRB_W),
+							  .SUM_M_STRB_WIDTH(SUM_S_STRB_W),
+							  .SUM_S_STRB_WIDTH(SUM_M_STRB_W),
                               .MAX_S_ID_WIDTH(MAX_M_ID_WIDTH),
-                              .MAX_M_A_WIDTH(MAX_S_ADDR_WIDTH),
-		              .COUPLER_REG_INSTANCE('d0))
+                              .MAX_M_A_WIDTH(MAX_S_ADDR_WIDTH))
                            dut1 (.clk             (aclk             ),             
-                                 .rst             (!aresetn          ),         
+                                 .rst             (aresetn          ),         
                                  .s_axi_awid      ({u_axi_master_if_3.awid,    u_axi_master_if_2.awid,    u_axi_master_if_1.awid,    u_axi_master_if_0.awid}      ),
                                  .s_axi_awaddr    ({u_axi_master_if_3.awaddr,  u_axi_master_if_2.awaddr,  u_axi_master_if_1.awaddr, u_axi_master_if_0.awaddr}    ),
                                  .s_axi_awlen     ({u_axi_master_if_3.awlen,   u_axi_master_if_2.awlen,   u_axi_master_if_1.awlen,   u_axi_master_if_0.awlen}     ),
@@ -158,13 +157,13 @@ import uvm_pkg::*;
                                  .s_axi_aruser    ({u_axi_master_if_3.aruser,  u_axi_master_if_2.aruser,  u_axi_master_if_1.aruser,  u_axi_master_if_0.aruser}    ),
                                  .s_axi_arvalid   ({u_axi_master_if_3.arvalid, u_axi_master_if_2.arvalid, u_axi_master_if_1.arvalid, u_axi_master_if_0.arvalid}   ),
                                  .s_axi_arready   ({u_axi_master_if_3.arready, u_axi_master_if_2.arready, u_axi_master_if_1.arready, u_axi_master_if_0.arready}   ),
-			         .s_axi_rid       ({u_axi_master_if_3.rid,     u_axi_master_if_2.rid,     u_axi_master_if_1.rid,     u_axi_master_if_0.rid}       ),
-			         .s_axi_rdata     ({u_axi_master_if_3.rdata,   u_axi_master_if_2.rdata,   u_axi_master_if_1.rdata,   u_axi_master_if_0.rdata}     ),
-			         .s_axi_rresp     ({u_axi_master_if_3.rresp,   u_axi_master_if_2.rresp,   u_axi_master_if_1.rresp,   u_axi_master_if_0.rresp}     ),
-			         .s_axi_rlast     ({u_axi_master_if_3.rlast,   u_axi_master_if_2.rlast,   u_axi_master_if_1.rlast,   u_axi_master_if_0.rlast}     ),  				
-                          	 .s_axi_ruser     ({u_axi_master_if_3.ruser,   u_axi_master_if_2.ruser,   u_axi_master_if_1.ruser,   u_axi_master_if_0.ruser}     ),
-			         .s_axi_rvalid    ({u_axi_master_if_3.rvalid,  u_axi_master_if_2.rvalid,  u_axi_master_if_1.rvalid,  u_axi_master_if_0.rvalid}    ),
-			         .s_axi_rready    ({u_axi_master_if_3.rready,  u_axi_master_if_2.rready,  u_axi_master_if_1.rready,  u_axi_master_if_0.rready}    ),
+			                     .s_axi_rid       ({u_axi_master_if_3.rid,     u_axi_master_if_2.rid,     u_axi_master_if_1.rid,     u_axi_master_if_0.rid}       ),
+			                     .s_axi_rdata     ({u_axi_master_if_3.rdata,   u_axi_master_if_2.rdata,   u_axi_master_if_1.rdata,   u_axi_master_if_0.rdata}     ),
+			                     .s_axi_rresp     ({u_axi_master_if_3.rresp,   u_axi_master_if_2.rresp,   u_axi_master_if_1.rresp,   u_axi_master_if_0.rresp}     ),
+			                     .s_axi_rlast     ({u_axi_master_if_3.rlast,   u_axi_master_if_2.rlast,   u_axi_master_if_1.rlast,   u_axi_master_if_0.rlast}     ),  				
+                          	     .s_axi_ruser     ({u_axi_master_if_3.ruser,   u_axi_master_if_2.ruser,   u_axi_master_if_1.ruser,   u_axi_master_if_0.ruser}     ),
+			                     .s_axi_rvalid    ({u_axi_master_if_3.rvalid,  u_axi_master_if_2.rvalid,  u_axi_master_if_1.rvalid,  u_axi_master_if_0.rvalid}    ),
+			                     .s_axi_rready    ({u_axi_master_if_3.rready,  u_axi_master_if_2.rready,  u_axi_master_if_1.rready,  u_axi_master_if_0.rready}    ),
 
                                  .m_axi_awid      ({u_axi_slave_if_5.awid ,    u_axi_slave_if_4.awid ,    u_axi_slave_if_3.awid,     u_axi_slave_if_2.awid,	    u_axi_slave_if_1.awid,	    u_axi_slave_if_0.awid}    	),
                                  .m_axi_awaddr    ({u_axi_slave_if_5.awaddr ,  u_axi_slave_if_4.awaddr ,  u_axi_slave_if_3.awaddr,   u_axi_slave_if_2.awaddr,	u_axi_slave_if_1.awaddr,    u_axi_slave_if_0.awaddr} 	),
@@ -253,7 +252,7 @@ import uvm_pkg::*;
 
 
 
-initial run_test ("axi_interconnect_reg_slice_test");
+initial run_test ("axi_interconnect_basic_test");
 
 
 endmodule

@@ -12,7 +12,7 @@ class axi_seq_item extends uvm_sequence_item;
    rand int burst_length;
    rand int burst_type;
    rand bit [`AXI_MAX_DW/8-1:0] byte_en []; ///< tr_size_in_bytes lowest bits used as byte enable for data
-   bit  				   byte_en_first_custom;
+   bit  				   byte_en_first_custom=1;
    bit  				   byte_en_last_custom;
    bit [`AXI_MAX_DW/8-1:0] byte_en_last;
    rand int tr_size_in_bytes;
