@@ -1,6 +1,6 @@
  //***********************************************************************************************************************************************************
  //	File_name   : axi_interconnect_reg_slice_test.sv
- //     Description : This test class is going to check the 4k_address_boundary_crossing
+ //     Description : This test is going to measure how much latency reg_slice is adding 
  //***********************************************************************************************************************************************************
 
 `include "axi_defines.svh"
