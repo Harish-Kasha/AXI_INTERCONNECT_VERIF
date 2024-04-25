@@ -762,7 +762,7 @@ interface axi_footprint_interface #(int DW=32, int AW=32, int ID_W =10);
                t.rresp =new[qu_resp.size()];
                foreach(t.data[i])begin
 	          t.data[i] = qu_data.pop_front();
-                 // $display($time,"##################$$$$$$$$$$$$$$$ data read[%0d] =%0d",i,t.data[i]);
+               `uvm_info("nazma", $sformatf(" data read[%0d] =%0h",i,t.data[i]),UVM_LOW)
                end
                foreach(t.rresp[i]) t.rresp[i] = qu_resp.pop_front();
 

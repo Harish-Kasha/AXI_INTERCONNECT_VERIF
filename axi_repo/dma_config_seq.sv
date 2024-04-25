@@ -79,7 +79,7 @@ class dma_config_seq extends uvm_sequence #(axi_seq_item);
 
     // Channel start. 
     wr_data[0]='h00000001;
-    pw_seq.write_burst(S5_START+`CORE0_OFFSET+`CH0_OFFSET+`CH_START_REG_OFFSET, wr_data, 'd1, 'hF00,seqr,'d4);
+    pw_seq.write_burst(S5_START+`CORE0_OFFSET+`CH0_OFFSET+`CH_START_REG_OFFSET, wr_data, 'd1, 'hF0,seqr,'d4);
     #3000;
   endtask
 

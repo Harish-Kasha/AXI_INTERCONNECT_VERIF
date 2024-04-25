@@ -47,7 +47,7 @@
 `define TIMEOUT_BITS   10
 `define WDT_BITS       11
 `define CMD_BITS       7
-`define ID_BITS        1
+`define ID_BITS        9
 `define LEN_BITS       8
 `define SIZE_BITS      2
 

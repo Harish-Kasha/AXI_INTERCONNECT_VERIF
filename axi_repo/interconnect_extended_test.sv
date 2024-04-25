@@ -9,7 +9,7 @@ class axi_interconnect_basic_test extends axi_interconnect_base_test;
    extern function new(string name, uvm_component parent = null);
    extern virtual function void build_phase(uvm_phase phase);
    extern task run_phase (uvm_phase phase);
-bit [31:0] arr1[6];
+      bit [31:0] arr1[6];
       bit [31:0] arr_address1[6];
       bit [31:0] arr_address2[6];
       bit [31:0] arr_address3[6];
