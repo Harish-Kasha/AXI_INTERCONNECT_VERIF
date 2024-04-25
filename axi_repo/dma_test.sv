@@ -38,7 +38,7 @@ endclass
      // start address for read
      wr_data    = new[6];
      foreach(wr_data[i]) wr_data[i] = i;
-     pw_seq.write_burst('d0, wr_data, 'd6, 'h1111,env.master_agt_1.sqr,'d4);
+     pw_seq.write_burst('d0, wr_data, 'd6, 'hF,env.master_agt_1.sqr,'d4);
      #300;
 
      dma_cfg_seq.dma_config(S0_START,S1_START,'d24,env.master_agt_1.sqr); 
