@@ -68,7 +68,7 @@ module dma_axi32_core0_axim_wdata(clk,reset,rd_transfer,rd_transfer_size,ch_fifo
    input [`CMD_BITS-1:0]       AWID;
    input [32-1:0]      AWADDR;
    input [`LEN_BITS-1:0]      AWLEN;
-   input [1:0]               AWSIZE;
+   input [2:0]               AWSIZE;
    input               AWVALID;
    input               AWREADY;
    input               AJOINT;
@@ -273,7 +273,7 @@ module dma_axi32_core0_axim_wdata(clk,reset,rd_transfer,rd_transfer_size,ch_fifo
    //always @(/*AUTOSENSE*/ - no AUTOSENSE due to defines
    always @(AWADDR or AWSIZE)
      begin              
-    case ({AWSIZE[1:0], AWADDR[1:0]})
+    case ({AWSIZE[2:0], AWADDR[1:0]})
       //8 bit
       {2'b00, 2'b00} : WSTRB_pre = 4'b0001;
       {2'b00, 2'b01} : WSTRB_pre = 4'b0010;

@@ -75,6 +75,8 @@ import uvm_pkg::*;
    assign u_axi_master_if_2.aclk    = aclk;
    assign u_axi_master_if_2.max_footprint_if.awburst = 1;
    assign u_axi_master_if_2.max_footprint_if.arburst = 1;
+   assign u_axi_master_if_2.max_footprint_if.awsize = 0;
+   assign u_axi_master_if_2.max_footprint_if.arsize = 0;
 
    assign u_axi_master_if_3.aresetn = aresetn;
    assign u_axi_master_if_3.aclk    = aclk;
@@ -125,10 +127,10 @@ import uvm_pkg::*;
 		              .COUPLER_REG_INSTANCE('d0))
                            dut1 (.clk             (aclk             ),             
                                  .rst             (!aresetn          ),         
-                                 .s_axi_awid      ({u_axi_master_if_3.awid,    1'b0,    u_axi_master_if_1.awid,    u_axi_master_if_0.awid}      ),
+                                 .s_axi_awid      ({u_axi_master_if_3.awid,  u_axi_master_if_2.awid  ,    u_axi_master_if_1.awid,    u_axi_master_if_0.awid}      ),
                                  .s_axi_awaddr    ({u_axi_master_if_3.awaddr,  u_axi_master_if_2.awaddr,  u_axi_master_if_1.awaddr, u_axi_master_if_0.awaddr}    ),
                                  .s_axi_awlen     ({u_axi_master_if_3.awlen,   u_axi_master_if_2.awlen,   u_axi_master_if_1.awlen,   u_axi_master_if_0.awlen}     ),
-                                 .s_axi_awsize    ({u_axi_master_if_3.awsize,  {1'b0,u_axi_master_if_2.awsize[1:0]},  u_axi_master_if_1.awsize,  u_axi_master_if_0.awsize}    ),
+                                 .s_axi_awsize    ({u_axi_master_if_3.awsize,  u_axi_master_if_2.awsize,  u_axi_master_if_1.awsize,  u_axi_master_if_0.awsize}    ),
                                  .s_axi_awburst   ({u_axi_master_if_3.awburst,u_axi_master_if_2.awburst , u_axi_master_if_1.awburst, u_axi_master_if_0.awburst}   ),
                                  .s_axi_awlock    ({u_axi_master_if_3.awlock,  u_axi_master_if_2.awlock,  u_axi_master_if_1.awlock,  u_axi_master_if_0.awlock}    ),
                                  .s_axi_awcache   ({u_axi_master_if_3.awcache, u_axi_master_if_2.awcache, u_axi_master_if_1.awcache, u_axi_master_if_0.awcache}   ),
@@ -151,7 +153,7 @@ import uvm_pkg::*;
                                  .s_axi_arid      ({u_axi_master_if_3.arid,  u_axi_master_if_2.arid  ,    u_axi_master_if_1.arid,    u_axi_master_if_0.arid}      ),
                                  .s_axi_araddr    ({u_axi_master_if_3.araddr,  u_axi_master_if_2.araddr,  u_axi_master_if_1.araddr,  u_axi_master_if_0.araddr}    ),
                                  .s_axi_arlen     ({u_axi_master_if_3.arlen,   u_axi_master_if_2.arlen,   u_axi_master_if_1.arlen,   u_axi_master_if_0.arlen}     ),
-                                 .s_axi_arsize    ({u_axi_master_if_3.arsize,  {1'b0,u_axi_master_if_2.arsize[1:0]},  u_axi_master_if_1.arsize,  u_axi_master_if_0.arsize}    ),
+                                 .s_axi_arsize    ({u_axi_master_if_3.arsize,  u_axi_master_if_2.arsize,  u_axi_master_if_1.arsize,  u_axi_master_if_0.arsize}    ),
                                  .s_axi_arburst   ({u_axi_master_if_3.arburst, u_axi_master_if_2.arburst, u_axi_master_if_1.arburst, u_axi_master_if_0.arburst}   ),
                                  .s_axi_arlock    ({u_axi_master_if_3.arlock,  u_axi_master_if_2.arlock,  u_axi_master_if_1.arlock,  u_axi_master_if_0.arlock}    ),
                                  .s_axi_arcache   ({u_axi_master_if_3.arcache, u_axi_master_if_2.arcache, u_axi_master_if_1.arcache, u_axi_master_if_0.arcache}   ),

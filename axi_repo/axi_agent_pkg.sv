@@ -51,6 +51,7 @@ package axi_agent_pkg;
 `include "axi_seq_item.svh"
 `include "axi_adapter.svh"
 `include "axi_agent_configuration.svh"
+`include "axi_dma_configuration.svh"
 `include "axi_monitor.svh"
 
 // Master sequences
@@ -60,6 +61,8 @@ package axi_agent_pkg;
 `include "axi_pipeline_read_seq.svh"
 `include "axi_burst_write_seq.svh"
 `include "dma_config_seq.sv"
+`include "axi_dma_seq.sv"
+`include "dma_ral_seq.sv"
 
 // Master
 `include "axi_master_driver.svh"

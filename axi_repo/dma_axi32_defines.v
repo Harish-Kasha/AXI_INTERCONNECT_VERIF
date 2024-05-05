@@ -46,10 +46,10 @@
 `define WAIT_BITS      12
 `define TIMEOUT_BITS   10
 `define WDT_BITS       11
-`define CMD_BITS       7
+`define CMD_BITS       8
 `define ID_BITS        9
 `define LEN_BITS       8
-`define SIZE_BITS      2
+`define SIZE_BITS      3
 
 `define ID_END_LINE    6
 `define ID_LAST        3

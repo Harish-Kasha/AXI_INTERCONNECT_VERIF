@@ -540,6 +540,7 @@ task axi_monitor:: post_process_axi_read_pkt(axi_seq_item t);
 
    $cast(rd_tr, t.clone());
    
+   `uvm_info(get_type_name(),$sformatf("before scr =%0s",rd_tr.sprint),UVM_LOW)
    rd_tr.byte_en = new[rd_tr.burst_length];  
    shifted_rd_data = new[rd_tr.burst_length];
    shifted_rd_data = rd_tr.data;
@@ -556,12 +557,15 @@ task axi_monitor:: post_process_axi_read_pkt(axi_seq_item t);
 
     // Calculate dtsize
     dtsize = rd_tr.tr_size_in_bytes * rd_tr.burst_length;
+
 	for (int n = 1; n <= rd_tr.burst_length; n++) begin
           if(n==1) begin
             //`uvm_info(get_type_name(),$sformatf("value of Address=%0d",Start_Address),UVM_LOW)
             //`uvm_info(get_type_name(),$sformatf("value of data_bus_bytes=%0d",Data_Bus_Bytes),UVM_LOW)
             Lower_Byte_Lane = Start_Address -($floor(Start_Address/Data_Bus_Bytes))* Data_Bus_Bytes;
             Upper_Byte_Lane = Aligned_Address +( Number_Bytes - 1) - ($floor(Start_Address / Data_Bus_Bytes)) * Data_Bus_Bytes;
+          `uvm_info(get_type_name(),$sformatf("start LB =%0d\t UB = %0d\t data_bus_B = %0d\t start_add= %0h no_B=%0d",Lower_Byte_Lane,Upper_Byte_Lane,Data_Bus_Bytes,Start_Address,Number_Bytes),UVM_LOW)
+
           end
           else begin
             Start_Address =Aligned_Address+(n-1)* Number_Bytes;
@@ -570,7 +574,10 @@ task axi_monitor:: post_process_axi_read_pkt(axi_seq_item t);
             //`uvm_info(get_type_name(),$sformatf("value of B=%0d",B),UVM_LOW)
             Lower_Byte_Lane=Start_Address-($floor(Start_Address/Data_Bus_Bytes))*Data_Bus_Bytes;
             Upper_Byte_Lane = Lower_Byte_Lane + (Number_Bytes - 1);
+          `uvm_info(get_type_name(),$sformatf("LB =%0d\t UB = %0d\t data_bus_B = %0d\t start_add= %0h no_B=%0d",Lower_Byte_Lane,Upper_Byte_Lane,Data_Bus_Bytes,Start_Address,Number_Bytes),UVM_LOW)
+
             end
+         // `uvm_info(get_type_name(),$sformatf("LB =%0d\t UB = %0d\t data_bus_B = %0d\t start_add= %0h no_B=%0d",Lower_Byte_Lane,Upper_Byte_Lane,Data_Bus_Bytes,Start_Address,Number_Bytes),UVM_LOW)
            
             // All transfers after the first are aligned
             //`uvm_info(get_type_name(),$sformatf("lower_byte_lane=%0h and upper_byte-lane=%0h",Lower_Byte_Lane,Upper_Byte_Lane),UVM_LOW)
@@ -579,12 +586,19 @@ task axi_monitor:: post_process_axi_read_pkt(axi_seq_item t);
                //  slave_data=rd_tr.data[n-1][i*8+:8];
               //   `uvm_info(get_type_name(),$sformatf("value_checking=%0h",slave_data),UVM_LOW)
                 temp_rresp.push_front(rd_tr.rresp[n-1]);
-            end
-        end
+  // `uvm_info(get_type_name(),$sformatf("tempdata =%0d after scr =%0s",temp_data.size,rd_tr.sprint),UVM_LOW)
 
+            end
+   //`uvm_info(get_type_name(),$sformatf("tempdata =%0d after scr =%0s",temp_data.size,rd_tr.sprint),UVM_LOW)
+
+        end
+   `uvm_info(get_type_name(),$sformatf("tempdata =%0d after scr =%0s",temp_data.size,rd_tr.sprint),UVM_LOW)
+
+  // `uvm_info(get_type_name(),$sformatf("after scr =%0s",rd_tr.sprint),UVM_LOW)
 
        rd_tr.data  = new[temp_data.size()];
        rd_tr.rresp = new[temp_rresp.size()];
+ //  `uvm_info(get_type_name(),$sformatf("tempdata =%0d after scr =%0s",temp_data.size,rd_tr.sprint),UVM_LOW)
 
        foreach(rd_tr.data[i])   begin
                  rd_tr.data[i]  = temp_data.pop_back();
@@ -592,6 +606,8 @@ task axi_monitor:: post_process_axi_read_pkt(axi_seq_item t);
             end
 
        foreach(rd_tr.rresp[i])  rd_tr.rresp[i] = temp_rresp.pop_back();
+   //`uvm_info(get_type_name(),$sformatf("tempdata =%0d after scr =%0s",temp_data.size,rd_tr.sprint),UVM_LOW)
+
         /*for (int n = 1; n <= rd_tr.burst_length; n++) begin
             Lower_Byte_Lane = Start_Address - ($floor(Start_Address / Data_Bus_Bytes)) * Data_Bus_Bytes;
             if (aligned) begin

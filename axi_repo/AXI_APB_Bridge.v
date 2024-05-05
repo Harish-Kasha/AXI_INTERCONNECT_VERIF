@@ -21,7 +21,7 @@
 
 
 module AXI_APB_Bridge #(
-    parameter MAX_TRANSFER_WIDTH = 2) (
+    parameter MAX_TRANSFER_WIDTH = 8) (
     //AXI interface signals
     input wire ACLK,
     input wire ARESET,
@@ -29,7 +29,7 @@ module AXI_APB_Bridge #(
     input wire [10:0] ARID,
     input wire [31:0] ARADDR,
     input wire ARVALID,
-    input wire [1:0] ARSIZE,
+    input wire [2:0] ARSIZE,
     input wire [1:0] ARBURST,
     input wire [MAX_TRANSFER_WIDTH-1:0] ARLEN,
     output reg ARREADY,
@@ -37,9 +37,9 @@ module AXI_APB_Bridge #(
     input wire [10:0] AWID,
     input wire [31:0] AWADDR,
     input wire AWVALID,
-    input wire [1:0] AWSIZE,
+    input wire [2:0] AWSIZE,
     input wire [1:0] AWBURST,
-    input wire [1:0] AWLEN,
+    input wire [MAX_TRANSFER_WIDTH-1:0] AWLEN,
     output reg AWREADY,
 
     output reg [31:0] RDATA,
@@ -82,11 +82,11 @@ module AXI_APB_Bridge #(
      
      //sampled address and datas
      reg[31:0] sampled_address;
-     reg[1:0] sampled_wlen;
+     reg[7:0] sampled_wlen;
      reg[1:0] sampled_rlen;
      
      reg[1:0] sampled_rsize;
-     reg[1:0] sampled_wsize;
+     reg[2:0] sampled_wsize;
      
      reg[1:0] sampled_rburst;
      reg[1:0] sampled_wburst;

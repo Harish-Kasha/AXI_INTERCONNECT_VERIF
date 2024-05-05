@@ -5,11 +5,12 @@
 
 `ifndef _EXAMPLE_TEST_
 `define _EXAMPLE_TEST_
-
+//`include "DMA_ral_pkg.sv"
 `include "axi_interconnect_base_env.sv"
 
    import axi_parameter_pkg::*;
-class axi_interconnect_base_test extends uvm_test;
+   import DMA_ral_pkg::*;
+  class axi_interconnect_base_test extends uvm_test;
    `uvm_component_utils(axi_interconnect_base_test)
  // uvm_active_passive_enum is_active = UVM_ACTIVE;
    axi_interconnect_env env;

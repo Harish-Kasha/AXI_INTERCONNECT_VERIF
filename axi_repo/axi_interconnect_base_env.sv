@@ -9,6 +9,7 @@
 
 // importing packages and including files 
 import axi_agent_pkg::*;
+import DMA_ral_pkg::*;
 import axi_parameter_pkg::*;
 
 `include "uvm_macros.svh"
@@ -18,10 +19,9 @@ class axi_interconnect_base_env extends uvm_env;
   `uvm_component_utils(axi_interconnect_base_env)
 
    // register model here;
-   ral_block_example_reg_block u_reg_block;
 
    // reg adapter;
-   axi_adapter u_axi_adapter;
+ //  axi_adapter u_axi_adapter;
    
 
    extern function new(string name, uvm_component parent = null);
@@ -37,7 +37,8 @@ endclass
    endfunction
    
    // build_phase 
-   function void axi_interconnect_base_env::build_phase(uvm_phase phase);   
+   function void axi_interconnect_base_env::build_phase(uvm_phase phase); 
+  
      /* u_axi_adapter = axi_adapter::type_id::create ("u_axi_adapter",,get_full_name ());
       u_reg_block = ral_block_example_reg_block::type_id::create ("u_reg_block");
       u_reg_block.build();
@@ -56,6 +57,8 @@ endclass
 class axi_interconnect_env extends axi_interconnect_base_env;
    `uvm_component_utils(axi_interconnect_env)
 
+   DMA_block_model u_reg_block;
+   
    axi_master_agent #(M_DATA_W[0],M_ADDR_W,M_ID_WIDTH[0]) master_agt_0;
    axi_master_agent #(M_DATA_W[1],M_ADDR_W,M_ID_WIDTH[1]) master_agt_1;
    axi_master_agent #(M_DATA_W[2],M_ADDR_W,M_ID_WIDTH[2]) master_agt_2;
@@ -94,6 +97,9 @@ endclass
    // build phase
    function void axi_interconnect_env::build_phase(uvm_phase phase);
       super.build_phase(phase);
+       u_reg_block = new("u_reg_block");
+       u_reg_block.build();
+       //u_reg_block.lock_model();
       scr = interconnect_scoreboard::type_id::create("scr",this);
       // creation of master agents based on agent configuration
       

@@ -67,7 +67,7 @@ module dma_axi32_core0_axim_cmd(clk,reset,ch_num,burst_start,burst_addr,burst_si
    output [32-1:0]     AADDR;
    output               APORT;
    output [`LEN_BITS-1:0]     ALEN;
-   output [1:0]           ASIZE;
+   output [2:0]           ASIZE;
    output               AVALID;
    input               AREADY;
    input               AWVALID;
@@ -83,14 +83,14 @@ module dma_axi32_core0_axim_cmd(clk,reset,ch_num,burst_start,burst_addr,burst_si
    reg [32-1:0]           AADDR;
    reg                   APORT;
    reg [`LEN_BITS-1:0]           ALEN;
-   reg [1:0]               ASIZE;
+   reg [2:0]               ASIZE;
    reg                   AVALID_reg;
    reg                   AJOINT;
    
 
    wire [`CMD_BITS-1:0]       AID_pre;
    wire [32-1:0]       AADDR_pre;
-   wire [1:0]               ASIZE_pre;
+   wire [2:0]               ASIZE_pre;
    wire [`LEN_BITS-1:0]       ALEN_pre;
    wire [7-1:0]      burst_length;
 
@@ -178,7 +178,7 @@ module dma_axi32_core0_axim_cmd(clk,reset,ch_num,burst_start,burst_addr,burst_si
    
    assign               AID_pre = {
                      end_line_cmd,   //[6]
-                     ASIZE_pre[1:0], //[5:4]
+                     ASIZE_pre[2:0], //[5:4]
                      extra_bit,      //[3]
                      ch_num[2:0]     //[2:0]
                      };
@@ -203,7 +203,7 @@ module dma_axi32_core0_axim_cmd(clk,reset,ch_num,burst_start,burst_addr,burst_si
    always @(posedge clk or posedge reset)
      if (reset)
        begin
-      ASIZE  <= #1 {2{1'b0}};
+      ASIZE  <= #1 {3{1'b0}};
       AJOINT <= #1 1'b0;
        end
      else if (burst_start)

@@ -82,7 +82,7 @@ module dma_axi32_core0_axim_wr(clk,reset,wr_cmd_port,wr_last_cmd,wr_line_cmd,wr_
    output [32-1:0]     AWADDR;
    output               AWPORT;
    output [`LEN_BITS-1:0]     AWLEN;
-   output [1:0]           AWSIZE;
+   output [2:0]           AWSIZE;
    output               AWVALID;
    input               AWREADY;
    output [32-1:0]     WDATA;
@@ -148,7 +148,8 @@ module dma_axi32_core0_axim_wr(clk,reset,wr_cmd_port,wr_last_cmd,wr_line_cmd,wr_
              .page_cross(page_cross),
              .AID(AWID),
              .AADDR(AWADDR),
-             .APORT(AWPORT),
+             .APORT(AWPORTn
+),
              .ALEN(AWLEN),
              .ASIZE(AWSIZE),
              .AVALID(AWVALID),

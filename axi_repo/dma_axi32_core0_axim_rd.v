@@ -88,7 +88,7 @@ module dma_axi32_core0_axim_rd(clk,reset,load_wr,load_wr_num,load_wr_cycle,load_
    output [32-1:0]     ARADDR;
    output               ARPORT;
    output [`LEN_BITS-1:0]     ARLEN;
-   output [1:0]           ARSIZE;
+   output [2:0]           ARSIZE;
    output               ARVALID;
    input               ARREADY;
    input               AWVALID;
